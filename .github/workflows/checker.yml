@@ -20,9 +20,15 @@ jobs:
         with: 
           node-version: latest
           cache: npm
+          cache-dependency-path: websight/package-lock.json
 
-      - run: npm ci
-      - run: npm run build
+      - name: dependencies
+        working-directory: websight
+        run: npm ci
+
+      - name: build
+        working-directory: websight
+        run: npm run build
 
 
 
