@@ -37,7 +37,7 @@ export class GameScene extends Phaser.Scene {
         this.add.image(640, 360, "background");
         this.player = this.physics.add.image(640, 360, "character");
 
-        this.player.setBounce(0.5);
+        this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
 
 
