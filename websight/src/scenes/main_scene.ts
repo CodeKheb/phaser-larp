@@ -4,7 +4,7 @@ import Phaser from "phaser";
 export class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image;
     private platforms!: Phaser.Physics.Arcade.StaticGroup;
-    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+    // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
     private keys!: {
         D: Phaser.Input.Keyboard.Key;
@@ -45,7 +45,7 @@ export class GameScene extends Phaser.Scene {
 
         this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
         this.physics.add.collider(this.player, this.platforms);
-        this.cursors = this.input.keyboard!.createCursorKeys();
+        // this.cursors = this.input.keyboard!.createCursorKeys();
     }
 
     update() {
