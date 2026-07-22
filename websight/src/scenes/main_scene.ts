@@ -10,6 +10,7 @@ export class GameScene extends Phaser.Scene {
         D: Phaser.Input.Keyboard.Key;
         A: Phaser.Input.Keyboard.Key;
         Space: Phaser.Input.Keyboard.Key;
+    };
 
     constructor() {
         super("GameScene");
