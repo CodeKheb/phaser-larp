@@ -1,7 +1,7 @@
 import './style.css'
 
 import Phaser from "phaser";
-import {GameScene} from "./scenes/main_scene.ts";
+import { MainScene } from "./core/scenes/MainScene";
 
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
@@ -19,7 +19,7 @@ const config: Phaser.Types.Core.GameConfig = {
     },
   },
   scene: [
-      GameScene
+      MainScene
   ]
 };
 
