@@ -4,6 +4,7 @@ import Phaser from "phaser";
 export class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image;
     private platforms!: Phaser.Physics.Arcade.StaticGroup;
+    private background!: Phaser.GameObjects.Image;
     // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
     private keys!: {
@@ -34,7 +35,17 @@ export class GameScene extends Phaser.Scene {
             Space: Phaser.Input.Keyboard.Key;
        };
 
-        this.add.image(640, 360, "background");
+
+        this.background = this.add.image(this.scale.width / 2, this.scale.height / 2,"background");
+        this.background.setDisplaySize(this.scale.width, this.scale.height);
+
+        this.resizeBackground();
+
+        this.scale.on('resize', () =>{
+                this.resizeBackground();
+        }, this);
+
+
         this.player = this.physics.add.image(640, 360, "character");
 
         this.player.setBounce(0.25);
@@ -73,5 +84,18 @@ export class GameScene extends Phaser.Scene {
             this.player.setVelocityY(-400);
         } 
 
+    }
+    private resizeBackground(): void {
+        if (!this.background) return;
+
+        const screenWidth = this.scale.width;
+        const screenHeight = this.scale.height;
+
+        this.background.setPosition(screenWidth / 2, screenHeight / 2);
+
+        const scaleX = screenWidth / this.background.width;
+        const scaleY = screenHeight / this.background.height;
+        const coverScale = Math.max(scaleX, scaleY);
+        this.background.setScale(coverScale);
     }
 }
