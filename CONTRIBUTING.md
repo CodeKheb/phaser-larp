@@ -5,6 +5,7 @@ npm install -g npm@latest
 
 # Install packages
 ```bash 
+cd websight
 npm install
 ```
 
