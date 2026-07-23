@@ -18,9 +18,9 @@ export class GameScene extends Phaser.Scene {
 
 
     preload() {
-            this.load.image("character", "/assets/character.png");
-            this.load.image("ground", "/assets/platform.png");
-            this.load.image("logo", "/assets/logo.png");
+            this.load.image("character", "assets/character.png");
+            this.load.image("ground", "assets/platform.png");
+            this.load.image("logo", "assets/logo.png");
     }
 
     create() {

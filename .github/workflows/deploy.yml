@@ -34,7 +34,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: websight/
+          path: websight/dist
 
   deploy:
     needs: build
