@@ -4,7 +4,6 @@ import Phaser from "phaser";
 export class GameScene extends Phaser.Scene {
     private player!: Phaser.Physics.Arcade.Image;
     private platforms!: Phaser.Physics.Arcade.StaticGroup;
-    private background!: Phaser.GameObjects.Image;
     // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
     private keys!: {
@@ -19,13 +18,9 @@ export class GameScene extends Phaser.Scene {
 
 
     preload() {
-            this.load.image(
-                "background", 
-                '/assets/background.png'
-            );
-
             this.load.image("character", "/assets/character.png");
             this.load.image("ground", "/assets/platform.png");
+            this.load.image("logo", "/assets/logo.png");
     }
 
     create() {
@@ -35,26 +30,22 @@ export class GameScene extends Phaser.Scene {
             Space: Phaser.Input.Keyboard.Key;
        };
 
-
-        this.background = this.add.image(this.scale.width / 2, this.scale.height / 2,"background");
-        this.background.setDisplaySize(this.scale.width, this.scale.height);
-
-        this.resizeBackground();
-
-        this.scale.on('resize', () =>{
-                this.resizeBackground();
-        }, this);
+        this.add.image(this.scale.width / 2, 50, 'logo');
 
 
-        this.player = this.physics.add.image(640, 360, "character");
+
+        this.player = this.physics.add.image(640, 200, "character");
 
         this.player.setBounce(0.25);
         this.player.setCollideWorldBounds(true);
 
+        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+        this.cameras.main.setZoom(0.8);
+
 
         this.platforms = this.physics.add.staticGroup();
 
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+        this.platforms.create(this.scale.width / 2, this.scale.height, 'ground').setScale(18).refreshBody();
         this.physics.add.collider(this.player, this.platforms);
         // this.cursors = this.input.keyboard!.createCursorKeys();
     }
@@ -84,18 +75,5 @@ export class GameScene extends Phaser.Scene {
             this.player.setVelocityY(-400);
         } 
 
-    }
-    private resizeBackground(): void {
-        if (!this.background) return;
-
-        const screenWidth = this.scale.width;
-        const screenHeight = this.scale.height;
-
-        this.background.setPosition(screenWidth / 2, screenHeight / 2);
-
-        const scaleX = screenWidth / this.background.width;
-        const scaleY = screenHeight / this.background.height;
-        const coverScale = Math.max(scaleX, scaleY);
-        this.background.setScale(coverScale);
     }
 }

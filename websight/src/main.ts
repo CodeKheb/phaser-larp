@@ -6,6 +6,7 @@ import {GameScene} from "./scenes/main_scene.ts";
 const config: Phaser.Types.Core.GameConfig = {
   type: Phaser.AUTO,
   parent: 'game-container',
+  transparent: true,
   scale: {
       mode: Phaser.Scale.RESIZE,
       autoCenter: Phaser.Scale.CENTER_BOTH

@@ -8,7 +8,9 @@ body, html {
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-color: #000000;
+    background-image: linear-gradient(to bottom, #096b7f, #ffffff);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
 }
 
 #game-container {
