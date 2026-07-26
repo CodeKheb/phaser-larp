@@ -4,6 +4,15 @@
     box-sizing: border-box;
 }
 
+:root {
+    --control-size: clamp(78px, 14vw, 90px);
+    --control-gap: clamp(8px, 2vw, 20px);
+    --control-padding: clamp(12px, 4vw, 32px);
+    --control-bg: #4b5563;
+    --control-border: #1f2937;
+    --control-text: white;
+}
+
 body, html {
     width: 100%;
     height: 100%;
@@ -19,4 +28,60 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#mobile-controls {
+    display: none;
+}
+
+@media (pointer: coarse) {
+    #mobile-controls {
+        position: fixed;
+        bottom: 72px;
+        left: 0;
+        right: 0;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: end;
+
+        padding: var(--control-padding);
+    }
+
+    #mobile-controls button {
+        width: var(--control-size);
+        height: var(--control-size);
+
+        border-radius: 50%;
+        border: none;
+
+        font-size: 28px;
+        font-weight: bold;
+
+        cursor: pointer;
+
+        background: var(--control-bg);
+        color: var(--control-text);
+
+        border: 4px solid var(--control-border);
+
+        box-shadow:
+        0 6px 0 #111827;
+
+        transition: transform .1s;
+    }
+
+    #mobile-controls button:active {
+        transform: translateY(4px);
+
+        box-shadow:
+        0 2px 0 #111827;
+    }
+
+    .movement,
+    .actions {
+        display: flex;
+        gap: var(--control-gap);
+    }
+
 }

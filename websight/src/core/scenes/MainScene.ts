@@ -2,12 +2,12 @@ import Phaser from "phaser";
 import { Assets, AssetPaths } from "../../shared/Assets";
 import { Player } from "../../features/player/Player";
 import { World } from "../../features/world/World";
-import { PlayerInput } from "../../features/player/PlayerInput";
+import { InputManager } from "../../features/controls/InputManager";
 
 export class MainScene extends Phaser.Scene {
 
     private player!: Player;
-    private playerInput!: PlayerInput;
+    private controls!: InputManager;
     private world!: World;
 
     constructor() {
@@ -24,7 +24,7 @@ export class MainScene extends Phaser.Scene {
     create() {
         this.player = new Player(this);
 
-        this.playerInput = new PlayerInput(this);
+        this.controls = new InputManager(this);
 
         this.world = new World(this);
 
@@ -39,16 +39,16 @@ export class MainScene extends Phaser.Scene {
     }
 
     update() {
-        if (this.playerInput.left)
+        if (this.controls.left)
             this.player.moveLeft();
 
-        else if (this.playerInput.right)
+        else if (this.controls.right)
             this.player.moveRight();
 
         else
             this.player.stop();
 
-        if (this.playerInput.jump)
+        if (this.controls.jump)
             this.player.jump();
     }
 

@@ -1,10 +1,9 @@
 import Phaser from "phaser";
 
-export class PlayerInput {
-
-    private leftKey!: Phaser.Input.Keyboard.Key;
-    private rightKey!: Phaser.Input.Keyboard.Key;
-    private jumpKey!: Phaser.Input.Keyboard.Key;
+export class KeyboardInput {
+    private leftKey: Phaser.Input.Keyboard.Key;
+    private rightKey: Phaser.Input.Keyboard.Key;
+    private jumpKey: Phaser.Input.Keyboard.Key;
 
     constructor(scene: Phaser.Scene) {
         this.leftKey = scene.input.keyboard!.addKey(
