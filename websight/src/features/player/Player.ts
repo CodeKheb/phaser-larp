@@ -1,11 +1,12 @@
 import { Assets } from "../../shared/Assets";
+import { WORLD_WIDTH } from "../../core/config/GameConfig";
 
 export class Player {
     readonly sprite: Phaser.Physics.Arcade.Image;
 
     constructor(scene: Phaser.Scene) {
         this.sprite = scene.physics.add.image(
-            640,
+            WORLD_WIDTH / 2.5,
             200,
             Assets.CHARACTER
         );

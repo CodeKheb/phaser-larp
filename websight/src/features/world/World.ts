@@ -1,5 +1,6 @@
 import { Assets } from "../../shared/Assets";
 import Phaser from "phaser";
+import { GROUND_Y, WORLD_HEIGHT, WORLD_WIDTH } from "../../core/config/GameConfig";
 
 export class World {
 
@@ -8,7 +9,7 @@ export class World {
     constructor(scene: Phaser.Scene) {
             
         scene.add.image(
-            scene.scale.width / 2,
+            WORLD_WIDTH / 2,
             150,
             Assets.LOGO,
         )
@@ -18,11 +19,25 @@ export class World {
 
         this.platforms
             .create(
-                scene.scale.width / 2,
-                scene.scale.height,
+                WORLD_WIDTH / 2,
+                GROUND_Y,
                 Assets.PLATFORM
             )
-            .setScale(18)
+            .setScale(20)
             .refreshBody();
+
+            scene.physics.world.setBounds(
+                0,
+                0,
+                WORLD_WIDTH,
+                WORLD_HEIGHT
+            );
+
+            scene.cameras.main.setBounds(
+                0,
+                0,
+                WORLD_WIDTH,
+                WORLD_HEIGHT
+            );
     }
 }
