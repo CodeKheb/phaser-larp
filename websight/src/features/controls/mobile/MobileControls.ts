@@ -14,11 +14,11 @@ export class MobileControls {
         key: keyof MobileInput
     ) {
         const button = document.getElementById(id);
-        console.log(id, button);
 
         if (!button) return;
 
-        button.addEventListener("pointerdown", () => {
+        button.addEventListener("pointerdown", (e) => {
+            e.preventDefault();
             this.input[key] = true;
         });
 

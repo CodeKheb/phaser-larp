@@ -78,6 +78,14 @@ body, html {
         0 2px 0 #111827;
     }
 
+    #mobile-controls,
+    #mobile-controls * {
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
     .movement,
     .actions {
         display: flex;
