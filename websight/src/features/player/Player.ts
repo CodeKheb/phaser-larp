@@ -1,27 +1,28 @@
 import { Assets } from "../../shared/Assets";
-import { WORLD_WIDTH } from "../../core/config/GameConfig";
+import { WorldConfig } from "../../core/config/GameConfig";
+import { Attributes } from "../../core/config/PlayerConfig";
 
 export class Player {
     readonly sprite: Phaser.Physics.Arcade.Image;
 
     constructor(scene: Phaser.Scene) {
         this.sprite = scene.physics.add.image(
-            WORLD_WIDTH / 2.5,
+            WorldConfig.WORLD_WIDTH / 2.15,
             200,
             Assets.CHARACTER
         );
 
-        this.sprite.setBounce(0.25);
+        this.sprite.setBounce(Attributes.BOUNCE_AMOUNT);
         this.sprite.setCollideWorldBounds(true);
     }
 
     moveLeft() {
-        this.sprite.setVelocityX(-360);
+        this.sprite.setVelocityX(-Attributes.VELOCITY);
         this.sprite.setFlipX(true);
     }
 
     moveRight() {
-        this.sprite.setVelocityX(360);
+        this.sprite.setVelocityX(Attributes.VELOCITY);
         this.sprite.setFlipX(false);
     }
 
@@ -31,7 +32,7 @@ export class Player {
 
     jump() {
         if (this.sprite.body?.blocked.down) {
-            this.sprite.setVelocityY(-400);
+            this.sprite.setVelocityY(Attributes.JUMP_HEIGHT);
         }
     }
 }
