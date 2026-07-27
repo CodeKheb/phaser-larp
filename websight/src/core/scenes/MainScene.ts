@@ -3,12 +3,14 @@ import { Assets, AssetPaths } from "../../shared/Assets";
 import { Player } from "../../features/player/Player";
 import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
+import { Interactable } from "../../features/gameObjects/interactable";
 
 export class MainScene extends Phaser.Scene {
 
     private player!: Player;
     private controls!: InputManager;
     private world!: World;
+    private interactable!: Interactable;
 
     constructor() {
         super("MainScene");
@@ -27,6 +29,8 @@ export class MainScene extends Phaser.Scene {
         this.controls = new InputManager(this);
 
         this.world = new World(this);
+
+        this.interactable = new Interactable(this);
 
         this.physics.add.collider(
             this.player.sprite,
