@@ -16,6 +16,10 @@ export class Player {
         this.sprite.setCollideWorldBounds(true);
     }
 
+    currentPosition(): { x: number; y: number } {
+        return { x: this.sprite.x, y: this.sprite.y };
+    }
+
     moveLeft() {
         this.sprite.setVelocityX(-Attributes.VELOCITY);
         this.sprite.setFlipX(true);

@@ -3,7 +3,7 @@ import { Assets, AssetPaths } from "../../shared/Assets";
 import { Player } from "../../features/player/Player";
 import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
-import { Interactable } from "../../features/gameObjects/interactable";
+import { Interactable } from "../../features/gameObjects/Interactable";
 
 export class MainScene extends Phaser.Scene {
 
@@ -21,6 +21,7 @@ export class MainScene extends Phaser.Scene {
             this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
             this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
             this.load.image(Assets.LOGO, AssetPaths.LOGO);
+            this.load.image(Assets.STAFF, AssetPaths.STAFF)
     }
 
     create() {
@@ -30,7 +31,7 @@ export class MainScene extends Phaser.Scene {
 
         this.world = new World(this);
 
-        this.interactable = new Interactable(this);
+       // this.interactable = new Interactable(this, this.player);
 
         this.physics.add.collider(
             this.player.sprite,
