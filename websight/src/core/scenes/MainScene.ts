@@ -17,10 +17,10 @@ export class MainScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
-        this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
-        this.load.image(Assets.LOGO, AssetPaths.LOGO);
-        this.load.image(Assets.STAFF, AssetPaths.STAFF);
+            this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
+            this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
+            this.load.image(Assets.LOGO, AssetPaths.LOGO);
+            this.load.image(Assets.STAFF, AssetPaths.STAFF)
     }
 
     create() {
@@ -29,8 +29,16 @@ export class MainScene extends Phaser.Scene {
         this.interactable = new Interactable(this, this.player);
         this.world = new World(this);
 
-        this.physics.add.collider(this.player.sprite, this.world.platforms);
-        this.physics.add.collider(this.interactable, this.world.platforms);
+       // this.interactable = new Interactable(this, this.player);
+
+        this.physics.add.collider(
+            this.player.sprite,
+            this.world.platforms
+        );
+        this.physics.add.collider(
+            this.interactable,
+            this.world.platforms
+        )
 
         this.physics.add.overlap(
             this.player.sprite,
@@ -41,9 +49,11 @@ export class MainScene extends Phaser.Scene {
             },
             undefined,
             this
-        );
+        )
 
-        this.cameras.main.startFollow(this.player.sprite);
+        this.cameras.main.startFollow(
+            this.player.sprite
+        );    
     }
 
     update() {
@@ -53,21 +63,27 @@ export class MainScene extends Phaser.Scene {
             this.isInZone = false;
             this.interactable.setCanInteract(false);
         }
-
-        if (this.controls.left) {
+            
+        if (this.controls.left)
             this.player.moveLeft();
-        } else if (this.controls.right) {
-            this.player.moveRight();
-        } else {
-            this.player.stop();
-        }
 
-        if (this.controls.jump) {
+        else if (this.controls.right)
+            this.player.moveRight();
+
+        else
+            this.player.stopPlayer();
+
+        if (this.controls.jump)
             this.player.jump();
-        }
 
         if (this.controls.interactJustPressed) {
             this.player.toggleInteractable();
+            console.log("Interact key was pressed");
+            console.log(this.children
+            .getAll()
+            .filter((obj): obj is Interactable => obj instanceof Interactable)
+            .filter((interactable) => interactable.interactState));
+            
         }
     }
 }

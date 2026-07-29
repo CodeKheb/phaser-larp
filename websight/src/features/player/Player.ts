@@ -4,11 +4,13 @@ import { Attributes } from "../../core/config/PlayerConfig";
 import { Interactable } from "../gameObjects/Interactable";
 import Phaser from "phaser";
 
-export class Player {
+export class Player extends Phaser.Physics.Arcade.Sprite {
     readonly sprite: Phaser.Physics.Arcade.Image;
     private interactableList: Interactable[] = [];
+    private interactedObject: Interactable | null = null;
 
     constructor(scene: Phaser.Scene) {
+        super(scene, WorldConfig.WORLD_WIDTH / 2.15, 200, Assets.CHARACTER);
         this.sprite = scene.physics.add.image(
             WorldConfig.WORLD_WIDTH / 2.15,
             200,
@@ -21,8 +23,9 @@ export class Player {
         this.refreshInteractableList(scene);
     }
 
-    currentPosition(): { x: number; y: number } {
-        return { x: this.sprite.x, y: this.sprite.y };
+    protected preUpdate(time: number, delta: number): void {
+        super.preUpdate(time, delta);
+        this.refreshInteractableList(this.scene);
     }
 
     private refreshInteractableList(scene: Phaser.Scene): void {
@@ -33,30 +36,47 @@ export class Player {
     }
 
     toggleInteractable() {
-        this.refreshInteractableList(this.sprite.scene);
-
         if (this.interactableList.length > 0) {
             const interactable = this.interactableList[0];
             interactable.toggleClicked();
+            this.interactedObject = interactable;
+            //console.log(this.interactedObject);
+        } else {
+            //console.log(this.interactableList);
         }
     }
 
+    currentPosition(): { x: number; y: number } {
+        return { x: this.sprite.x, y: this.sprite.y };
+    }
+
     moveLeft() {
+        if (this.interactedObject) {
+            this.interactedObject.setVelocityX(-Attributes.VELOCITY);
+            this.interactedObject.setFlipX(true);
+        }
         this.sprite.setVelocityX(-Attributes.VELOCITY);
         this.sprite.setFlipX(true);
     }
 
     moveRight() {
+        if (this.interactedObject) {
+            this.interactedObject.setVelocityX(Attributes.VELOCITY);
+            this.interactedObject.setFlipX(false);
+        }
         this.sprite.setVelocityX(Attributes.VELOCITY);
         this.sprite.setFlipX(false);
     }
 
-    stop() {
+    stopPlayer() {
         this.sprite.setVelocityX(0);
     }
 
     jump() {
         if (this.sprite.body?.blocked.down) {
+            if (this.interactedObject) {
+                this.interactedObject.setVelocityY(Attributes.JUMP_HEIGHT);
+            }
             this.sprite.setVelocityY(Attributes.JUMP_HEIGHT);
         }
     }
