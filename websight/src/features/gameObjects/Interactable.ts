@@ -31,9 +31,8 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
     protected preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
 
-        if (this.clicked) {
-            const playerCoordinates = this.player.currentPosition();
-            this.setPosition(playerCoordinates.x + 50, playerCoordinates.y);
+        if (!this.clicked) {
+            this.setVelocityX(0)
         }
 
         this.interactionZone.setPosition(this.x, this.y);
@@ -55,7 +54,7 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.clicked = !this.clicked;
     }
 
-    get isInteractable(): boolean {
+    get isClicked(): boolean {
         return this.canInteract && this.clicked;
     }
 }

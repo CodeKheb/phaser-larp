@@ -32,7 +32,7 @@ export class MainScene extends Phaser.Scene {
         this.interactable = new Interactable(this, this.player);
 
         this.physics.add.collider(
-            this.player.sprite,
+            this.player,
             this.world.platforms
         );
         this.physics.add.collider(
@@ -41,7 +41,7 @@ export class MainScene extends Phaser.Scene {
         )
 
         this.physics.add.overlap(
-            this.player.sprite,
+            this.player,
             this.interactable.interactionZone,
             () => {
                 this.interactable.setCanInteract(true);
@@ -53,12 +53,12 @@ export class MainScene extends Phaser.Scene {
         )
 
         this.cameras.main.startFollow(
-            this.player.sprite
+            this.player
         );    
     }
 
     update() {
-        const stillOverlapping = this.physics.overlap(this.player.sprite, this.interactable.interactionZone);
+        const stillOverlapping = this.physics.overlap(this.player, this.interactable.interactionZone);
 
         if (!stillOverlapping && this.isInZone) {
             this.isInZone = false;
