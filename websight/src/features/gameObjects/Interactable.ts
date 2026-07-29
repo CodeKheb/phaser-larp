@@ -35,6 +35,12 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
             const playerCoordinates = this.player.currentPosition();
             this.setPosition(playerCoordinates.x + 50, playerCoordinates.y);
         }
+
+        this.interactionZone.setPosition(this.x, this.y);
+        const zoneBody = this.interactionZone.body as Phaser.Physics.Arcade.StaticBody | undefined;
+        if (zoneBody) {
+            zoneBody.updateFromGameObject();
+        }
     }
 
     get interactState(): boolean {

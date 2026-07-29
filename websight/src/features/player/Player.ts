@@ -36,6 +36,8 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     toggleInteractable() {
+        this.refreshInteractableList(this.scene);
+
         if (this.interactableList.length > 0) {
             const interactable = this.interactableList[0];
             interactable.toggleClicked();

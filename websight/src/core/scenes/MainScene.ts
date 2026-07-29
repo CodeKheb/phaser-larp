@@ -30,9 +30,6 @@ export class MainScene extends Phaser.Scene {
         this.player = new Player(this);
         this.controls = new InputManager(this);
         this.interactable = new Interactable(this, this.player);
-        this.world = new World(this);
-
-       // this.interactable = new Interactable(this, this.player);
 
         this.physics.add.collider(
             this.player.sprite,
