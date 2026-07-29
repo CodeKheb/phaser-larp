@@ -21,9 +21,12 @@ export class MainScene extends Phaser.Scene {
             this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
             this.load.image(Assets.LOGO, AssetPaths.LOGO);
             this.load.image(Assets.STAFF, AssetPaths.STAFF)
+            this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
     }
 
     create() {
+        this.world = new World(this);
+
         this.player = new Player(this);
         this.controls = new InputManager(this);
         this.interactable = new Interactable(this, this.player);
