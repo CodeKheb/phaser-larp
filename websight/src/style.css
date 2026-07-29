@@ -5,9 +5,9 @@
 }
 
 :root {
-    --control-size: clamp(78px, 14vw, 90px);
-    --control-gap: clamp(8px, 2vw, 20px);
-    --control-padding: clamp(12px, 4vw, 32px);
+    --control-size: clamp(78px, 18vw, 500px);
+    --control-gap: clamp(8px, 4vw, 48px);
+    --control-padding: clamp(12px, 4vw, 48px);
     --control-bg: #4b5563;
     --control-border: #1f2937;
     --control-text: white;

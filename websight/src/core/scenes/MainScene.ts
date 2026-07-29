@@ -19,19 +19,20 @@ export class MainScene extends Phaser.Scene {
             this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
             this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
             this.load.image(Assets.LOGO, AssetPaths.LOGO);
+            this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
     }
 
     create() {
-        this.player = new Player(this);
-
-        this.controls = new InputManager(this);
-
         this.world = new World(this);
+
+        this.player = new Player(this);
 
         this.physics.add.collider(
             this.player.sprite,
             this.world.platforms
         );
+
+        this.controls = new InputManager(this);
 
         this.cameras.main.startFollow(
             this.player.sprite
