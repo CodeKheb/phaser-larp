@@ -3,7 +3,6 @@ import { KeyboardInput } from "./keyboard/KeyboardInput";
 import { MobileInput } from "./mobile/MobileInput";
 import { MobileControls } from "./mobile/MobileControls";
 
-
 export class InputManager {
     readonly keyboard: KeyboardInput;
     readonly mobile: MobileInput;
@@ -25,5 +24,13 @@ export class InputManager {
 
     get jump() {
         return this.keyboard.jump || this.mobile.jump;
+    }
+
+    get interact() {
+        return this.keyboard.interact;
+    }
+
+    get interactJustPressed() {
+        return this.keyboard.interactJustPressed;
     }
 }
