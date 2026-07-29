@@ -45,6 +45,7 @@ export class MainScene extends Phaser.Scene {
             this.interactable.interactionZone,
             () => {
                 this.interactable.setCanInteract(true);
+                console.log("Player and object overlapped");
                 this.isInZone = true;
             },
             undefined,
@@ -82,8 +83,7 @@ export class MainScene extends Phaser.Scene {
             console.log(this.children
             .getAll()
             .filter((obj): obj is Interactable => obj instanceof Interactable)
-            .filter((interactable) => interactable.interactState));
-            
+            .filter((interactable) => interactable.interactState == true));
         }
     }
 }
