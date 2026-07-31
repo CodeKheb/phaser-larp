@@ -4,14 +4,14 @@ import Phaser from "phaser";
 
 export class Interactable extends Phaser.Physics.Arcade.Sprite {
     private clicked: boolean = false;
-    private player: Player;
+    //private player: Player;
     readonly interactionZone: Phaser.GameObjects.Zone;
     private canInteract: boolean = false;
     private readonly interactionRadius: number = 120;
 
     constructor(scene: Phaser.Scene, player: Player) {
         super(scene, player.currentPosition().x + 50, player.currentPosition().y, Assets.STAFF);
-        this.player = player;
+        //this.player = player;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
