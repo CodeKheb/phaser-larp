@@ -46,9 +46,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
             const interactable = this.interactableList[0];
             interactable.toggleClicked();
             this.interactedObject = interactable;
-            //console.log(this.interactedObject);
-        } else {
-            //console.log(this.interactableList);
         }
     }
 
