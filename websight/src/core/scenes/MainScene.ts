@@ -3,7 +3,7 @@ import { Assets, AssetPaths } from "../../shared/Assets";
 import { Player } from "../../features/player/Player";
 import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
-import { Interactable } from "../../features/gameObjects/Interactable";
+import { Interactable } from "../../features/objects/Interactable";
 
 export class MainScene extends Phaser.Scene {
     private player!: Player;

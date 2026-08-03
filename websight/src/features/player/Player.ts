@@ -1,7 +1,7 @@
 import { Assets } from "../../shared/Assets";
 import { WorldConfig } from "../../core/config/GameConfig";
 import { Attributes } from "../../core/config/PlayerConfig";
-import { Interactable } from "../gameObjects/Interactable";
+import { Interactable } from "../objects/Interactable";
 import Phaser from "phaser";
 
 export class Player extends Phaser.Physics.Arcade.Sprite {
