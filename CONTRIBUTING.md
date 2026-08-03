@@ -5,9 +5,7 @@
 
 | Tool | What it actually is |
 |---|---|
-| **Node.js** | A program that lets JavaScript run outside a browser, on your computer. It's what powers the tools below. |
-| **npm** | "Node Package Manager." It comes bundled with Node.js. It downloads and manages all the external code libraries (called "packages" or "dependencies") that this project needs to run. |
-| **Vite** | The "bundler." It takes all our JavaScript/asset files, bundles them together, and runs a local development server so you can see live changes in your browser as you code. |
+| **Node.js** | A program that lets JavaScript run outside a browser, on your computer. It's what powers the tools below. | | **npm** | "Node Package Manager." It comes bundled with Node.js. It downloads and manages all the external code libraries (called "packages" or "dependencies") that this project needs to run. | | **Vite** | The "bundler." It takes all our JavaScript/asset files, bundles them together, and runs a local development server so you can see live changes in your browser as you code. |
 | **Phaser** | The game framework itself. It's a JavaScript library specifically built for making 2D browser games — it handles things like rendering sprites, physics, input (keyboard/mouse), sound, and scenes for us so we don't build a game engine from scratch. |
 
 ### Setting up your computer
@@ -64,7 +62,7 @@ version — reinstall the LTS version and try again.
 
 ---
 
-## 2. Contribution Rules
+## Contribution Rules
 
 ### Branching
 
