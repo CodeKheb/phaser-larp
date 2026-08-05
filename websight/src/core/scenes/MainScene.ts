@@ -10,7 +10,6 @@ export class MainScene extends Phaser.Scene {
     private controls!: InputManager;
     private world!: World;
     private interactable!: Interactable;
-    private isInZone = false;
 
     constructor() {
         super("MainScene");
@@ -40,30 +39,12 @@ export class MainScene extends Phaser.Scene {
             this.world.platforms
         )
 
-        this.physics.add.overlap(
-            this.player,
-            this.interactable.interactionZone,
-            () => {
-                this.interactable.setCanInteract(true);
-                console.log("Player and object overlapped");
-                this.isInZone = true;
-            },
-            undefined,
-            this
-        )
-
         this.cameras.main.startFollow(
             this.player
         );    
     }
 
     update() {
-        const stillOverlapping = this.physics.overlap(this.player, this.interactable.interactionZone);
-
-        if (!stillOverlapping && this.isInZone) {
-            this.isInZone = false;
-            this.interactable.setCanInteract(false);
-        }
             
         if (this.controls.left)
             this.player.moveLeft();
@@ -77,13 +58,8 @@ export class MainScene extends Phaser.Scene {
         if (this.controls.jump)
             this.player.jump();
 
-        if (this.controls.interactJustPressed) {
+        if (this.controls.interact) {
             this.player.toggleInteractable();
-            console.log("Interact key was pressed");
-            console.log(this.children
-            .getAll()
-            .filter((obj): obj is Interactable => obj instanceof Interactable)
-            .filter((interactable) => interactable.interactState == true));
         }
     }
 }
