@@ -27,10 +27,7 @@ export class InputManager {
     }
 
     get interact() {
-        return this.keyboard.interact;
+        return this.keyboard.interact || this.mobile.interact;
     }
 
-    get interactJustPressed() {
-        return this.keyboard.interactJustPressed;
-    }
 }
