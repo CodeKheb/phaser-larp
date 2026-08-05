@@ -37,10 +37,6 @@ export class KeyboardInput {
     }
 
     get interact() {
-        return this.interactKey.isDown;
-    }
-
-    get interactJustPressed() {
         return Phaser.Input.Keyboard.JustDown(this.interactKey);
     }
 }
