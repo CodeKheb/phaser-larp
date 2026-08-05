@@ -16,7 +16,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(Attributes.BOUNCE_AMOUNT);
         this.setCollideWorldBounds(true);
 
-        this.interaction = new InteractionController(this);
+        this.interaction = new InteractionController();
     }
 
     protected preUpdate(time: number, delta: number): void {
