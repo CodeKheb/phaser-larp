@@ -18,14 +18,6 @@ export class MobileControls {
 
         if (!button) return;
 
-        if (key === "interact") {
-            button.addEventListener("pointerdown", (e) => {
-                e.preventDefault();
-                this.input[key] = !this.input[key];
-            });
-            return;
-        }
-
         button.addEventListener("pointerdown", (e) => {
             e.preventDefault();
             this.input[key] = true;
