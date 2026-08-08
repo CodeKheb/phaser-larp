@@ -1,5 +1,10 @@
 import { MobileInput } from "./MobileInput";
 
+/**
+ * Connects HTML mobile control buttons to the game's input system.
+ *
+ * Button IDs are defined in index.html.
+ */
 export class MobileControls {
     private input: MobileInput;
     constructor(input: MobileInput) {

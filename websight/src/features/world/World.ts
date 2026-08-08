@@ -2,16 +2,24 @@ import { Assets } from "../../shared/Assets";
 import Phaser from "phaser";
 import { WorldConfig } from "../../core/config/GameConfig";
 
-
+/**
+ * Represents the game world.
+ * Contains the game's static environment, such as platforms, clouds, and the player's starting position.
+ */
 export class World {
 
     readonly platforms;
 
+    /**
+     * creates the game world. Runs automatically when the game starts.
+     * @param scene the game scene
+     */
     constructor(scene: Phaser.Scene) {
-
+        // Create a static physics group for the platforms
         this.platforms =
             scene.physics.add.staticGroup();
 
+        // Creates the ground platform according to WorldConfig.
         this.platforms
             .create(
                 WorldConfig.WORLD_WIDTH / 2,
@@ -21,22 +29,28 @@ export class World {
             .setScale(50)
             .refreshBody();
 
-            scene.physics.world.setBounds(
-                0,
-                0,
-                WorldConfig.WORLD_WIDTH,
-                WorldConfig.WORLD_HEIGHT
-            );
+        // Sets up the world bounds to prevent the player from falling off the screen.
+        scene.physics.world.setBounds(
+            0,
+            0,
+            WorldConfig.WORLD_WIDTH,
+            WorldConfig.WORLD_HEIGHT
+        );
 
-            scene.cameras.main.setBounds(
-                0,
-                0,
-                WorldConfig.WORLD_WIDTH,
-                WorldConfig.WORLD_HEIGHT * 1.25
-            );
+        // Sets up the camera to follow the player.
+        scene.cameras.main.setBounds(
+            0,
+            0,
+            WorldConfig.WORLD_WIDTH,
+            WorldConfig.WORLD_HEIGHT * 1.25
+        );
 
-            scene.cameras.main.setZoom(WorldConfig.ZOOM_AMOUNT);
+        // Sets the camera zoom level.
+        scene.cameras.main.setZoom(WorldConfig.ZOOM_AMOUNT);
 
+        /*
+            sets up the number of clouds to be generated in the scene.
+         */
         for (let i = 0; i < 20; i++) {
             let RandomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
             let RandomSpawnY = Phaser.Math.Between(0, WorldConfig.WORLD_HEIGHT / 2);
@@ -49,13 +63,11 @@ export class World {
             .setScale(RandomScale);
         }
 
+        // Adds SSITE logo in the middle of the screen.
         scene.add.image(
             WorldConfig.WORLD_WIDTH / 2,
             WorldConfig.LOGO_Y,
             Assets.LOGO,
         )
-
-
-            
     }
 }
