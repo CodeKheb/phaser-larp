@@ -8,26 +8,22 @@ export class InputManager {
     readonly mobile: MobileInput;
     readonly mobileControls: MobileControls;
 
+    /**
+     * assigns movement keys to the keyboard and mobile controls.
+     * @param scene the game scene
+     */
     constructor(scene: Phaser.Scene) {
         this.keyboard = new KeyboardInput(scene);
         this.mobile = new MobileInput();
         this.mobileControls = new MobileControls(this.mobile);
     }
 
-    get left() {
-        return this.keyboard.left || this.mobile.left;
-    }
-
-    get right() {
-        return this.keyboard.right || this.mobile.right;
-    }
-
-    get jump() {
-        return this.keyboard.jump || this.mobile.jump;
-    }
-
-    get interact() {
-        return this.keyboard.interact || this.mobile.interact;
-    }
-
+    /*
+        returns the current state of the input.
+        combines keyboard and mobile input states.
+     */
+    get left() { return this.keyboard.left || this.mobile.left; }
+    get right() { return this.keyboard.right || this.mobile.right; }
+    get jump() { return this.keyboard.jump || this.mobile.jump; }
+    get interact() { return this.keyboard.interact || this.mobile.interact; }
 }
