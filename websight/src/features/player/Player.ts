@@ -4,9 +4,19 @@ import { Attributes } from "../../core/config/PlayerConfig";
 import { InteractionController } from "../objects/InteractionController";
 import Phaser from "phaser";
 
+/**
+ * Main player class.
+ * Handles player movement, interaction, and physics.
+ *
+ * extends Phaser API's Phaser.Physics.Arcade.Sprite.
+ */
 export class Player extends Phaser.Physics.Arcade.Sprite {
     private readonly interaction: InteractionController;
 
+    /**
+     * creates a new player at the center of the screen.
+     * @param scene the game scene you wish to add the player to.
+     */
     constructor(scene: Phaser.Scene) {
         super(scene, WorldConfig.WORLD_WIDTH / 2.15, 200, Assets.CHARACTER);
     
@@ -19,6 +29,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.interaction = new InteractionController();
     }
 
+    /**
+     * updates the player's state
+     * @param time current internal game timestamp
+     * @param delta time elapsed since last update
+     */
     protected preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
         this.interaction.update();
@@ -27,6 +42,11 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     toggleInteractable() {
         this.interaction.toggle();
     }
+
+
+    /*
+     *  Character Position and movements
+     */
 
     currentPosition(): { x: number; y: number } {
         return { x: this.x, y: this.y };
