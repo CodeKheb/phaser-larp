@@ -2,6 +2,12 @@ import { Assets } from "../../shared/Assets";
 import { Player } from "../player/Player";
 import Phaser from "phaser";
 
+/**
+ * Represents an interactable object in the game.
+ * This class extends Phaser.Physics.Arcade.Sprite and adds functionality for interacting with the player.
+ * <br>
+ * This exact class is used for interaction specifically "holding" an object.
+ */
 export class Interactable extends Phaser.Physics.Arcade.Sprite {
     private static registry: Set<Interactable> = new Set();
 
@@ -10,6 +16,11 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
     private canInteract: boolean = false;
     private readonly interactionRadius: number = 120;
 
+    /**
+     * creates a new interactable object at the player's position.'
+     * @param scene the game scene
+     * @param player the player object that interacts with this object
+     */
     constructor(scene: Phaser.Scene, player: Player) {
         super(scene, player.currentPosition().x + 50, player.currentPosition().y, Assets.STAFF);
         this.player = player;
@@ -23,6 +34,7 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.setInteractive({ useHandCursor: true });
         this.input!.enabled = false;
 
+        // Centralized event handling for interaction
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleClicked());
         this.on(Phaser.Input.Events.POINTER_OVER, () => this.setTint(0xffff66));
         this.on(Phaser.Input.Events.POINTER_OUT, () => this.clearTint());
@@ -31,6 +43,10 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         Interactable.registry.add(this);
     }
 
+    /**
+     * gives you a list of all interactable objects that are
+     * currently close enough or otherwise valid for interaction.
+     */
     static getInRange(): Interactable[] {
         return [...Interactable.registry].filter((i) => i.interactState);
     }
@@ -40,6 +56,13 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         super.destroy(fromScene);
     }
 
+    /**
+     * updates the interactable object's proximity to the player and
+     * follows the player's movement if the object is held.
+     *
+     * @param time current internal game timestamp
+     * @param delta time elapsed since last update
+     */
     protected preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
 
@@ -47,6 +70,11 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.followPlayerIfHeld();
     }
 
+    /**
+     * updates the interactable object's proximity to the player.
+     * If the player is within the interaction radius, the object
+     * will be interactable.
+     */
     private updateProximity(): void {
         const inRange = Phaser.Math.Distance.Between(
             this.x, this.y,
@@ -60,6 +88,9 @@ export class Interactable extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
+    /**
+     * follows the player's movement if the object is held.
+     */
     private followPlayerIfHeld(): void {
         if (!this.isClicked) {
             this.setVelocityX(0);

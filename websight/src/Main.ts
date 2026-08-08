@@ -3,24 +3,30 @@ import './style.css'
 import Phaser from "phaser";
 import { MainScene } from "./core/scenes/MainScene";
 
+/**
+ * Main bootstrap file for the game configuration.
+ * entrypoint loaded by index.html
+ */
 const config: Phaser.Types.Core.GameConfig = {
-  type: Phaser.AUTO,
-  parent: 'game-container',
-  transparent: true,
+  type: Phaser.AUTO, // Renderer type: auto-detect WebGL or Canvas
+  parent: 'game-container', // Container ID
+  transparent: true, // Transparent background
   scale: {
-      mode: Phaser.Scale.RESIZE,
-      autoCenter: Phaser.Scale.CENTER_BOTH
+      mode: Phaser.Scale.RESIZE, // Scale mode: resize the game to fit the browser window
+      autoCenter: Phaser.Scale.CENTER_BOTH // Center the game horizontally and vertically
   },
   physics: {
-    default: "arcade",
+    default: "arcade", // Physics engine: arcade
     arcade: {
       gravity: { x:0, y: 1800},
       debug: false,
     },
   },
   scene: [
+      // List of registered scenes:
       MainScene
   ]
 };
 
+// Create the game instance
 new Phaser.Game(config);
