@@ -129,7 +129,7 @@ What you're actually working with:
 
 ---
 
-## Contribution Rules
+## Rules
 
 ### Branching
 
@@ -183,9 +183,10 @@ review, or remove later.
 websight/
 ├── src/
 │   ├── features/
-│   │   ├── player-movement/
-│   │   ├── enemy-ai/
-│   │   └── inventory-system/
+│   │   ├── controls/
+│   │   ├── objects/
+│   │   ├── player/
+│   │   └── world/
 │   ├── scenes/
 │   └── main.js
 ├── public/

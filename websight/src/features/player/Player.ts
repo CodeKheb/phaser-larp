@@ -1,13 +1,22 @@
 import { Assets } from "../../shared/Assets";
 import { WorldConfig } from "../../core/config/GameConfig";
 import { Attributes } from "../../core/config/PlayerConfig";
-import { Interactable } from "../objects/Interactable";
+import { InteractionController } from "../objects/InteractionController";
 import Phaser from "phaser";
 
+/**
+ * Main player class.
+ * Handles player movement, interaction, and physics.
+ *
+ * extends Phaser API's Phaser.Physics.Arcade.Sprite.
+ */
 export class Player extends Phaser.Physics.Arcade.Sprite {
-    private interactableList: Interactable[] = [];
-    private interactedObject: Interactable | null = null;
+    private readonly interaction: InteractionController;
 
+    /**
+     * creates a new player at the center of the screen.
+     * @param scene the game scene you wish to add the player to.
+     */
     constructor(scene: Phaser.Scene) {
         super(scene, WorldConfig.WORLD_WIDTH / 2.15, 200, Assets.CHARACTER);
     
@@ -17,75 +26,48 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(Attributes.BOUNCE_AMOUNT);
         this.setCollideWorldBounds(true);
 
-        this.refreshInteractableList(scene);
+        this.interaction = new InteractionController();
     }
 
+    /**
+     * updates the player's state
+     * @param time current internal game timestamp
+     * @param delta time elapsed since last update
+     */
     protected preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
-        this.refreshInteractableList(this.scene);
-        this.checkObjectState()
-    }
-
-    private checkObjectState(){
-        if (!this.interactedObject?.isClicked) {
-            this.interactedObject = null
-        }
-    }
-
-    private refreshInteractableList(scene: Phaser.Scene): void {
-        this.interactableList = scene.children
-            .getAll()
-            .filter((obj): obj is Interactable => obj instanceof Interactable)
-            .filter((interactable) => interactable.interactState);
+        this.interaction.update();
     }
 
     toggleInteractable() {
-        this.refreshInteractableList(this.scene);
-
-        if (this.interactableList.length > 0) {
-            const interactable = this.interactableList[0];
-            interactable.toggleClicked();
-            this.interactedObject = interactable;
-        }
+        this.interaction.toggle();
     }
+
+
+    /*
+     *  Character Position and movements
+     */
 
     currentPosition(): { x: number; y: number } {
         return { x: this.x, y: this.y };
     }
 
     moveLeft() {
-        if (this.interactedObject) {
-            this.interactedObject.setVelocityX(-Attributes.VELOCITY);
-            this.interactedObject.setFlipX(true);
-        }
         this.setVelocityX(-Attributes.VELOCITY);
         this.setFlipX(true);
     }
 
     moveRight() {
-        if (this.interactedObject) {
-            this.interactedObject.setVelocityX(Attributes.VELOCITY);
-            this.interactedObject.setFlipX(false);
-        }
         this.setVelocityX(Attributes.VELOCITY);
         this.setFlipX(false);
     }
 
     stopPlayer() {
-        if (this.interactedObject) {
-            this.interactedObject.setVelocityX(0);
-        }
         this.setVelocityX(0);
     }
 
     jump() {
         if (this.body?.blocked.down) {
-            if (this.interactedObject) {
-                this.interactedObject.setVelocityY(Attributes.JUMP_HEIGHT);
-                console.log(this.interactedObject.isClicked);
-                console.log(this.interactedObject);
-                
-            }
             this.setVelocityY(Attributes.JUMP_HEIGHT);
         }
     }

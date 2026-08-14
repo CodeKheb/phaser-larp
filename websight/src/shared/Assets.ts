@@ -1,3 +1,8 @@
+/* manages:
+ * 1. key/property name: unique identifier for the assets (e.g., Assets.CHARACTER)
+ * 2. path: path to the asset (e.g., AssetPaths.CHARACTER)
+ */
+
 export const Assets = {
     CHARACTER: "character",
     PLATFORM: "ground",

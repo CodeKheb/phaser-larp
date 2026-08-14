@@ -5,17 +5,26 @@ import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
 import { Interactable } from "../../features/objects/Interactable";
 
+/**
+ * Represents the main game scene.
+ * Handles the core gameplay mechanics, including the player, world, and interaction systems.
+ * It is initialized, loaded, and updated by the Phaser game framework.
+ *
+ * referenced by main.ts as the main scene
+ */
 export class MainScene extends Phaser.Scene {
     private player!: Player;
     private controls!: InputManager;
     private world!: World;
     private interactable!: Interactable;
-    private isInZone = false;
 
     constructor() {
         super("MainScene");
     }
 
+    /**
+     * preloads all main assets for the game
+     */
     preload() {
             this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
             this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
@@ -24,6 +33,16 @@ export class MainScene extends Phaser.Scene {
             this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
     }
 
+    /**
+     * creates all game objects and sets up the gameplay environment such as
+     * <ul>
+     *     <li>player</li>
+     *     <li>world</li>
+     *     <li>controls</li>
+     *     <li>physics</li>
+     *     <li>camera</li>
+     * </ul>
+     */
     create() {
         this.world = new World(this);
 
@@ -40,30 +59,15 @@ export class MainScene extends Phaser.Scene {
             this.world.platforms
         )
 
-        this.physics.add.overlap(
-            this.player,
-            this.interactable.interactionZone,
-            () => {
-                this.interactable.setCanInteract(true);
-                console.log("Player and object overlapped");
-                this.isInZone = true;
-            },
-            undefined,
-            this
-        )
-
         this.cameras.main.startFollow(
             this.player
         );    
     }
 
+    /**
+     * updates the game state, including player movement, interaction, and physics
+     */
     update() {
-        const stillOverlapping = this.physics.overlap(this.player, this.interactable.interactionZone);
-
-        if (!stillOverlapping && this.isInZone) {
-            this.isInZone = false;
-            this.interactable.setCanInteract(false);
-        }
             
         if (this.controls.left)
             this.player.moveLeft();
@@ -77,13 +81,8 @@ export class MainScene extends Phaser.Scene {
         if (this.controls.jump)
             this.player.jump();
 
-        if (this.controls.interactJustPressed) {
+        if (this.controls.interact) {
             this.player.toggleInteractable();
-            console.log("Interact key was pressed");
-            console.log(this.children
-            .getAll()
-            .filter((obj): obj is Interactable => obj instanceof Interactable)
-            .filter((interactable) => interactable.interactState == true));
         }
     }
 }
