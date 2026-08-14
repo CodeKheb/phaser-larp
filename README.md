@@ -75,8 +75,7 @@ For detailed setup steps and project rules (branching, naming conventions, proje
 
 Follow the WebSight series on our social media platforms to see what's new and vote on what comes next — polls, comments, and GitHub issues are all ways to suggest a change.
 
-- _Add your social media links here_
-
+<!-- - _Add your social media links here_ -->
 <!-- Have an idea? Open a [GitHub issue](<repository-url>/issues). -->
 
 ## Documentation
