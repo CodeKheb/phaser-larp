@@ -15,6 +15,18 @@ WebSight is a hands-on way to learn how real open-source projects work:
 
 Students are encouraged to contribute directly on GitHub — read the **[Contributing Guide](CONTRIBUTING.md)** to get started.
 
+## Feature Teams
+
+The game is built by **dedicated teams for each feature**, so you can contribute wherever you're most interested:
+
+- **Programming** — game logic, physics, and controls
+- **Sprite design** — characters, objects, and backgrounds
+- **Animation** — bringing sprites to life
+- **Sound design** — sound effects and background audio
+- **Voice acting** — character voices and narration
+
+You don't need to be an expert to join a team — this is a learning project first.
+
 ## The Game
 
 A 2D side-scrolling platformer. The player explores a wide world filled with interactable objects.
@@ -37,29 +49,7 @@ A 2D side-scrolling platformer. The player explores a wide world filled with int
 
 ## Getting Started
 
-1. **Install Node.js** (LTS) from [nodejs.org](https://nodejs.org/) and [Git](https://git-scm.com/downloads) if you don't have them.
-2. **Clone the repository:**
-   ```bash
-   git clone https://github.com/ - not sure yet
-   cd  -- not sure yet
-   ```
-3. **Install dependencies** (the game lives in `websight/`):
-   ```bash
-   cd websight
-   npm install
-   ```
-4. **Run the dev server:**
-   ```bash
-   npm run dev
-   ```
-   Open the local URL shown in your terminal — save a file and the browser auto-refreshes.
-5. **Build for production:**
-   ```bash
-   npm run build
-   ```
-   Outputs an optimized version into `dist/`.
-
-For detailed setup steps and project rules (branching, naming conventions, project structure), see the **[Contributing Guide](CONTRIBUTING.md)**.
+New to the project? The [Contributing Guide](CONTRIBUTING.md) walks you through everything **step by step, in beginner-friendly language** — installing Node.js and Git, cloning the repository, and running the game on your computer. No prior experience needed.
 
 ## Tech Stack
 
@@ -75,9 +65,7 @@ For detailed setup steps and project rules (branching, naming conventions, proje
 
 Follow the WebSight series on our social media platforms to see what's new and vote on what comes next — polls, comments, and GitHub issues are all ways to suggest a change.
 
-- _Add your social media links here_
-
-<!-- Have an idea? Open a [GitHub issue](<repository-url>/issues). -->
+All contributor communication happens on **Discord** or **Facebook Messenger** — join to coordinate with your team, ask questions, and get help. Links will be added here once they're ready.
 
 ## Documentation
 
