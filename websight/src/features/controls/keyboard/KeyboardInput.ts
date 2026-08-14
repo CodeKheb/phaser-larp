@@ -6,6 +6,10 @@ export class KeyboardInput {
     private jumpKey: Phaser.Input.Keyboard.Key;
     private interactKey: Phaser.Input.Keyboard.Key
 
+    /**
+     * assigns movement keys to the keyboard.
+     * @param scene the game scene
+     */
     constructor(scene: Phaser.Scene) {
         this.leftKey = scene.input.keyboard!.addKey(
             Phaser.Input.Keyboard.KeyCodes.A
@@ -37,10 +41,6 @@ export class KeyboardInput {
     }
 
     get interact() {
-        return this.interactKey.isDown;
-    }
-
-    get interactJustPressed() {
         return Phaser.Input.Keyboard.JustDown(this.interactKey);
     }
 }
