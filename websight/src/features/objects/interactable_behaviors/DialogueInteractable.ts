@@ -74,10 +74,12 @@ export class DialogueInteractable extends Interactable {
         // Background graphics
         this.dialogueBg = this.scene.add.graphics();
         this.drawDialogueBubble();
+        this.dialogueBg.setDepth(Depth.ABOVE_PLAYER);
 
         // Text
         this.dialogueText = this.scene.add.text(0, 0, this.message, style);
         this.positionDialogue(cam.scrollX, cam.scrollY);
+        this.dialogueText.setDepth(Depth.ABOVE_PLAYER);
     }
 
     /**
