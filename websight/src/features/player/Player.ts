@@ -1,5 +1,5 @@
 import { Assets } from "../../shared/Assets";
-import { WorldConfig } from "../../core/config/GameConfig";
+import { DEPTH, WorldConfig } from "../../core/config/GameConfig";
 import { Attributes } from "../../core/config/PlayerConfig";
 import { InteractionController } from "../objects/InteractionController";
 import Phaser from "phaser";
@@ -25,6 +25,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         
         this.setBounce(Attributes.BOUNCE_AMOUNT);
         this.setCollideWorldBounds(true);
+        this.setDepth(DEPTH.PLAYER)
 
         this.interaction = new InteractionController();
     }
