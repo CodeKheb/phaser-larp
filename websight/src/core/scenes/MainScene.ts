@@ -85,7 +85,8 @@ export class MainScene extends Phaser.Scene {
     /**
      * updates the game state, including player movement, interaction, and physics
      */
-    update() {
+    update(_time: number, delta: number) {
+        this.world.update(delta);
             
         if (this.controls.left)
             this.player.moveLeft();
