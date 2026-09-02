@@ -20,7 +20,6 @@ export class MainScene extends Phaser.Scene {
     private world!: World;
     private sign!: DialogueInteractable;
     private staff!: HoldingInteractable;
-    private cube!: CubeInteractable;
 
     constructor() {
         super("MainScene");
@@ -58,10 +57,11 @@ export class MainScene extends Phaser.Scene {
         // creates the staff (holdable object)
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
-        // creates cube objects
-        this.cube = CubeInteractable.spawn(
+        // spawns cube objects
+        CubeInteractable.spawn(
             this, 
-            this.player
+            this.player,
+            this.world.platforms
         )
 
         // creates the sign (dialogue object)
@@ -72,12 +72,6 @@ export class MainScene extends Phaser.Scene {
             "Welcome to the demo world developed by SSITE!\nExplore and interact with objects.",
             this.player.currentPosition().x - 80,
             this.player.currentPosition().y,
-        );
-
-        this.cube.body!.setOffset(30, 30);
-        this.physics.add.collider(
-            this.cube,
-            this.world.platforms
         );
 
         this.physics.add.collider(
