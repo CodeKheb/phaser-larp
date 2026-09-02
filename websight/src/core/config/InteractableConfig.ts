@@ -6,5 +6,5 @@
  */
 export const InteractableConfig = {
     RADIUS: 120,
-    DIALOGUE_MAX_WIDTH: 250,
+    DIALOGUE_MAX_WIDTH: 300,
 } as const;

@@ -63,7 +63,7 @@ export class DialogueInteractable extends Interactable {
         const cam = this.scene.cameras.main;
         const style: Phaser.Types.GameObjects.Text.TextStyle = {
             fontFamily: "Arial",
-            fontSize: "25px",
+            fontSize: "28px",
             color: "#000000",
             wordWrap: { width: InteractableConfig.DIALOGUE_MAX_WIDTH },
             align: "center",
