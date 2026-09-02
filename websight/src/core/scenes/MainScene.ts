@@ -5,6 +5,7 @@ import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
 import { HoldingInteractable } from "../../features/objects/interactable_behaviors/HoldingInteractable.ts";
 import { DialogueInteractable } from "../../features/objects/interactable_behaviors/DialogueInteractable.ts";
+import { CubeInteractable } from "../../features/objects/interactable_behaviors/CubeInteractable.ts";
 
 /**
  * Represents the main game scene.
@@ -19,6 +20,7 @@ export class MainScene extends Phaser.Scene {
     private world!: World;
     private sign!: DialogueInteractable;
     private staff!: HoldingInteractable;
+    private cube!: CubeInteractable;
 
     constructor() {
         super("MainScene");
@@ -56,6 +58,12 @@ export class MainScene extends Phaser.Scene {
         // creates the staff (holdable object)
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
+        // creates cube objects
+        this.cube = CubeInteractable.spawn(
+            this, 
+            this.player
+        )
+
         // creates the sign (dialogue object)
         this.sign = new DialogueInteractable(
             this,
@@ -64,6 +72,11 @@ export class MainScene extends Phaser.Scene {
             "Welcome to the demo world developed by SSITE!\nExplore and interact with objects.",
             this.player.currentPosition().x - 80,
             this.player.currentPosition().y,
+        );
+
+        this.physics.add.collider(
+            this.cube,
+            this.world.platforms
         );
 
         this.physics.add.collider(

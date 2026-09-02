@@ -1,6 +1,7 @@
 import { Interactable } from "../Interactable.ts";
 import { InteractableConfig } from "../../../core/config/InteractableConfig.ts";
 import { Player } from "../../player/Player.ts";
+import { DEPTH } from "../../../core/config/GameConfig.ts";
 import Phaser from "phaser";
 
 /**
@@ -31,6 +32,7 @@ export class DialogueInteractable extends Interactable {
     ) {
         super(scene, player, x, y, asset);
         this.message = message;
+        this.setDepth(DEPTH.ABOVE_PLAYER)
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.onInteract());
     }
