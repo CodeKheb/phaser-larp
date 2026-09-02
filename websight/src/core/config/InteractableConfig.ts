@@ -5,5 +5,6 @@
  * highlight color, or object-follow behavior.
  */
 export const InteractableConfig = {
-    //TODO: add interactable config and remove hardcoded interactionRadius value in interactable.ts
+    RADIUS: 120,
+    DIALOGUE_MAX_WIDTH: 300,
 } as const;
