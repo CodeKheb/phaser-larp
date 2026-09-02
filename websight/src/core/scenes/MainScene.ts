@@ -3,8 +3,8 @@ import { Assets, AssetPaths } from "../../shared/Assets";
 import { Player } from "../../features/player/Player";
 import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
-import { HoldingInteractable } from "../../features/objects/HoldingInteractable";
-import { DialogueInteractable } from "../../features/objects/DialogueInteractable";
+import { HoldingInteractable } from "../../features/objects/interactable_behaviors/HoldingInteractable.ts";
+import { DialogueInteractable } from "../../features/objects/interactable_behaviors/DialogueInteractable.ts";
 
 /**
  * Represents the main game scene.

@@ -1,5 +1,5 @@
-import { Interactable } from "./Interactable";
-import { Player } from "../player/Player";
+import { Interactable } from "../Interactable.ts";
+import { Player } from "../../player/Player.ts";
 import Phaser from "phaser";
 
 /**
