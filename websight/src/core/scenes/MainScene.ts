@@ -52,12 +52,15 @@ export class MainScene extends Phaser.Scene {
         this.player = new Player(this);
         this.controls = new InputManager(this);
 
+        // creates the staff (holdable object)
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
+
+        // creates the sign (dialogue object)
         this.sign = new DialogueInteractable(
             this,
             this.player,
             Assets.SIGN,
-            "Welcome to the world!\nExplore and interact with objects.",
+            "Welcome to the demo world developed by SSITE!\nExplore and interact with objects.",
             this.player.currentPosition().x - 80,
             this.player.currentPosition().y,
         );
