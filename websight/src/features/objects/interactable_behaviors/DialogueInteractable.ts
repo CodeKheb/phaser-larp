@@ -1,6 +1,6 @@
-import { Interactable } from "./Interactable";
-import { InteractableConfig } from "../../core/config/InteractableConfig";
-import { Player } from "../player/Player";
+import { Interactable } from "../Interactable.ts";
+import { InteractableConfig } from "../../../core/config/InteractableConfig.ts";
+import { Player } from "../../player/Player.ts";
 import Phaser from "phaser";
 
 /**
