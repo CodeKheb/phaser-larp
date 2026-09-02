@@ -1,6 +1,7 @@
 import { Interactable } from "../Interactable.ts";
 import { Player } from "../../player/Player.ts";
 import Phaser from "phaser";
+import { Depth } from "../../../core/config/GameConfig.ts";
 
 /**
  * An interactable that the player can pick up and carry.
@@ -25,6 +26,7 @@ export class HoldingInteractable extends Interactable {
     ) {
         const pos = player.currentPosition();
         super(scene, player, x ?? pos.x + 50, y ?? pos.y, asset);
+        this.setDepth(Depth.ABOVE_PLAYER)
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleClicked());
     }
