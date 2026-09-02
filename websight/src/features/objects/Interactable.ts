@@ -71,7 +71,9 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         if (inRange !== this.canInteract) {
             this.canInteract = inRange;
             this.input!.enabled = inRange;
-            if (!inRange) {
+            if (inRange) {
+                this.onInRange();
+            } else {
                 this.clearTint();
                 this.onOutOfRange();
             }
@@ -88,6 +90,14 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * Subclasses define what happens here.
      */
     abstract onInteract(): void;
+
+    /**
+     * Called when the player moves inside of interaction range.
+     * Subclasses can override to perform cleanup (e.g. start glow).
+     */
+    onInRange(): void {
+        // Default: no-op
+    }
 
     /**
      * Called when the player moves out of interaction range.
