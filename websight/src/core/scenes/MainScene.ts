@@ -57,8 +57,8 @@ export class MainScene extends Phaser.Scene {
         // creates the staff (holdable object)
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
-        // creates cube objects
-        this.cube = CubeInteractable.spawn(
+        // spawns cube objects
+        CubeInteractable.spawn(
             this, 
             this.player,
             this.world.platforms
