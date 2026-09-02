@@ -10,6 +10,7 @@ export const Assets = {
     STAFF: "staff",
     CLOUD: "cloud",
     SIGN: "sign",
+    CUBE: "cube",
 } as const;
 
 export const AssetPaths = {
@@ -19,4 +20,5 @@ export const AssetPaths = {
     STAFF: "objects/staff.png",
     CLOUD: "world/clouds.png",
     SIGN: "objects/sign.png",
+    CUBE: "objects/cube.png"
 } as const;
