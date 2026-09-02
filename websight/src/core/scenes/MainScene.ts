@@ -74,6 +74,7 @@ export class MainScene extends Phaser.Scene {
             this.player.currentPosition().y,
         );
 
+        this.cube.body!.setOffset(30, 30);
         this.physics.add.collider(
             this.cube,
             this.world.platforms

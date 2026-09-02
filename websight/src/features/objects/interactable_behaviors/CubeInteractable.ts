@@ -2,7 +2,7 @@ import Phaser from "phaser";
 import { Interactable } from "../Interactable";
 import { Player } from "../../player/Player";
 import { Assets } from "../../../shared/Assets";
-import { DEPTH, WorldConfig } from "../../../core/config/GameConfig";
+import { Depth, WorldConfig } from "../../../core/config/GameConfig";
 
 export class CubeInteractable extends Interactable {
     private glowSprite!: Phaser.GameObjects.Sprite;
@@ -15,8 +15,8 @@ export class CubeInteractable extends Interactable {
         y: number,
     ) {
         super(scene, player, x, y, Assets.CUBE)
-        this.setScale(0.5)
-        this.setDepth(DEPTH.BEHIND_PLAYER)
+        this.setScale(0.35)
+        this.setDepth(Depth.BEHIND_PLAYER)
 
         this.setUpGlow();
 
@@ -30,8 +30,8 @@ export class CubeInteractable extends Interactable {
         player: Player,
     ): CubeInteractable {
         const x = Phaser.Math.Between(
-            100,
-            WorldConfig.WORLD_WIDTH - 100
+            WorldConfig.WORLD_WIDTH - 3500,
+            WorldConfig.WORLD_WIDTH - 5500
         );
 
         const y = 1000;
@@ -55,8 +55,8 @@ export class CubeInteractable extends Interactable {
 
         this.glowTween = this.scene.tweens.add({
             targets: this.glowSprite,
-            scaleX: this.scaleX * 1.5,
-            scaleY: this.scaleY * 1.5,
+            scaleX: this.scaleX * 1.25,
+            scaleY: this.scaleY * 1.25,
             alpha: 0.8,
             duration: 1000,
             yoyo: true,
