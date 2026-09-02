@@ -9,6 +9,7 @@ export const Assets = {
     LOGO: "logo",
     STAFF: "staff",
     CLOUD: "cloud",
+    SIGN: "sign",
 } as const;
 
 export const AssetPaths = {
@@ -17,4 +18,5 @@ export const AssetPaths = {
     LOGO: "world/logo.png",
     STAFF: "objects/staff.png",
     CLOUD: "world/clouds.png",
+    SIGN: "objects/sign.png",
 } as const;
