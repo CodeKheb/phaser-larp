@@ -1,4 +1,4 @@
-import Phaser from "phaser";
+import Phaser, { Physics } from "phaser";
 import { Interactable } from "../Interactable";
 import { Player } from "../../player/Player";
 import { Assets } from "../../../shared/Assets";
@@ -28,20 +28,35 @@ export class CubeInteractable extends Interactable {
     static spawn(
         scene: Phaser.Scene,
         player: Player,
+        platforms: Phaser.GameObjects.Group | Phaser.Physics.Arcade.Sprite
     ): CubeInteractable {
         const x = Phaser.Math.Between(
             WorldConfig.WORLD_WIDTH - 3500,
             WorldConfig.WORLD_WIDTH - 5500
         );
 
-        const y = 1000;
+        const y = WorldConfig.GROUND_Y - 1000;
 
-        return new CubeInteractable(
+        const cube =new CubeInteractable(
             scene,
             player,
             x,
             y
         );
+
+        scene.physics.add.existing(cube)
+
+        cube.body!.setOffset(30, 30);
+        scene.physics.add.collider(
+            cube,
+            platforms
+        )
+
+        cube.once(Phaser.GameObjects.Events.DESTROY, () => {
+            CubeInteractable.spawn(scene, player, platforms)
+        })
+
+        return cube;
     }
 
     private setUpGlow(): void {
@@ -66,6 +81,15 @@ export class CubeInteractable extends Interactable {
 
         this.glowTween.pause();
 
+        const updateListener = () => {
+            if (this.active && this.glowSprite && this.glowSprite.active) {
+                this.glowSprite.setPosition(this.x, this.y);
+            }
+        };
+
+        this.scene.events.on(Phaser.Scenes.Events.UPDATE, updateListener);
+
+
         this.scene.events.on(Phaser.Scenes.Events.UPDATE, () => {
             if (this.active && this.glowSprite) {
                 this.glowSprite.setPosition(this.x, this.y);
@@ -73,6 +97,8 @@ export class CubeInteractable extends Interactable {
         });
 
         this.on(Phaser.GameObjects.Events.DESTROY, () => {
+            this.scene.events.off(Phaser.Scenes.Events.UPDATE, updateListener);
+            if (this.glowTween) this.glowTween.remove();
             if (this.glowSprite) this.glowSprite.destroy();
         });
     }
