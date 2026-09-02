@@ -11,7 +11,7 @@ export const WorldConfig = {
     ZOOM_AMOUNT: 0.55 // Amount of zoom used in the camera
 } as const;
 
-export const DEPTH = {
+export const Depth = {
     PLAYER: 10,
     ABOVE_PLAYER: 20,
     BEHIND_PLAYER: 5,
