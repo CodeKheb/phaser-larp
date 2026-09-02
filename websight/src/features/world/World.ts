@@ -9,6 +9,7 @@ import { WorldConfig } from "../../core/config/GameConfig";
 export class World {
 
     readonly platforms;
+    private readonly clouds: Phaser.GameObjects.Image[] = [];
 
     /**
      * creates the game world. Runs automatically when the game starts.
@@ -55,12 +56,14 @@ export class World {
             let RandomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
             let RandomSpawnY = Phaser.Math.Between(0, WorldConfig.WORLD_HEIGHT / 2);
             let RandomScale = Phaser.Math.Between(0, 2);
-            scene.add.image(
+            const cloud = scene.add.image(
                 RandomSpawnX,
                 RandomSpawnY,
                 Assets.CLOUD
             )
             .setScale(RandomScale);
+
+            this.clouds.push(cloud);
         }
 
         // Adds SSITE logo in the middle of the screen.
@@ -69,5 +72,16 @@ export class World {
             WorldConfig.LOGO_Y,
             Assets.LOGO,
         )
+    }
+
+    // Move clouds right and recycle them after they leave the world.
+    update(delta: number) {
+        for (const cloud of this.clouds) {
+            cloud.x += WorldConfig.CLOUD_SPEED * delta;
+
+            if (cloud.x > WorldConfig.WORLD_WIDTH + cloud.displayWidth / 2) {
+                cloud.x = -cloud.displayWidth / 2;
+            }
+        }
     }
 }
