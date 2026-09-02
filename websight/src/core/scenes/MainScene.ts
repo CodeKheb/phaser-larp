@@ -34,6 +34,7 @@ export class MainScene extends Phaser.Scene {
             this.load.image(Assets.STAFF, AssetPaths.STAFF);
             this.load.image(Assets.SIGN, AssetPaths.SIGN);
             this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
+            this.load.image(Assets.CUBE, AssetPaths.CUBE);
     }
 
     /**
