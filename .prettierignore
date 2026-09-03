@@ -1,0 +1,10 @@
+# Ignore compiled game builds
+dist/
+build/
+
+# Ignore heavy game assets
+public/assets/
+src/assets/
+
+# Ignore large Tiled JSON maps
+**/*.json
