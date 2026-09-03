@@ -6,6 +6,7 @@ import { InputManager } from "../../features/controls/InputManager";
 import { HoldingInteractable } from "../../features/objects/interactable_behaviors/HoldingInteractable.ts";
 import { DialogueInteractable } from "../../features/objects/interactable_behaviors/DialogueInteractable.ts";
 import { CubeInteractable } from "../../features/objects/interactable_behaviors/CubeInteractable.ts";
+import { WorldConfig } from "../config/GameConfig.ts";
 
 /**
  * Represents the main game scene.
@@ -29,13 +30,13 @@ export class MainScene extends Phaser.Scene {
      * preloads all main assets for the game
      */
     preload() {
-            this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
-            this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
-            this.load.image(Assets.LOGO, AssetPaths.LOGO);
-            this.load.image(Assets.STAFF, AssetPaths.STAFF);
-            this.load.image(Assets.SIGN, AssetPaths.SIGN);
-            this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
-            this.load.image(Assets.CUBE, AssetPaths.CUBE);
+        this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
+        this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
+        this.load.image(Assets.LOGO, AssetPaths.LOGO);
+        this.load.image(Assets.STAFF, AssetPaths.STAFF);
+        this.load.image(Assets.SIGN, AssetPaths.SIGN);
+        this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
+        this.load.image(Assets.CUBE, AssetPaths.CUBE);
     }
 
     /**
@@ -59,7 +60,7 @@ export class MainScene extends Phaser.Scene {
 
         // spawns cube objects
         CubeInteractable.spawn(
-            this, 
+            this,
             this.player,
             this.world.platforms
         )
@@ -86,9 +87,24 @@ export class MainScene extends Phaser.Scene {
             this.sign,
             this.world.platforms
         );
-        this.cameras.main.startFollow(
-            this.player
-        );    
+
+        const camera = this.cameras.main;
+        // isMobile boolean if in mobile view
+        const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+        // setZoom if mobile view, set MOBILE_ZOOM else set ZOOM_AMOUNT
+        camera.setZoom(
+            isMobile
+                ? WorldConfig.MOBILE_ZOOM
+                : WorldConfig.ZOOM_AMOUNT
+        );
+
+        camera.startFollow(this.player);
+
+        // if mobile view MOBILE_ZOOM_OFFSET
+        if (isMobile) {
+            camera.setFollowOffset(0, WorldConfig.MOBILE_ZOOM_OFFSET);
+        }
     }
 
     /**
@@ -96,7 +112,7 @@ export class MainScene extends Phaser.Scene {
      */
     update(_time: number, delta: number) {
         this.world.update(delta);
-            
+
         if (this.controls.left)
             this.player.moveLeft();
 

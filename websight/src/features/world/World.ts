@@ -40,17 +40,6 @@ export class World {
             WorldConfig.WORLD_HEIGHT
         );
 
-        // Sets up the camera to follow the player.
-        scene.cameras.main.setBounds(
-            0,
-            0,
-            WorldConfig.WORLD_WIDTH,
-            WorldConfig.WORLD_HEIGHT * 1.25
-        );
-
-        // Sets the camera zoom level.
-        scene.cameras.main.setZoom(WorldConfig.ZOOM_AMOUNT);
-
         /*
             sets up the number of clouds to be generated in the scene.
          */
@@ -63,7 +52,7 @@ export class World {
                 RandomSpawnY,
                 Assets.CLOUD
             )
-            .setScale(RandomScale);
+                .setScale(RandomScale);
 
             this.clouds.push(cloud);
         }
