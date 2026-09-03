@@ -26,6 +26,27 @@ jobs:
         with:
           node-version: 22
 
+      - name: Fetch contributors
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const contributors = await github.paginate(github.rest.repos.listContributors, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              per_page: 100,
+            });
+            const data = contributors
+            .filter(c => c.type === 'User')
+            .map(c => ({
+              login: c.login,
+              avatar_url: c.avatar_url,
+              html_url: c.html_url,
+              contributions: c.contributions,
+            }));
+            fs.mkdirSync('websight/public', { recursive: true });
+            fs.writeFileSync('websight/public/contributors.json', JSON.stringify(data, null, 2));
+
       - run: npm ci
         working-directory: websight
 
@@ -47,5 +68,5 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
-      
+
 
