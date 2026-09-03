@@ -46,12 +46,9 @@ export class World {
       WorldConfig.WORLD_HEIGHT * 1.25,
     );
 
-    // Sets the camera zoom level.
-    scene.cameras.main.setZoom(WorldConfig.ZOOM_AMOUNT);
-
     /*
-            sets up the number of clouds to be generated in the scene.
-         */
+           sets up the number of clouds to be generated in the scene.
+           */
     for (let i = 0; i < 20; i++) {
       let RandomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
       let RandomSpawnY = Phaser.Math.Between(0, WorldConfig.WORLD_HEIGHT / 2);
