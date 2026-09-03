@@ -1,6 +1,6 @@
 import { Assets } from "../../shared/Assets";
 import Phaser from "phaser";
-import { WorldConfig } from "../../core/config/GameConfig";
+import { Depth, WorldConfig } from "../../core/config/GameConfig";
 
 /**
  * Represents the game world.
@@ -29,6 +29,8 @@ export class World {
             )
             .setScale(50)
             .refreshBody();
+
+        this.platforms.setDepth(Depth.ABOVE_PLAYER);
 
         // Sets up the world bounds to prevent the player from falling off the screen.
         scene.physics.world.setBounds(

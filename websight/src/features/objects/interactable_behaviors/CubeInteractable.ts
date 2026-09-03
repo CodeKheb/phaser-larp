@@ -92,6 +92,8 @@ export class CubeInteractable extends Interactable {
         // Initially not visible
         this.glowSprite.setVisible(false);
 
+        this.glowSprite.setDepth(Depth.BEHIND_PLAYER);
+
         // The tween(animation)
         this.glowTween = this.scene.tweens.add({
             targets: this.glowSprite,
