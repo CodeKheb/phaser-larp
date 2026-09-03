@@ -2,6 +2,7 @@ import './style.css'
 
 import Phaser from "phaser";
 import { MainScene } from "./core/scenes/MainScene";
+import { MenuScene } from './core/scenes/MenuScene';
 
 /**
  * Main bootstrap file for the game configuration.
@@ -24,7 +25,8 @@ const config: Phaser.Types.Core.GameConfig = {
   },
   scene: [
       // List of registered scenes:
-      MainScene
+      MenuScene,
+      MainScene,
   ]
 };
 
