@@ -75,6 +75,7 @@ export class MainScene extends Phaser.Scene {
             this.player.currentPosition().y,
         );
 
+        // physics colliders
         this.physics.add.collider(
             this.player,
             this.world.platforms
@@ -87,6 +88,10 @@ export class MainScene extends Phaser.Scene {
             this.sign,
             this.world.platforms
         );
+
+        // automatically place on ground 
+        this.placeOnGround(this.sign);
+        this.placeOnGround(this.staff);
 
         const camera = this.cameras.main;
         // isMobile boolean if in mobile view
@@ -128,5 +133,25 @@ export class MainScene extends Phaser.Scene {
         if (this.controls.interact) {
             this.player.toggleInteractable();
         }
+    }
+
+    /**
+     * @param sprite takes in the phaser sprite
+     *
+     * this method automatically spawns the sprites on the ground
+     */
+    private placeOnGround(
+        sprite: Phaser.Physics.Arcade.Sprite
+    ) {
+        const groundSprite =
+            this.world.platforms.getChildren()[0] as Phaser.Physics.Arcade.Sprite;
+
+        const groundBody =
+            groundSprite.body as Phaser.Physics.Arcade.Body;
+
+        Phaser.Display.Bounds.SetBottom(sprite, groundBody.top);
+
+        const body = sprite.body as Phaser.Physics.Arcade.Body;
+        body.updateFromGameObject();
     }
 }
