@@ -5,6 +5,7 @@ export class KeyboardInput {
     private rightKey: Phaser.Input.Keyboard.Key;
     private jumpKey: Phaser.Input.Keyboard.Key;
     private interactKey: Phaser.Input.Keyboard.Key
+    private escapeKey: Phaser.Input.Keyboard.Key
 
     /**
      * assigns movement keys to the keyboard.
@@ -26,6 +27,10 @@ export class KeyboardInput {
         this.interactKey = scene.input.keyboard!.addKey(
             Phaser.Input.Keyboard.KeyCodes.Q
         )
+
+        this.escapeKey = scene.input.keyboard!.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC
+        )
     }
 
     get left() {
@@ -38,6 +43,10 @@ export class KeyboardInput {
 
     get jump() {
         return this.jumpKey.isDown;
+    }
+
+    get escape() {
+        return this.escapeKey.isDown;
     }
 
     get interact() {
