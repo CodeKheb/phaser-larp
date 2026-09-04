@@ -4,7 +4,7 @@ import Phaser from "phaser";
 
 /**
  * Abstract base class for all interactable objects in the game.
- * Handles common functionality: proximity detection, hover tinting, and registry management.
+ * Handles common functionality: proximity detection, in-range outline, and registry management.
  *
  * Subclasses must implement {@link onInteract} to define their specific interaction behavior.
  */
@@ -13,6 +13,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
 
     protected player: Player;
     protected canInteract: boolean = false;
+    protected outlineGlow: Phaser.Filters.Glow | null = null;
 
     /**
      * Creates a new interactable at the given position.
@@ -35,10 +36,6 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.setInteractive({ useHandCursor: true });
         this.input!.enabled = false;
 
-        // Hover tinting
-        this.on(Phaser.Input.Events.POINTER_OVER, () => this.setTint(0xffff66));
-        this.on(Phaser.Input.Events.POINTER_OUT, () => this.clearTint());
-
         Interactable.registry.add(this);
     }
 
@@ -51,6 +48,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
 
     destroy(fromScene?: boolean): void {
         Interactable.registry.delete(this);
+        this.setOutlineEnabled(false);
         super.destroy(fromScene);
     }
 
@@ -71,12 +69,31 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         if (inRange !== this.canInteract) {
             this.canInteract = inRange;
             this.input!.enabled = inRange;
+            this.setOutlineEnabled(inRange);
             if (inRange) {
                 this.onInRange();
             } else {
-                this.clearTint();
                 this.onOutOfRange();
             }
+        }
+    }
+
+    /**
+     * Shows or hides the outline glow that marks this object as interactable.
+     * The outline only appears while the player is within interaction range.
+     */
+    private setOutlineEnabled(enabled: boolean): void {
+        if (enabled && !this.outlineGlow) {
+            this.enableFilters();
+            if (!this.filters) return; // Filters are WebGL-only; skip if unavailable
+            this.outlineGlow = this.filters.internal.addGlow(
+                InteractableConfig.OUTLINE_COLOR,
+                InteractableConfig.OUTLINE_STRENGTH,
+                0,
+            );
+        } else if (!enabled && this.outlineGlow) {
+            this.filters?.internal.remove(this.outlineGlow);
+            this.outlineGlow = null;
         }
     }
 
