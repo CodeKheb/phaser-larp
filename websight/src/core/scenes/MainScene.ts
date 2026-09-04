@@ -16,117 +16,118 @@ import { WorldConfig } from "../config/GameConfig.ts";
  * referenced by main.ts as the main scene
  */
 export class MainScene extends Phaser.Scene {
-    private player!: Player;
-    private controls!: InputManager;
-    private world!: World;
-    private sign!: DialogueInteractable;
-    private staff!: HoldingInteractable;
+  private player!: Player;
+  private controls!: InputManager;
+  private world!: World;
+  private sign!: DialogueInteractable;
+  private staff!: HoldingInteractable;
 
-    constructor() {
-        super("MainScene");
+  constructor() {
+    super("MainScene");
+  }
+
+  /**
+   * preloads all main assets for the game
+   */
+  preload() {
+    this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
+    this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
+    this.load.image(Assets.LOGO, AssetPaths.LOGO);
+    this.load.image(Assets.STAFF, AssetPaths.STAFF);
+    this.load.image(Assets.SIGN, AssetPaths.SIGN);
+    this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
+    this.load.image(Assets.CUBE, AssetPaths.CUBE);
+  }
+
+  /**
+   * creates all game objects and sets up the gameplay environment such as
+   * <ul>
+   *     <li>player</li>
+   *     <li>world</li>
+   *     <li>controls</li>
+   *     <li>physics</li>
+   *     <li>camera</li>
+   * </ul>
+   */
+  create() {
+    this.world = new World(this);
+
+    this.player = new Player(this);
+    this.controls = new InputManager(this);
+
+    // creates the staff (holdable object)
+    this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
+
+    // spawns cube objects
+    CubeInteractable.spawn(this, this.player, this.world.platforms);
+
+    // creates the sign (dialogue object)
+    this.sign = new DialogueInteractable(
+      this,
+      this.player,
+      Assets.SIGN,
+      "Welcome to the demo world developed by SSITE!\nExplore and interact with objects.",
+      this.player.currentPosition().x - 80,
+      this.player.currentPosition().y,
+    );
+
+    // physics colliders
+    this.physics.add.collider(this.player, this.world.platforms);
+    this.physics.add.collider(this.staff, this.world.platforms);
+    this.physics.add.collider(this.sign, this.world.platforms);
+
+    // automatically place on ground
+    this.placeOnGround(this.sign);
+    this.placeOnGround(this.staff);
+
+    const camera = this.cameras.main;
+    // isMobile boolean if in mobile view
+    const isMobile = window.matchMedia("(pointer: coarse)").matches;
+
+    // setZoom if mobile view, set MOBILE_ZOOM else set ZOOM_AMOUNT
+    camera.setZoom(
+      isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT,
+    );
+
+    camera.startFollow(this.player);
+
+    // if mobile view MOBILE_ZOOM_OFFSET
+    if (isMobile) {
+      camera.setFollowOffset(0, WorldConfig.MOBILE_ZOOM_OFFSET);
     }
+  }
 
-    /**
-     * preloads all main assets for the game
-     */
-    preload() {
-        this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
-        this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
-        this.load.image(Assets.LOGO, AssetPaths.LOGO);
-        this.load.image(Assets.STAFF, AssetPaths.STAFF);
-        this.load.image(Assets.SIGN, AssetPaths.SIGN);
-        this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
-        this.load.image(Assets.CUBE, AssetPaths.CUBE);
+  /**
+   * updates the game state, including player movement, interaction, and physics
+   */
+  update(_time: number, delta: number) {
+    this.world.update(delta);
+
+    if (this.controls.left) this.player.moveLeft();
+    else if (this.controls.right) this.player.moveRight();
+    else this.player.stopPlayer();
+
+    if (this.controls.jump) this.player.jump();
+
+    if (this.controls.interact) {
+      this.player.toggleInteractable();
     }
+  }
 
-    /**
-     * creates all game objects and sets up the gameplay environment such as
-     * <ul>
-     *     <li>player</li>
-     *     <li>world</li>
-     *     <li>controls</li>
-     *     <li>physics</li>
-     *     <li>camera</li>
-     * </ul>
-     */
-    create() {
-        this.world = new World(this);
+  /**
+   * @param sprite takes in the phaser sprite
+   *
+   * this method automatically spawns the sprites on the ground
+   */
+  private placeOnGround(sprite: Phaser.Physics.Arcade.Sprite) {
+    const groundSprite =
+      this.world.platforms.getChildren()[0] as Phaser.Physics.Arcade.Sprite;
 
-        this.player = new Player(this);
-        this.controls = new InputManager(this);
+    const groundBody = groundSprite.body as Phaser.Physics.Arcade.Body;
 
-        // creates the staff (holdable object)
-        this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
+    Phaser.Display.Bounds.SetBottom(sprite, groundBody.top);
 
-        // spawns cube objects
-        CubeInteractable.spawn(
-            this,
-            this.player,
-            this.world.platforms
-        )
-
-        // creates the sign (dialogue object)
-        this.sign = new DialogueInteractable(
-            this,
-            this.player,
-            Assets.SIGN,
-            "Welcome to the demo world developed by SSITE!\nExplore and interact with objects.",
-            this.player.currentPosition().x - 80,
-            this.player.currentPosition().y,
-        );
-
-        this.physics.add.collider(
-            this.player,
-            this.world.platforms
-        );
-        this.physics.add.collider(
-            this.staff,
-            this.world.platforms
-        );
-        this.physics.add.collider(
-            this.sign,
-            this.world.platforms
-        );
-
-        const camera = this.cameras.main;
-        // isMobile boolean if in mobile view
-        const isMobile = window.matchMedia("(pointer: coarse)").matches;
-
-        // setZoom if mobile view, set MOBILE_ZOOM else set ZOOM_AMOUNT
-        camera.setZoom(
-            isMobile
-                ? WorldConfig.MOBILE_ZOOM
-                : WorldConfig.ZOOM_AMOUNT
-        );
-
-        camera.startFollow(this.player);
-
-        // if mobile view MOBILE_ZOOM_OFFSET
-        if (isMobile) {
-            camera.setFollowOffset(0, WorldConfig.MOBILE_ZOOM_OFFSET);
-        }
-    }
-
-    /**
-     * updates the game state, including player movement, interaction, and physics
-     */
-    update(_time: number, delta: number) {
-        this.world.update(delta);
-
-        if (this.controls.left)
-            this.player.moveLeft();
-
-        else if (this.controls.right)
-            this.player.moveRight();
-
-        else
-            this.player.stopPlayer();
-
-        if (this.controls.jump)
-            this.player.jump();
-
-        if (this.controls.interact) {
-            this.player.toggleInteractable();
-        }
-    }
+    const body = sprite.body as Phaser.Physics.Arcade.Body;
+    body.updateFromGameObject();
+  }
 }
