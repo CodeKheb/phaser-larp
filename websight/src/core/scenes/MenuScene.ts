@@ -53,11 +53,10 @@ export class MenuScene extends Phaser.Scene {
 
   // If escape is pressed again, resume MainScene
   update(): void {
-      if (this.controls.escape && this.scene.isPaused("MainScene")) {
-          this.scene.stop();
-          this.scene.resume("MainScene");
-      }
-
+    if (this.controls.escape && this.scene.isPaused("MainScene")) {
+      this.scene.stop();
+      this.scene.resume("MainScene");
+    }
   }
 
   /**
