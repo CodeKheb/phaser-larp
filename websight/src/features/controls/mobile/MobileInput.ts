@@ -6,4 +6,5 @@ export class MobileInput {
     right = false;
     jump = false;
     interact = false;
+    settings = false;
 }
