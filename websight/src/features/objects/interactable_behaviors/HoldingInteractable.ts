@@ -29,7 +29,15 @@ export class HoldingInteractable extends Interactable {
         glowStrength?: number,
     ) {
         const pos = player.currentPosition();
-        super(scene, player, x ?? pos.x + 50, y ?? pos.y, asset, scale ?? 1, glowStrength ?? 0);
+        super(
+            scene,
+            player,
+            x ?? pos.x + 50,
+            y ?? pos.y,
+            asset,
+            scale ?? 1,
+            glowStrength ?? 0,
+        );
         this.setDepth(Depth.ABOVE_PLAYER);
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleClicked());
