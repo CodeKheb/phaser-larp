@@ -7,6 +7,7 @@ import { HoldingInteractable } from '../../features/objects/interactable_behavio
 import { DialogueInteractable } from '../../features/objects/interactable_behaviors/DialogueInteractable.ts';
 import { WorldConfig } from '../config/GameConfig.ts';
 import { CollectibleInteractable } from '../../features/objects/interactable_behaviors/CollectibleInteractable.ts';
+import { SwitchSceneInteractable } from '../../features/objects/interactable_behaviors/SwitchSceneInteractable.ts';
 
 /**
  * Represents the main game scene.
@@ -22,6 +23,7 @@ export class MainScene extends Phaser.Scene {
     private sign!: DialogueInteractable;
     private staff!: HoldingInteractable;
     private box!: HoldingInteractable;
+    private house!: SwitchSceneInteractable;
 
     constructor() {
         super('MainScene');
@@ -39,6 +41,7 @@ export class MainScene extends Phaser.Scene {
         this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
         this.load.image(Assets.CUBE, AssetPaths.CUBE);
         this.load.image(Assets.BOX, AssetPaths.BOX);
+        this.load.image(Assets.HOUSE, AssetPaths.HOUSE);
     }
 
     /**
@@ -68,7 +71,18 @@ export class MainScene extends Phaser.Scene {
             4500,
             1000,
             0.3,
-            4,
+            2,
+        );
+
+        this.house = new SwitchSceneInteractable(
+            this,
+            'HouseScene',
+            this.player,
+            Assets.HOUSE,
+            5000,
+            1000,
+            2,
+            320,
         );
 
         // spawns collectible objects
@@ -95,10 +109,12 @@ export class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.staff, this.world.platforms);
         this.physics.add.collider(this.sign, this.world.platforms);
         this.physics.add.collider(this.box, this.world.platforms);
+        this.physics.add.collider(this.house, this.world.platforms);
 
         // automatically place on ground
         this.placeOnGround(this.sign);
         this.placeOnGround(this.staff);
+        this.placeOnGround(this.house);
         this.placeOnGround(this.box);
 
         const camera = this.cameras.main;

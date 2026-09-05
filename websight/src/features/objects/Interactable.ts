@@ -15,6 +15,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
     protected canInteract: boolean = false;
     protected outlineGlow: Phaser.Filters.Glow | null = null;
     protected glowStrength: number;
+    protected interactionRadius: number;
 
     /**
      * Creates a new interactable at the given position.
@@ -32,11 +33,13 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         y: number,
         asset: string,
         scale: number,
-        glowStrength: number = 0,
+        glowStrength?: number,
+        interactionRadius?: number,
     ) {
         super(scene, x, y, asset);
         this.player = player;
-        this.glowStrength = glowStrength;
+        this.glowStrength = glowStrength ?? 0;
+        this.interactionRadius = interactionRadius ?? InteractableConfig.RADIUS;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -79,7 +82,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
                 this.y,
                 this.player.currentPosition().x,
                 this.player.currentPosition().y,
-            ) <= InteractableConfig.RADIUS;
+            ) <= this.interactionRadius;
 
         if (inRange !== this.canInteract) {
             this.canInteract = inRange;
