@@ -36,7 +36,11 @@ export class MenuScene extends Phaser.Scene {
             .setShadow(0, 4, '#00000066', 6, false, true);
 
         this.createButton(CENTER_X, CENTER_Y, 'PLAY', () => {
-            if (this.scene.isPaused('MainScene')) {
+            if (this.scene.isPaused('HouseScene')) {
+                this.scene.resume('HouseScene');
+                this.scene.stop();
+            }
+            else if (this.scene.isPaused('MainScene')) {
                 this.scene.resume('MainScene');
                 this.scene.stop();
             } else {
@@ -51,9 +55,13 @@ export class MenuScene extends Phaser.Scene {
         });
     }
 
-    // If escape is pressed again, resume MainScene
+    // If escape is pressed again, resume PreviousScene 
     update(): void {
-        if (this.controls.escape && this.scene.isPaused('MainScene')) {
+        if (this.controls.escape && this.scene.isPaused('HouseScene')) {
+            this.scene.stop();
+            this.scene.resume('HouseScene');
+        }
+        else if (this.controls.escape && this.scene.isPaused('MainScene')) {
             this.scene.stop();
             this.scene.resume('MainScene');
         }
