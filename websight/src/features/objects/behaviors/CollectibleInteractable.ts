@@ -62,11 +62,10 @@ export class CollectibleInteractable extends Interactable {
         spawnRate: number,
         scale = 0.35,
     ): CollectibleInteractable {
-        const x = Phaser.Math.Between(
-            WorldConfig.WORLD_WIDTH - 3500,
-            WorldConfig.WORLD_WIDTH - 5500,
-        );
+        const spawnAreaMinX = WorldConfig.WORLD_WIDTH - 5500;
+        const spawnAreaMaxX = WorldConfig.WORLD_WIDTH - 3500;
 
+        const x = Phaser.Math.Between(spawnAreaMinX, spawnAreaMaxX);
         const y = WorldConfig.GROUND_Y - 5000;
 
         const collectible = new CollectibleInteractable(
