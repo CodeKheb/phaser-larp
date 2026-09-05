@@ -55,10 +55,35 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
     }
 
     /**
-     * Returns all interactables currently in range of the player.
-     */
+    * Returns all interactables currently in range of the player,
+    * sorted by distance to the player (nearest first).
+    */
     static getInRange(): Interactable[] {
-        return [...Interactable.registry].filter((i) => i.canInteract);
+        const interactablesInRange = [...Interactable.registry].filter(
+            (interactable) => interactable.canInteract,
+        );
+
+        // All in-range interactables share the same player instance,
+        // so grab position once instead of per-comparison.
+        if (interactablesInRange.length <= 1) return interactablesInRange;
+
+        const playerPosition = interactablesInRange[0].player.currentPosition();
+
+        return interactablesInRange.sort((firstInteractable, secondInteractable) => {
+            const distanceToFirst = Phaser.Math.Distance.Between(
+                firstInteractable.x,
+                firstInteractable.y,
+                playerPosition.x,
+                playerPosition.y,
+            );
+            const distanceToSecond = Phaser.Math.Distance.Between(
+                secondInteractable.x,
+                secondInteractable.y,
+                playerPosition.x,
+                playerPosition.y,
+            );
+            return distanceToFirst - distanceToSecond;
+        });
     }
 
     destroy(fromScene?: boolean): void {
