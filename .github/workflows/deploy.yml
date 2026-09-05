@@ -1,72 +1,69 @@
 name: Deploy to Pages
 
 on:
-  push:
-    branches:
-      - main
+    push:
+        branches:
+            - main
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
-
+    group: pages
+    cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v4
+        steps:
+            - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22
 
-      - name: Fetch contributors
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs = require('fs');
-            const contributors = await github.paginate(github.rest.repos.listContributors, {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              per_page: 100,
-            });
-            const data = contributors
-            .filter(c => c.type === 'User')
-            .map(c => ({
-              login: c.login,
-              avatar_url: c.avatar_url,
-              html_url: c.html_url,
-              contributions: c.contributions,
-            }));
-            fs.mkdirSync('websight/public', { recursive: true });
-            fs.writeFileSync('websight/public/contributors.json', JSON.stringify(data, null, 2));
+            - name: Fetch contributors
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const fs = require('fs');
+                      const contributors = await github.paginate(github.rest.repos.listContributors, {
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        per_page: 100,
+                      });
+                      const data = contributors
+                      .filter(c => c.type === 'User')
+                      .map(c => ({
+                        login: c.login,
+                        avatar_url: c.avatar_url,
+                        html_url: c.html_url,
+                        contributions: c.contributions,
+                      }));
+                      fs.mkdirSync('websight/public', { recursive: true });
+                      fs.writeFileSync('websight/public/contributors.json', JSON.stringify(data, null, 2));
 
-      - run: npm ci
-        working-directory: websight
+            - run: npm ci
+              working-directory: websight
 
-      - run: npm run build
-        working-directory: websight
+            - run: npm run build
+              working-directory: websight
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: websight/dist
+            - uses: actions/upload-pages-artifact@v3
+              with:
+                  path: websight/dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
+    deploy:
+        needs: build
+        runs-on: ubuntu-latest
 
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+        environment:
+            name: github-pages
+            url: ${{ steps.deployment.outputs.page_url }}
 
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
-
-
+        steps:
+            - id: deployment
+              uses: actions/deploy-pages@v4

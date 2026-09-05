@@ -1,8 +1,8 @@
-import { Assets } from "../../shared/Assets";
-import { Depth, WorldConfig } from "../../core/config/GameConfig";
-import { Attributes } from "../../core/config/PlayerConfig";
-import { InteractionController } from "../objects/InteractionController";
-import Phaser from "phaser";
+import { Assets } from '../../shared/Assets';
+import { Depth, WorldConfig } from '../../core/config/GameConfig';
+import { Attributes } from '../../core/config/PlayerConfig';
+import { InteractionController } from '../objects/InteractionController';
+import Phaser from 'phaser';
 
 /**
  * Main player class.
@@ -19,13 +19,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
      */
     constructor(scene: Phaser.Scene) {
         super(scene, WorldConfig.WORLD_WIDTH / 2.15, 200, Assets.CHARACTER);
-    
+
         scene.add.existing(this);
         scene.physics.add.existing(this);
-        
+
         this.setBounce(Attributes.BOUNCE_AMOUNT);
         this.setCollideWorldBounds(true);
-        this.setDepth(Depth.PLAYER)
+        this.setDepth(Depth.PLAYER);
 
         this.interaction = new InteractionController();
     }
@@ -43,7 +43,6 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     toggleInteractable() {
         this.interaction.toggle();
     }
-
 
     /*
      *  Character Position and movements
