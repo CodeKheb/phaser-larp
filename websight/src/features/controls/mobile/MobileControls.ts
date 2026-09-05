@@ -17,6 +17,7 @@ export class MobileControls {
         this.bind("right", "right");
         this.bind("jump", "jump");
         this.bind("interact", "interact");
+        this.bind("settings", "settings");
     }
 
     /**
@@ -25,7 +26,7 @@ export class MobileControls {
      * @param key the key in the input object to bind to
      */
     private bind(
-        id: "left" | "right" | "jump" | "interact",
+        id: "left" | "right" | "jump" | "interact" | "settings",
         key: keyof MobileInput
     ) {
         // Declares a button element with the given id in the parameter

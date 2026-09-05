@@ -38,7 +38,7 @@ export class InputManager {
     return this.keyboard.jump || this.mobile.jump;
   }
   get escape() {
-    return this.keyboard.escape;
+    return this.keyboard.escape || this.mobile.settings;
   }
 
   /**
