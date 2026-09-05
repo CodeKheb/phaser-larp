@@ -1,6 +1,6 @@
-import { Player } from "../player/Player";
-import { InteractableConfig } from "../../core/config/InteractableConfig";
-import Phaser from "phaser";
+import { Player } from '../player/Player';
+import { InteractableConfig } from '../../core/config/InteractableConfig';
+import Phaser from 'phaser';
 
 /**
  * Abstract base class for all interactable objects in the game.
@@ -61,10 +61,13 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * Checks distance to the player and toggles the interaction-enabled state.
      */
     private updateProximity(): void {
-        const inRange = Phaser.Math.Distance.Between(
-            this.x, this.y,
-            this.player.currentPosition().x, this.player.currentPosition().y
-        ) <= InteractableConfig.RADIUS;
+        const inRange =
+            Phaser.Math.Distance.Between(
+                this.x,
+                this.y,
+                this.player.currentPosition().x,
+                this.player.currentPosition().y,
+            ) <= InteractableConfig.RADIUS;
 
         if (inRange !== this.canInteract) {
             this.canInteract = inRange;

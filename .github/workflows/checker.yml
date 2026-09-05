@@ -1,34 +1,30 @@
-name: Checker 
+name: Checker
 
-on: 
-  push:
-    branches:
-      - main
-  pull_request:
-
+on:
+    push:
+        branches:
+            - main
+    pull_request:
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
+    check:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
 
-      - name: Node
-        uses: actions/setup-node@v4
-        with: 
-          node-version: latest
-          cache: npm
-          cache-dependency-path: websight/package-lock.json
+            - name: Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: latest
+                  cache: npm
+                  cache-dependency-path: websight/package-lock.json
 
-      - name: dependencies
-        working-directory: websight
-        run: npm ci
+            - name: dependencies
+              working-directory: websight
+              run: npm ci
 
-      - name: build
-        working-directory: websight
-        run: npm run build
-
-
-
+            - name: build
+              working-directory: websight
+              run: npm run build

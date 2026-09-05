@@ -1,5 +1,5 @@
-import { Interactable } from "./Interactable";
-import { HoldingInteractable } from "./interactable_behaviors/HoldingInteractable.ts";
+import { Interactable } from './Interactable';
+import { HoldingInteractable } from './interactable_behaviors/HoldingInteractable.ts';
 
 /**
  * Controls the interaction between the player and interactable objects.

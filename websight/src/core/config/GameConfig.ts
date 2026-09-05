@@ -9,8 +9,8 @@ export const WorldConfig = {
     CLOUD_Y: 600, // Y-coordinate where the clouds are placed
     CLOUD_SPEED: 0.02, // Cloud movement speed in pixels per millisecond
     ZOOM_AMOUNT: 0.55, // Amount of zoom used in the camera
-    MOBILE_ZOOM: 0.35, // Amount of zoom used in mobile camera 
-    MOBILE_ZOOM_OFFSET: 300 // Amount of offset on Y-coordinate
+    MOBILE_ZOOM: 0.35, // Amount of zoom used in mobile camera
+    MOBILE_ZOOM_OFFSET: 300, // Amount of offset on Y-coordinate
 } as const;
 
 /**
