@@ -98,7 +98,6 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * The outline only appears while the player is within interaction range.
      */
     private setOutlineEnabled(enabled: boolean): void {
-
         if (enabled && !this.outlineGlow) {
             this.enableFilters();
             if (!this.filters) return; // Filters are WebGL-only; skip if unavailable
