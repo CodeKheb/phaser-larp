@@ -46,7 +46,7 @@ export class KeyboardInput {
     }
 
     get escape() {
-        return this.escapeKey.isDown;
+        return Phaser.Input.Keyboard.JustDown(this.escapeKey);
     }
 
     get interact() {
