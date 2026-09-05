@@ -1,8 +1,8 @@
-import { Interactable } from "../Interactable.ts";
-import { InteractableConfig } from "../../../core/config/InteractableConfig.ts";
-import { Player } from "../../player/Player.ts";
-import { Depth } from "../../../core/config/GameConfig.ts";
-import Phaser from "phaser";
+import { Interactable } from '../Interactable.ts';
+import { InteractableConfig } from '../../../core/config/InteractableConfig.ts';
+import { Player } from '../../player/Player.ts';
+import { Depth } from '../../../core/config/GameConfig.ts';
+import Phaser from 'phaser';
 
 /**
  * An interactable that displays a dialogue box when the player interacts with it.
@@ -32,7 +32,7 @@ export class DialogueInteractable extends Interactable {
     ) {
         super(scene, player, x, y, asset);
         this.message = message;
-        this.setDepth(Depth.ABOVE_PLAYER)
+        this.setDepth(Depth.ABOVE_PLAYER);
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.onInteract());
     }
@@ -64,11 +64,13 @@ export class DialogueInteractable extends Interactable {
 
         const cam = this.scene.cameras.main;
         const style: Phaser.Types.GameObjects.Text.TextStyle = {
-            fontFamily: "Arial",
-            fontSize: "28px",
-            color: "#000000",
-            wordWrap: { width: InteractableConfig.DIALOGUE_MAX_WIDTH },
-            align: "center",
+            fontFamily: 'Arial',
+            fontSize: '28px',
+            color: '#000000',
+            wordWrap: {
+                width: InteractableConfig.DIALOGUE_MAX_WIDTH,
+            },
+            align: 'center',
         };
 
         // Background graphics
@@ -125,7 +127,14 @@ export class DialogueInteractable extends Interactable {
         const tipX = this.x;
         const tipY = by + bh;
         this.dialogueBg.fillStyle(0xffffff, 0.92);
-        this.dialogueBg.fillTriangle(tipX - 6, tipY, tipX + 6, tipY, tipX, tipY + 8);
+        this.dialogueBg.fillTriangle(
+            tipX - 6,
+            tipY,
+            tipX + 6,
+            tipY,
+            tipX,
+            tipY + 8,
+        );
         this.dialogueBg.lineStyle(2, 0x333333, 1);
         this.dialogueBg.lineBetween(tipX - 6, tipY, tipX, tipY + 8);
         this.dialogueBg.lineBetween(tipX + 6, tipY, tipX, tipY + 8);

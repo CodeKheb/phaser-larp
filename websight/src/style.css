@@ -15,7 +15,8 @@
     --settings-bg: #111827;
 }
 
-body, html {
+body,
+html {
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -31,8 +32,6 @@ body, html {
     justify-content: center;
     align-items: center;
 }
-
-
 
 #mobile-controls {
     display: none;
@@ -69,17 +68,15 @@ body, html {
 
         border: 4px solid var(--control-border);
 
-        box-shadow:
-        0 6px 0 var(--control-shadow);
+        box-shadow: 0 6px 0 var(--control-shadow);
 
-        transition: transform .1s;
+        transition: transform 0.1s;
     }
 
     #mobile-controls button:active {
         transform: translateY(4px);
 
-        box-shadow:
-        0 2px 0 var(--control-shadow);
+        box-shadow: 0 2px 0 var(--control-shadow);
     }
 
     #mobile-controls,
@@ -120,7 +117,6 @@ body, html {
         transform: scale(0.9) !important;
         box-shadow: none !important;
     }
-
 
     body.menu-active #mobile-controls {
         display: none !important;
