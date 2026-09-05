@@ -20,10 +20,10 @@ Students are encouraged to contribute directly on GitHub — read the **[Contrib
 The game is built by **dedicated teams for each feature**, so you can contribute wherever you're most interested:
 
 - **Programming** — game logic, physics, and controls
-- **Sprite design** — characters, objects, and backgrounds
-- **Animation** — bringing sprites to life
+- **Sprite design & Animation** — characters, objects, animations, and backgrounds
 - **Sound design** — sound effects and background audio
 - **Voice acting** — character voices and narration
+- **Media & Publication** — social media pubmats and engagements
 
 You don't need to be an expert to join a team — this is a learning project first.
 
@@ -38,6 +38,7 @@ A 2D side-scrolling platformer. The player explores a wide world filled with int
 | Move left / right | `A` / `D` | ◀ / ▶ buttons |
 | Jump | `Space` | A button |
 | Interact (pick up objects) | `Q` | B button |
+| Menu | `Escape` | ⚙ button |
 
 ### Features
 
