@@ -5,6 +5,7 @@ import { MainScene } from './core/scenes/MainScene';
 import { MenuScene } from './core/scenes/MenuScene';
 import { HouseScene } from './core/scenes/HouseScene';
 
+
 /**
  * Main bootstrap file for the game configuration.
  * entrypoint loaded by index.html
@@ -21,6 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
         default: 'arcade', // Physics engine: arcade
         arcade: {
             gravity: { x: 0, y: 1800 },
+
             debug: false,
         },
     },

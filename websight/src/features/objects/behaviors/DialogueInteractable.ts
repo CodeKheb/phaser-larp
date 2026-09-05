@@ -1,7 +1,7 @@
-import { Interactable } from '../Interactable.ts';
-import { InteractableConfig } from '../../../core/config/InteractableConfig.ts';
-import { Player } from '../../player/Player.ts';
-import { Depth } from '../../../core/config/GameConfig.ts';
+import { Interactable } from '../Interactable';
+import { InteractableConfig } from '../../../core/config/InteractableConfig';
+import { Player } from '../../player/Player';
+import { Depth } from '../../../core/config/GameConfig';
 import Phaser from 'phaser';
 
 /**

@@ -3,11 +3,11 @@ import { Assets, AssetPaths } from '../../shared/Assets';
 import { Player } from '../../features/player/Player';
 import { World } from '../../features/world/World';
 import { InputManager } from '../../features/controls/InputManager';
-import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable.ts';
-import { DialogueInteractable } from '../../features/objects/behaviors/DialogueInteractable.ts';
-import { WorldConfig } from '../config/GameConfig.ts';
-import { CollectibleInteractable } from '../../features/objects/behaviors/CollectibleInteractable.ts';
-import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable.ts';
+import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable';
+import { DialogueInteractable } from '../../features/objects/behaviors/DialogueInteractable';
+import { WorldConfig } from '../config/GameConfig';
+import { CollectibleInteractable } from '../../features/objects/behaviors/CollectibleInteractable';
+import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable';
 
 /**
  * Represents the main game scene.

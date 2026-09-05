@@ -1,7 +1,7 @@
-import { Interactable } from '../Interactable.ts';
-import { Player } from '../../player/Player.ts';
+import { Interactable } from '../Interactable';
+import { Player } from '../../player/Player';
 import Phaser from 'phaser';
-import { Depth } from '../../../core/config/GameConfig.ts';
+import { Depth } from '../../../core/config/GameConfig';
 
 /**
  * An interactable that the player can pick up and carry.
