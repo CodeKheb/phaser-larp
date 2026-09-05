@@ -1,4 +1,4 @@
-import { MobileInput } from "./MobileInput";
+import { MobileInput } from './MobileInput';
 
 /**
  * Connects HTML mobile control buttons to the game's input system.
@@ -13,11 +13,11 @@ export class MobileControls {
         /*
             Binds the buttons to the input objects in MobileInput.
          */
-        this.bind("left", "left");
-        this.bind("right", "right");
-        this.bind("jump", "jump");
-        this.bind("interact", "interact");
-        this.bind("settings", "settings");
+        this.bind('left', 'left');
+        this.bind('right', 'right');
+        this.bind('jump', 'jump');
+        this.bind('interact', 'interact');
+        this.bind('settings', 'settings');
     }
 
     /**
@@ -26,8 +26,8 @@ export class MobileControls {
      * @param key the key in the input object to bind to
      */
     private bind(
-        id: "left" | "right" | "jump" | "interact" | "settings",
-        key: keyof MobileInput
+        id: 'left' | 'right' | 'jump' | 'interact' | 'settings',
+        key: keyof MobileInput,
     ) {
         // Declares a button element with the given id in the parameter
         const button = document.getElementById(id);
@@ -36,7 +36,7 @@ export class MobileControls {
         if (!button) return;
 
         // Prevents default browser behaviors and assigns input as true if the button is pressed
-        button.addEventListener("pointerdown", (e) => {
+        button.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             this.input[key] = true;
         });
@@ -49,8 +49,8 @@ export class MobileControls {
         /*
             Event listeners for cases where the button is released.
          */
-        button.addEventListener("pointerup", release);
-        button.addEventListener("pointerleave", release);
-        button.addEventListener("pointercancel", release);
+        button.addEventListener('pointerup', release);
+        button.addEventListener('pointerleave', release);
+        button.addEventListener('pointercancel', release);
     }
 }
