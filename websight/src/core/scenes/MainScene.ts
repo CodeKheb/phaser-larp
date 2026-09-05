@@ -5,8 +5,8 @@ import { World } from "../../features/world/World";
 import { InputManager } from "../../features/controls/InputManager";
 import { HoldingInteractable } from "../../features/objects/interactable_behaviors/HoldingInteractable.ts";
 import { DialogueInteractable } from "../../features/objects/interactable_behaviors/DialogueInteractable.ts";
-import { CubeInteractable } from "../../features/objects/interactable_behaviors/CubeInteractable.ts";
 import { WorldConfig } from "../config/GameConfig.ts";
+import { CollectibleInteractable } from "../../features/objects/interactable_behaviors/CollectibleInteractable.ts";
 
 /**
  * Represents the main game scene.
@@ -58,8 +58,14 @@ export class MainScene extends Phaser.Scene {
     // creates the staff (holdable object)
     this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
-    // spawns cube objects
-    CubeInteractable.spawn(this, this.player, this.world.platforms);
+    // spawns collectible objects
+    CollectibleInteractable.spawn(
+      this,
+      this.player,
+      this.world.platforms,
+      Assets.CUBE,
+      1000,
+    );
 
     // creates the sign (dialogue object)
     this.sign = new DialogueInteractable(
