@@ -46,19 +46,14 @@ export class World {
             WorldConfig.WORLD_HEIGHT * 1.25,
         );
 
-        /*
-           sets up the number of clouds to be generated in the scene.
-           */
-        for (let i = 0; i < 20; i++) {
-            let RandomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
-            let RandomSpawnY = Phaser.Math.Between(
-                0,
-                WorldConfig.WORLD_HEIGHT / 2,
-            );
-            let RandomScale = Phaser.Math.Between(0, 2);
+        // Create decorative clouds scattered across the upper half of the world.
+        for (let i = 0; i < WorldConfig.CLOUD_AMOUNT; i++) {
+            const randomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
+            const randomSpawnY = Phaser.Math.Between(0, WorldConfig.WORLD_HEIGHT / 2);
+            const randomScale = Phaser.Math.Between(0, 2);
             const cloud = scene.add
-                .image(RandomSpawnX, RandomSpawnY, Assets.CLOUD)
-                .setScale(RandomScale);
+                .image(randomSpawnX, randomSpawnY, Assets.CLOUD)
+                .setScale(randomScale);
 
             this.clouds.push(cloud);
         }

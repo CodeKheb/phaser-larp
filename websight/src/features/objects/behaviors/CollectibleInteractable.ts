@@ -77,7 +77,7 @@ export class CollectibleInteractable extends Interactable {
             scale,
         );
 
-        scene.physics.add.existing(collectible);
+
 
         scene.physics.add.collider(collectible, platforms);
 
@@ -107,7 +107,9 @@ export class CollectibleInteractable extends Interactable {
             this.collectibleTexture,
         );
         this.glowSprite.setScale(this.scale * 1.1);
-        this.glowSprite.setDepth(this.depth - 1);
+
+        // The glow sprite sits above the player so the collectible itself (below the player)
+        // is clearly visible when highlighted.
         this.glowSprite.setTint(0xffffff);
         this.glowSprite.setAlpha(0.6);
 
@@ -164,7 +166,6 @@ export class CollectibleInteractable extends Interactable {
     onOutOfRange(): void {
         if (this.glowSprite && this.glowSprite && this.glowTween) {
             this.glowSprite.setVisible(false);
-            this.glowTween.restart();
             this.glowTween.pause();
         }
     }
