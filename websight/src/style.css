@@ -10,7 +10,9 @@
     --control-padding: clamp(12px, 4vw, 48px);
     --control-bg: #4b5563;
     --control-border: #1f2937;
+    --control-shadow: #111827;
     --control-text: white;
+    --settings-bg: #111827;
 }
 
 body, html {
@@ -28,6 +30,31 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.settings-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    width: 78px!important;
+    height: 78px!important;
+
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+
+    color: var(--settings-bg);
+    font-size: 58px!important;
+}
+
+.settings-button:hover {
+    transform: scale(1.1);
+}
+
+.settings-button:active {
+    transform: scale(0.9) !important;
+    box-shadow: none !important;
 }
 
 #mobile-controls {
@@ -66,7 +93,7 @@ body, html {
         border: 4px solid var(--control-border);
 
         box-shadow:
-        0 6px 0 #111827;
+        0 6px 0 var(--control-shadow);
 
         transition: transform .1s;
     }
@@ -75,7 +102,7 @@ body, html {
         transform: translateY(4px);
 
         box-shadow:
-        0 2px 0 #111827;
+        0 2px 0 var(--control-shadow);
     }
 
     #mobile-controls,
@@ -90,6 +117,15 @@ body, html {
     .actions {
         display: flex;
         gap: var(--control-gap);
+    }
+
+    .settings-button {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 36px !important;
+
+        top: 15px;
+        right: 15px;
     }
 
     body.menu-active #mobile-controls {
