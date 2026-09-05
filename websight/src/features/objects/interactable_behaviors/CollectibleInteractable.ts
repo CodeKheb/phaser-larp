@@ -67,7 +67,7 @@ export class CollectibleInteractable extends Interactable {
             WorldConfig.WORLD_WIDTH - 5500,
         );
 
-        const y = WorldConfig.GROUND_Y - 1000;
+        const y = WorldConfig.GROUND_Y - 5000;
 
         const collectible = new CollectibleInteractable(
             scene,
@@ -80,7 +80,6 @@ export class CollectibleInteractable extends Interactable {
 
         scene.physics.add.existing(collectible);
 
-        collectible.body!.setOffset(30, 30);
         scene.physics.add.collider(collectible, platforms);
 
         collectible.once(Phaser.GameObjects.Events.DESTROY, () => {
@@ -116,7 +115,7 @@ export class CollectibleInteractable extends Interactable {
         // Initially not visible
         this.glowSprite.setVisible(false);
 
-        this.glowSprite.setDepth(Depth.BEHIND_PLAYER);
+        this.glowSprite.setDepth(Depth.ABOVE_PLAYER);
 
         // The tween(animation)
         this.glowTween = this.scene.tweens.add({

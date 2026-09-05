@@ -17,8 +17,13 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
      * creates a new player at the center of the screen.
      * @param scene the game scene you wish to add the player to.
      */
-    constructor(scene: Phaser.Scene) {
-        super(scene, WorldConfig.WORLD_WIDTH / 2.15, 200, Assets.CHARACTER);
+    constructor(scene: Phaser.Scene, x?: number, y?: number) {
+        super(
+            scene,
+            x ?? WorldConfig.WORLD_WIDTH / 2.15,
+            y ?? 200,
+            Assets.CHARACTER,
+        );
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
