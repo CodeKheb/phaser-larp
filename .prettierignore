@@ -2,6 +2,9 @@
 dist/
 build/
 
+# Ignore markdowns
+*.md
+
 # Ignore heavy game assets
 public/assets/
 src/assets/
