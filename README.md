@@ -33,12 +33,12 @@ A 2D side-scrolling platformer. The player explores a wide world filled with int
 
 ### Controls
 
-| Action | Keyboard | Mobile |
-| --- | --- | --- |
-| Move left / right | `A` / `D` | ◀ / ▶ buttons |
-| Jump | `Space` | A button |
-| Interact (pick up objects) | `Q` | B button |
-| Menu | `Escape` | ⚙ button |
+| Action                     | Keyboard  | Mobile        |
+| -------------------------- | --------- | ------------- |
+| Move left / right          | `A` / `D` | ◀ / ▶ buttons |
+| Jump                       | `Space`   | A button      |
+| Interact (pick up objects) | `Q`       | B button      |
+| Menu                       | `Escape`  | ⚙ button      |
 
 ### Features
 
@@ -54,13 +54,13 @@ New to the project? The [Contributing Guide](CONTRIBUTING.md) walks you through 
 
 ## Tech Stack
 
-| Tool | What it actually is |
-| --- | --- |
-| **Node.js** | Runs JavaScript outside the browser; powers the tools below. |
-| **npm** | Installs and manages the project's dependencies. |
-| **Vite** | Bundler and dev server with live reload. |
-| **Phaser** | 2D game framework — rendering, sprites, physics, input, and scenes. |
-| **TypeScript** | Typed JavaScript used throughout the game code. |
+| Tool           | What it actually is                                                 |
+| -------------- | ------------------------------------------------------------------- |
+| **Node.js**    | Runs JavaScript outside the browser; powers the tools below.        |
+| **npm**        | Installs and manages the project's dependencies.                    |
+| **Vite**       | Bundler and dev server with live reload.                            |
+| **Phaser**     | 2D game framework — rendering, sprites, physics, input, and scenes. |
+| **TypeScript** | Typed JavaScript used throughout the game code.                     |
 
 ## Community & Updates
 
