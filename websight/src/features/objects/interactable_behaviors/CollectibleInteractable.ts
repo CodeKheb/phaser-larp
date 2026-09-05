@@ -1,26 +1,33 @@
 import Phaser from "phaser";
 import { Interactable } from "../Interactable";
 import { Player } from "../../player/Player";
-import { Assets } from "../../../shared/Assets";
 import { Depth, WorldConfig } from "../../../core/config/GameConfig";
 
 /**
- * An interactable that displays a cube.
- * When the player is near, the cube glow, when the player interacts with it, it spawns a new one.
+ * An interactable that displays a collectible.
+ * When the player is near, the collectible glow, when the player interacts with it, it spawns a new one.
  */
-export class CubeInteractable extends Interactable {
-  private glowSprite!: Phaser.GameObjects.Sprite; // Sprite for the cube glow
+export class CollectibleInteractable extends Interactable {
+  private glowSprite!: Phaser.GameObjects.Sprite; // Sprite for the collectible glow
   private glowTween!: Phaser.Tweens.Tween; // The animation (tween means in-between)
+
+  private readonly collectibleTexture: string;
+  private readonly collectibleScale: number;
 
   /**
    * @param scene the game scene
    * @param player the player object
    * @param x spawn X
    * @param y spawn Y
+   * @param texture the sprite asset
+   * @param scale for scale of asset
    */
+  constructor(scene: Phaser.Scene, player: Player, x: number, y: number, texture: string, scale = 0.35) {
+    super(scene, player, x, y, texture);
 
-  constructor(scene: Phaser.Scene, player: Player, x: number, y: number) {
-    super(scene, player, x, y, Assets.CUBE);
+    this.collectibleTexture = texture;
+    this.collectibleScale = scale;
+
     this.setScale(0.35);
     this.setDepth(Depth.BEHIND_PLAYER);
 
@@ -30,18 +37,24 @@ export class CubeInteractable extends Interactable {
   }
 
   /**
-   * This method is called in MainScene and adds the cubes in a random position
-   * Once a cube is destroyed, it spawns a new one
+   * This method is called in MainScene and adds the collectible in a random position
+   * Once a collectible is destroyed, it spawns a new one
    *
    * @param Phaser.scene
    * @param player the player object
    * @param platforms the collidable Physics component
+   * @param texture the Sprite Asset
+   * @param spawnRate delay for spawn after destroy
+   * @param scale for scale of asset
    */
   static spawn(
     scene: Phaser.Scene,
     player: Player,
     platforms: Phaser.GameObjects.Group | Phaser.Physics.Arcade.Sprite,
-  ): CubeInteractable {
+    texture: string,
+    spawnRate: number,
+    scale = 0.35
+  ): CollectibleInteractable {
     const x = Phaser.Math.Between(
       WorldConfig.WORLD_WIDTH - 3500,
       WorldConfig.WORLD_WIDTH - 5500,
@@ -49,26 +62,28 @@ export class CubeInteractable extends Interactable {
 
     const y = WorldConfig.GROUND_Y - 1000;
 
-    const cube = new CubeInteractable(scene, player, x, y);
+    const collectible = new CollectibleInteractable(scene, player, x, y, texture, scale);
 
-    scene.physics.add.existing(cube);
+    scene.physics.add.existing(collectible);
 
-    cube.body!.setOffset(30, 30);
-    scene.physics.add.collider(cube, platforms);
+    collectible.body!.setOffset(30, 30);
+    scene.physics.add.collider(collectible, platforms);
 
-    cube.once(Phaser.GameObjects.Events.DESTROY, () => {
-      CubeInteractable.spawn(scene, player, platforms);
+    collectible.once(Phaser.GameObjects.Events.DESTROY, () => {
+    scene.time.delayedCall(spawnRate, () => {
+        CollectibleInteractable.spawn(scene, player, platforms, texture, spawnRate, scale);
+        })
     });
 
-    return cube;
+    return collectible;
   }
 
   /**
    * This method creates the glowSprite and sets up glowTween
    */
   private setUpGlow(): void {
-    this.glowSprite = this.scene.add.sprite(this.x, this.y, Assets.CUBE);
-    this.glowSprite.setScale(this.scaleX * 1.1);
+    this.glowSprite = this.scene.add.sprite(this.x, this.y, this.collectibleTexture);
+    this.glowSprite.setScale(this.scale * 1.1);
     this.glowSprite.setDepth(this.depth - 1);
     this.glowSprite.setTint(0xffffff);
     this.glowSprite.setAlpha(0.6);
@@ -81,8 +96,8 @@ export class CubeInteractable extends Interactable {
     // The tween(animation)
     this.glowTween = this.scene.tweens.add({
       targets: this.glowSprite,
-      scaleX: this.scaleX * 1.25,
-      scaleY: this.scaleY * 1.25,
+      scaleX: this.collectibleScale * 1.25,
+      scaleY: this.collectibleScale * 1.25,
       alpha: 0.8,
       duration: 250,
       yoyo: true,
@@ -131,7 +146,7 @@ export class CubeInteractable extends Interactable {
     }
   }
 
-  // destroy cube after player interacts with it
+  // destroy collectible after player interacts with it
   onInteract(): void {
     this.destroy();
   }
