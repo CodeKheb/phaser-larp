@@ -31,7 +31,7 @@ export class InputManager {
     get left() { return this.keyboard.left || this.mobile.left; }
     get right() { return this.keyboard.right || this.mobile.right; }
     get jump() { return this.keyboard.jump || this.mobile.jump; }
-    get escape() { return this.keyboard.escape }
+    get escape() { return this.keyboard.escape || this.mobile.settings }
 
     /**
      * One-shot interact: fires once per press on both keyboard and mobile.
