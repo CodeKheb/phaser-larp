@@ -114,9 +114,9 @@ export class MainScene extends Phaser.Scene {
     }
 
     if (this.controls.escape) {
-        this.scene.pause();
-        this.scene.launch('MenuScene');
-        this.scene.bringToTop('MenuScene');
+      this.scene.pause();
+      this.scene.launch("MenuScene");
+      this.scene.bringToTop("MenuScene");
     }
   }
 
