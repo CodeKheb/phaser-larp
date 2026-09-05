@@ -4,6 +4,7 @@ import Phaser from 'phaser';
 import { MainScene } from './core/scenes/MainScene';
 import { MenuScene } from './core/scenes/MenuScene';
 import { HouseScene } from './core/scenes/HouseScene';
+import { GRAVITY } from './core/config/GameConfig';
 
 
 /**
@@ -21,7 +22,7 @@ const config: Phaser.Types.Core.GameConfig = {
     physics: {
         default: 'arcade', // Physics engine: arcade
         arcade: {
-            gravity: { x: 0, y: 1800 },
+            gravity: { x: 0, y: GRAVITY },
 
             debug: false,
         },

@@ -1,3 +1,5 @@
+// Gravity in Main.ts
+export const GRAVITY = 1800;
 /**
  * Global world layout and camera configuration
  */
