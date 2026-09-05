@@ -21,6 +21,7 @@ export class DialogueInteractable extends Interactable {
      * @param message the text to show in the dialogue
      * @param x spawn X
      * @param y spawn Y
+     * @param scale for asset scale
      */
     constructor(
         scene: Phaser.Scene,
@@ -29,8 +30,9 @@ export class DialogueInteractable extends Interactable {
         message: string,
         x: number,
         y: number,
+        scale?: number,
     ) {
-        super(scene, player, x, y, asset);
+        super(scene, player, x, y, asset, scale ?? 1);
         this.message = message;
         this.setDepth(Depth.ABOVE_PLAYER);
 

@@ -14,6 +14,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
     protected player: Player;
     protected canInteract: boolean = false;
     protected outlineGlow: Phaser.Filters.Glow | null = null;
+    protected glowStrength: number;
 
     /**
      * Creates a new interactable at the given position.
@@ -22,6 +23,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * @param x spawn X coordinate
      * @param y spawn Y coordinate
      * @param asset the texture key to use
+     * @param scale for the asset scale
      */
     constructor(
         scene: Phaser.Scene,
@@ -30,9 +32,11 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         y: number,
         asset: string,
         scale: number,
+        glowStrength: number = 0,
     ) {
-        super(scene, x, y, asset, scale);
+        super(scene, x, y, asset);
         this.player = player;
+        this.glowStrength = glowStrength;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
@@ -94,13 +98,14 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * The outline only appears while the player is within interaction range.
      */
     private setOutlineEnabled(enabled: boolean): void {
+
         if (enabled && !this.outlineGlow) {
             this.enableFilters();
             if (!this.filters) return; // Filters are WebGL-only; skip if unavailable
             this.outlineGlow = this.filters.internal.addGlow(
                 InteractableConfig.OUTLINE_COLOR,
                 InteractableConfig.OUTLINE_STRENGTH,
-                0,
+                this.glowStrength / this.scale,
             );
         } else if (!enabled && this.outlineGlow) {
             this.filters?.internal.remove(this.outlineGlow);

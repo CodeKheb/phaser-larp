@@ -61,7 +61,8 @@ export class MainScene extends Phaser.Scene {
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
         // creates the box (holdable object)
-        this.box = new HoldingInteractable(this, this.player, Assets.BOX, 4500, 1000, 0.3);
+        this.box = new HoldingInteractable(this, this.player, Assets.BOX, 4500, 1000, 0.3, 4);
+
 
         // spawns collectible objects
         CollectibleInteractable.spawn(
