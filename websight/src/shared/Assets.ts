@@ -12,6 +12,8 @@ export const Assets = {
     SIGN: 'sign',
     CUBE: 'cube',
     BOX: 'box',
+    HOUSE: 'house',
+    HOUSE_SCENE: 'house_scene',
 } as const;
 
 export const AssetPaths = {
@@ -23,4 +25,6 @@ export const AssetPaths = {
     SIGN: 'objects/sign.png',
     CUBE: 'objects/cube.png',
     BOX: 'objects/wooden_box.png',
+    HOUSE: 'world/house.png',
+    HOUSE_SCENE: 'scenes/house_scene.png',
 } as const;
