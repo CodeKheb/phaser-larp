@@ -17,7 +17,13 @@ export class HoldingInteractable extends Interactable {
      * @param x spawn X (defaults to near the player)
      * @param y spawn Y (defaults to the player's Y)
      */
-    constructor(scene: Phaser.Scene, player: Player, asset: string, x?: number, y?: number) {
+    constructor(
+        scene: Phaser.Scene,
+        player: Player,
+        asset: string,
+        x?: number,
+        y?: number,
+    ) {
         const pos = player.currentPosition();
         super(scene, player, x ?? pos.x + 50, y ?? pos.y, asset);
         this.setDepth(Depth.ABOVE_PLAYER);

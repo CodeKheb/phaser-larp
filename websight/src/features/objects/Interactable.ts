@@ -23,7 +23,13 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * @param y spawn Y coordinate
      * @param asset the texture key to use
      */
-    constructor(scene: Phaser.Scene, player: Player, x: number, y: number, asset: string) {
+    constructor(
+        scene: Phaser.Scene,
+        player: Player,
+        x: number,
+        y: number,
+        asset: string,
+    ) {
         super(scene, x, y, asset);
         this.player = player;
 

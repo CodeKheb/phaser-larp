@@ -12,15 +12,25 @@ export class KeyboardInput {
      * @param scene the game scene
      */
     constructor(scene: Phaser.Scene) {
-        this.leftKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.leftKey = scene.input.keyboard!.addKey(
+            Phaser.Input.Keyboard.KeyCodes.A,
+        );
 
-        this.rightKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.rightKey = scene.input.keyboard!.addKey(
+            Phaser.Input.Keyboard.KeyCodes.D,
+        );
 
-        this.jumpKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.jumpKey = scene.input.keyboard!.addKey(
+            Phaser.Input.Keyboard.KeyCodes.SPACE,
+        );
 
-        this.interactKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.Q);
+        this.interactKey = scene.input.keyboard!.addKey(
+            Phaser.Input.Keyboard.KeyCodes.Q,
+        );
 
-        this.escapeKey = scene.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.escapeKey = scene.input.keyboard!.addKey(
+            Phaser.Input.Keyboard.KeyCodes.ESC,
+        );
     }
 
     get left() {

@@ -20,14 +20,23 @@ export class World {
 
         // Creates the ground platform according to WorldConfig.
         this.platforms
-            .create(WorldConfig.WORLD_WIDTH / 2, WorldConfig.GROUND_Y, Assets.PLATFORM)
+            .create(
+                WorldConfig.WORLD_WIDTH / 2,
+                WorldConfig.GROUND_Y,
+                Assets.PLATFORM,
+            )
             .setScale(50)
             .refreshBody();
 
         this.platforms.setDepth(Depth.ABOVE_PLAYER);
 
         // Sets up the world bounds to prevent the player from falling off the screen.
-        scene.physics.world.setBounds(0, 0, WorldConfig.WORLD_WIDTH, WorldConfig.WORLD_HEIGHT);
+        scene.physics.world.setBounds(
+            0,
+            0,
+            WorldConfig.WORLD_WIDTH,
+            WorldConfig.WORLD_HEIGHT,
+        );
 
         // Sets up the camera to follow the player.
         scene.cameras.main.setBounds(
@@ -42,7 +51,10 @@ export class World {
            */
         for (let i = 0; i < 20; i++) {
             let RandomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
-            let RandomSpawnY = Phaser.Math.Between(0, WorldConfig.WORLD_HEIGHT / 2);
+            let RandomSpawnY = Phaser.Math.Between(
+                0,
+                WorldConfig.WORLD_HEIGHT / 2,
+            );
             let RandomScale = Phaser.Math.Between(0, 2);
             const cloud = scene.add
                 .image(RandomSpawnX, RandomSpawnY, Assets.CLOUD)
@@ -52,7 +64,11 @@ export class World {
         }
 
         // Adds SSITE logo in the middle of the screen.
-        scene.add.image(WorldConfig.WORLD_WIDTH / 2, WorldConfig.LOGO_Y, Assets.LOGO);
+        scene.add.image(
+            WorldConfig.WORLD_WIDTH / 2,
+            WorldConfig.LOGO_Y,
+            Assets.LOGO,
+        );
     }
 
     // Move clouds right and recycle them after they leave the world.

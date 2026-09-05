@@ -65,7 +65,12 @@ export class MenuScene extends Phaser.Scene {
      * @param label as text content
      * @param onClick as the click handler
      */
-    private createButton(x: number, y: number, label: string, onClick: () => void): void {
+    private createButton(
+        x: number,
+        y: number,
+        label: string,
+        onClick: () => void,
+    ): void {
         const button = this.add
             .text(x, y, label, {
                 fontFamily: 'Arial, sans-serif',
@@ -80,17 +85,33 @@ export class MenuScene extends Phaser.Scene {
 
         button.on('pointerover', () => {
             button.setStyle({ backgroundColor: '#2563eb' });
-            this.tweens.add({ targets: button, scale: 1.05, duration: 100 });
+            this.tweens.add({
+                targets: button,
+                scale: 1.05,
+                duration: 100,
+            });
         });
         button.on('pointerout', () => {
             button.setStyle({ backgroundColor: '#1d4ed8' });
-            this.tweens.add({ targets: button, scale: 1, duration: 100 });
+            this.tweens.add({
+                targets: button,
+                scale: 1,
+                duration: 100,
+            });
         });
         button.on('pointerdown', () => {
-            this.tweens.add({ targets: button, scale: 0.95, duration: 60 });
+            this.tweens.add({
+                targets: button,
+                scale: 0.95,
+                duration: 60,
+            });
         });
         button.on('pointerup', () => {
-            this.tweens.add({ targets: button, scale: 1.05, duration: 60 });
+            this.tweens.add({
+                targets: button,
+                scale: 1.05,
+                duration: 60,
+            });
             onClick();
         });
     }

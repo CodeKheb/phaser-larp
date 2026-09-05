@@ -25,7 +25,10 @@ export class MobileControls {
      * @param id the id of the button (e.g., "left", "right")
      * @param key the key in the input object to bind to
      */
-    private bind(id: 'left' | 'right' | 'jump' | 'interact' | 'settings', key: keyof MobileInput) {
+    private bind(
+        id: 'left' | 'right' | 'jump' | 'interact' | 'settings',
+        key: keyof MobileInput,
+    ) {
         // Declares a button element with the given id in the parameter
         const button = document.getElementById(id);
 

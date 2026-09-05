@@ -67,7 +67,9 @@ export class DialogueInteractable extends Interactable {
             fontFamily: 'Arial',
             fontSize: '28px',
             color: '#000000',
-            wordWrap: { width: InteractableConfig.DIALOGUE_MAX_WIDTH },
+            wordWrap: {
+                width: InteractableConfig.DIALOGUE_MAX_WIDTH,
+            },
             align: 'center',
         };
 
@@ -125,7 +127,14 @@ export class DialogueInteractable extends Interactable {
         const tipX = this.x;
         const tipY = by + bh;
         this.dialogueBg.fillStyle(0xffffff, 0.92);
-        this.dialogueBg.fillTriangle(tipX - 6, tipY, tipX + 6, tipY, tipX, tipY + 8);
+        this.dialogueBg.fillTriangle(
+            tipX - 6,
+            tipY,
+            tipX + 6,
+            tipY,
+            tipX,
+            tipY + 8,
+        );
         this.dialogueBg.lineStyle(2, 0x333333, 1);
         this.dialogueBg.lineBetween(tipX - 6, tipY, tipX, tipY + 8);
         this.dialogueBg.lineBetween(tipX + 6, tipY, tipX, tipY + 8);

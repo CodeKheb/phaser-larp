@@ -59,7 +59,13 @@ export class MainScene extends Phaser.Scene {
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
         // spawns collectible objects
-        CollectibleInteractable.spawn(this, this.player, this.world.platforms, Assets.CUBE, 1000);
+        CollectibleInteractable.spawn(
+            this,
+            this.player,
+            this.world.platforms,
+            Assets.CUBE,
+            1000,
+        );
 
         // creates the sign (dialogue object)
         this.sign = new DialogueInteractable(
@@ -85,7 +91,9 @@ export class MainScene extends Phaser.Scene {
         const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
         // setZoom if mobile view, set MOBILE_ZOOM else set ZOOM_AMOUNT
-        camera.setZoom(isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT);
+        camera.setZoom(
+            isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT,
+        );
 
         camera.startFollow(this.player);
 
@@ -124,7 +132,8 @@ export class MainScene extends Phaser.Scene {
      * this method automatically spawns the sprites on the ground
      */
     private placeOnGround(sprite: Phaser.Physics.Arcade.Sprite) {
-        const groundSprite = this.world.platforms.getChildren()[0] as Phaser.Physics.Arcade.Sprite;
+        const groundSprite =
+            this.world.platforms.getChildren()[0] as Phaser.Physics.Arcade.Sprite;
 
         const groundBody = groundSprite.body as Phaser.Physics.Arcade.Body;
 

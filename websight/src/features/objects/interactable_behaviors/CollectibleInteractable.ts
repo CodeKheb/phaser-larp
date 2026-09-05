@@ -69,7 +69,14 @@ export class CollectibleInteractable extends Interactable {
 
         const y = WorldConfig.GROUND_Y - 1000;
 
-        const collectible = new CollectibleInteractable(scene, player, x, y, texture, scale);
+        const collectible = new CollectibleInteractable(
+            scene,
+            player,
+            x,
+            y,
+            texture,
+            scale,
+        );
 
         scene.physics.add.existing(collectible);
 
@@ -78,7 +85,14 @@ export class CollectibleInteractable extends Interactable {
 
         collectible.once(Phaser.GameObjects.Events.DESTROY, () => {
             scene.time.delayedCall(spawnRate, () => {
-                CollectibleInteractable.spawn(scene, player, platforms, texture, spawnRate, scale);
+                CollectibleInteractable.spawn(
+                    scene,
+                    player,
+                    platforms,
+                    texture,
+                    spawnRate,
+                    scale,
+                );
             });
         });
 
@@ -89,7 +103,11 @@ export class CollectibleInteractable extends Interactable {
      * This method creates the glowSprite and sets up glowTween
      */
     private setUpGlow(): void {
-        this.glowSprite = this.scene.add.sprite(this.x, this.y, this.collectibleTexture);
+        this.glowSprite = this.scene.add.sprite(
+            this.x,
+            this.y,
+            this.collectibleTexture,
+        );
         this.glowSprite.setScale(this.scale * 1.1);
         this.glowSprite.setDepth(this.depth - 1);
         this.glowSprite.setTint(0xffffff);
