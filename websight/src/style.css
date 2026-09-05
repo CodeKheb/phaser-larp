@@ -32,30 +32,7 @@ body, html {
     align-items: center;
 }
 
-.settings-button {
-    position: fixed;
-    top: 20px;
-    right: 20px;
 
-    width: 78px!important;
-    height: 78px!important;
-
-    background: transparent !important;
-    border: none !important;
-    box-shadow: none !important;
-
-    color: var(--settings-bg);
-    font-size: 58px!important;
-}
-
-.settings-button:hover {
-    transform: scale(1.1);
-}
-
-.settings-button:active {
-    transform: scale(0.9) !important;
-    box-shadow: none !important;
-}
 
 #mobile-controls {
     display: none;
@@ -120,13 +97,30 @@ body, html {
     }
 
     .settings-button {
-        width: 50px !important;
-        height: 50px !important;
-        font-size: 36px !important;
-
+        position: fixed;
         top: 15px;
         right: 15px;
+
+        width: 50px !important;
+        height: 50px !important;
+
+        background: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+
+        color: var(--settings-bg);
+        font-size: 36px !important;
     }
+
+    .settings-button:hover {
+        transform: scale(1.1);
+    }
+
+    .settings-button:active {
+        transform: scale(0.9) !important;
+        box-shadow: none !important;
+    }
+
 
     body.menu-active #mobile-controls {
         display: none !important;

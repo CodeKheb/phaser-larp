@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { InputManager } from "../../features/controls/InputManager";
 
 /**
  * Represents the menu mage scene.
@@ -8,6 +9,8 @@ import Phaser from "phaser";
  * referenved by main.ts as the first scene
  */
 export class MenuScene extends Phaser.Scene {
+  private controls!: InputManager;
+
   constructor() {
     super("MenuScene");
   }
@@ -16,6 +19,8 @@ export class MenuScene extends Phaser.Scene {
    * creates the text and buttons
    */
   create(): void {
+    this.controls = new InputManager(this);
+
     const CENTER_X = this.cameras.main.width / 2;
     const CENTER_Y = this.cameras.main.height / 2;
 
@@ -44,6 +49,15 @@ export class MenuScene extends Phaser.Scene {
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
       document.body.classList.remove("menu-active");
     });
+  }
+
+  // If escape is pressed again, resume MainScene
+  update(): void {
+      if (this.controls.escape && this.scene.isPaused("MainScene")) {
+          this.scene.stop();
+          this.scene.resume("MainScene");
+      }
+
   }
 
   /**
