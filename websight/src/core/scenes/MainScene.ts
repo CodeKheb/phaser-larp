@@ -21,6 +21,7 @@ export class MainScene extends Phaser.Scene {
     private world!: World;
     private sign!: DialogueInteractable;
     private staff!: HoldingInteractable;
+    private box!: HoldingInteractable;
 
     constructor() {
         super('MainScene');
@@ -37,6 +38,7 @@ export class MainScene extends Phaser.Scene {
         this.load.image(Assets.SIGN, AssetPaths.SIGN);
         this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
         this.load.image(Assets.CUBE, AssetPaths.CUBE);
+        this.load.image(Assets.BOX, AssetPaths.BOX);
     }
 
     /**
@@ -57,6 +59,17 @@ export class MainScene extends Phaser.Scene {
 
         // creates the staff (holdable object)
         this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
+
+        // creates the box (holdable object)
+        this.box = new HoldingInteractable(
+            this,
+            this.player,
+            Assets.BOX,
+            4500,
+            1000,
+            0.3,
+            4,
+        );
 
         // spawns collectible objects
         CollectibleInteractable.spawn(
@@ -81,10 +94,12 @@ export class MainScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.world.platforms);
         this.physics.add.collider(this.staff, this.world.platforms);
         this.physics.add.collider(this.sign, this.world.platforms);
+        this.physics.add.collider(this.box, this.world.platforms);
 
         // automatically place on ground
         this.placeOnGround(this.sign);
         this.placeOnGround(this.staff);
+        this.placeOnGround(this.box);
 
         const camera = this.cameras.main;
         // isMobile boolean if in mobile view

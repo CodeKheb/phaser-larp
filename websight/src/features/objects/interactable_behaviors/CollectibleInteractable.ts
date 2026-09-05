@@ -28,14 +28,14 @@ export class CollectibleInteractable extends Interactable {
         x: number,
         y: number,
         texture: string,
-        scale = 0.35,
+        scale: number,
     ) {
-        super(scene, player, x, y, texture);
+        super(scene, player, x, y, texture, scale ?? 0.35);
 
         this.collectibleTexture = texture;
         this.collectibleScale = scale;
 
-        this.setScale(0.35);
+        this.setScale(scale);
         this.setDepth(Depth.BEHIND_PLAYER);
 
         this.setUpGlow();
