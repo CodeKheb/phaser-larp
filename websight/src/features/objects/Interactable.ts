@@ -29,8 +29,9 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         x: number,
         y: number,
         asset: string,
+        scale: number,
     ) {
-        super(scene, x, y, asset);
+        super(scene, x, y, asset, scale);
         this.player = player;
 
         scene.add.existing(this);
@@ -38,6 +39,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.setCollideWorldBounds(true);
         this.setVisible(true);
         this.setActive(true);
+        this.setScale(scale);
 
         this.setInteractive({ useHandCursor: true });
         this.input!.enabled = false;

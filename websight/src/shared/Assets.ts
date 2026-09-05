@@ -11,6 +11,7 @@ export const Assets = {
     CLOUD: 'cloud',
     SIGN: 'sign',
     CUBE: 'cube',
+    BOX: 'box',
 } as const;
 
 export const AssetPaths = {
@@ -21,4 +22,5 @@ export const AssetPaths = {
     CLOUD: 'world/clouds.png',
     SIGN: 'objects/sign.png',
     CUBE: 'objects/cube.png',
+    BOX: 'objects/wooden_box.png',
 } as const;
