@@ -59,7 +59,13 @@ export class MainScene extends Phaser.Scene {
     this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
 
     // spawns collectible objects
-    CollectibleInteractable.spawn(this, this.player, this.world.platforms, Assets.CUBE, 1000);
+    CollectibleInteractable.spawn(
+      this,
+      this.player,
+      this.world.platforms,
+      Assets.CUBE,
+      1000,
+    );
 
     // creates the sign (dialogue object)
     this.sign = new DialogueInteractable(
