@@ -9,9 +9,9 @@ export const WorldConfig = {
     LOGO_Y: 400, // Y-coordinate where the logo is placed
     CLOUD_AMOUNT: 20, // Number of clouds to spawn
     CLOUD_SPEED: 0.02, // Cloud scroll speed (multiplier for delta time)
-    ZOOM_AMOUNT: 0.55, // Desktop camera zoom level
-    MOBILE_ZOOM: 0.48, // Mobile camera zoom level
-    MOBILE_ZOOM_OFFSET: 220, // Mobile camera Y-axis follow offset
+    ZOOM_AMOUNT: 0.7, // Desktop camera zoom level
+    MOBILE_ZOOM: 0.55, // Mobile camera zoom level
+    MOBILE_ZOOM_OFFSET: 200, // Mobile camera Y-axis follow offset
 } as const;
 
 /**
