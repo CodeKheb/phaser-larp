@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { InputManager } from '../../features/controls/InputManager';
+import { CameraManager } from '../camera/CameraManager';
 import { SceneKeys } from '../config/SceneKeys';
 
 /**
@@ -22,8 +23,9 @@ export class MenuScene extends Phaser.Scene {
     create(): void {
         this.controls = new InputManager(this);
 
-        const CENTER_X = this.cameras.main.width / 2;
-        const CENTER_Y = this.cameras.main.height / 2;
+        const camera = new CameraManager(this.cameras.main);
+        const CENTER_X = camera.viewportCenterX();
+        const CENTER_Y = camera.viewportCenterY();
 
         this.add
             .text(CENTER_X, CENTER_Y - 180, 'WebSight', {

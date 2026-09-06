@@ -1,6 +1,7 @@
 import { AssetPaths, Assets } from '../../shared/Assets';
 import { SceneKeys } from '../config/SceneKeys';
 import { GameScene } from './GameScene';
+import { CameraManager } from '../camera/CameraManager';
 
 export class HouseScene extends GameScene {
     constructor() {
@@ -13,9 +14,11 @@ export class HouseScene extends GameScene {
     }
 
     create(): void {
+        const camera = new CameraManager(this.cameras.main);
+
         const house = this.add.image(
-            this.cameras.main.width / 2,
-            this.cameras.main.height / 2,
+            camera.viewportCenterX(),
+            camera.viewportCenterY(),
             Assets.HOUSE_SCENE,
         );
         house.setScale(1.8);

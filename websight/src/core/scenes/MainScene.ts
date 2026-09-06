@@ -4,8 +4,8 @@ import { World } from '../../features/world/World';
 import { GameScene } from './GameScene';
 import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable';
 import { DialogueInteractable } from '../../features/objects/behaviors/DialogueInteractable';
-import { WorldConfig } from '../config/GameConfig';
 import { SceneKeys } from '../config/SceneKeys';
+import { CameraManager } from '../camera/CameraManager';
 import { CollectibleInteractable } from '../../features/objects/behaviors/CollectibleInteractable';
 import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable';
 
@@ -113,21 +113,9 @@ export class MainScene extends GameScene {
         this.placeOnGround(this.house);
         this.placeOnGround(this.box);
 
-        const camera = this.cameras.main;
-        // Detect if the device uses coarse pointer (touch/mobile)
-        const isMobile = window.matchMedia('(pointer: coarse)').matches;
-
-        // Apply different zoom levels for mobile vs desktop
-        camera.setZoom(
-            isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT,
+        new CameraManager(this.cameras.main, { mobileFollow: true }).startFollow(
+            this.player,
         );
-
-        camera.startFollow(this.player);
-
-        // Set additional Y offset for mobile camera follow
-        if (isMobile) {
-            camera.setFollowOffset(0, WorldConfig.MOBILE_ZOOM_OFFSET);
-        }
     }
 
     /**
