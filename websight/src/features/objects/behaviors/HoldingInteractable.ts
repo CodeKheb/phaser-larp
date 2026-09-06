@@ -8,15 +8,19 @@ import { Depth } from '../../../core/config/GameConfig';
  * Follows the player's movement while held.
  */
 export class HoldingInteractable extends Interactable {
-    private clicked: boolean = false;
+    private held: boolean = false;
 
     /**
      * @param scene the game scene
      * @param player the player object
      * @param options configuration for this holdable object
-     * @param (x and y default to just right of the player)
+     *        (x and y default to just right of the player)
      */
-    constructor(scene: Phaser.Scene, player: Player, options: InteractableOptions) {
+    constructor(
+        scene: Phaser.Scene,
+        player: Player,
+        options: InteractableOptions,
+    ) {
         const pos = player.currentPosition();
         super(scene, player, {
             ...options,
@@ -25,7 +29,7 @@ export class HoldingInteractable extends Interactable {
         });
         this.setDepth(Depth.ABOVE_PLAYER);
 
-        this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleClicked());
+        this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleHeld());
     }
 
     protected preUpdate(time: number, delta: number): void {
@@ -36,25 +40,25 @@ export class HoldingInteractable extends Interactable {
     /**
      * Toggles the held state on/off.
      */
-    toggleClicked(): void {
-        this.clicked = !this.clicked;
+    toggleHeld(): void {
+        this.held = !this.held;
     }
 
     /** Whether the object is currently held by the player. */
-    get isClicked(): boolean {
-        return this.canInteract && this.clicked;
+    get isHeld(): boolean {
+        return this.canInteract && this.held;
     }
 
     /** Held objects are activated via toggle, not a separate interaction. */
     onInteract(): void {
-        this.toggleClicked();
+        this.toggleHeld();
     }
 
     /**
      * While held, the object matches the player's velocity so it stays alongside them.
      */
     private followPlayerIfHeld(): void {
-        if (!this.isClicked) {
+        if (!this.isHeld) {
             this.setVelocityX(0);
             return;
         }

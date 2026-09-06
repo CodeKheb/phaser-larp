@@ -20,7 +20,11 @@ export class CollectibleInteractable extends Interactable {
      * @param options configuration for this collectible object
      *                (scale defaults to 0.35)
      */
-    constructor(scene: Phaser.Scene, player: Player, options: InteractableOptions) {
+    constructor(
+        scene: Phaser.Scene,
+        player: Player,
+        options: InteractableOptions,
+    ) {
         super(scene, player, { ...options, scale: options.scale ?? 0.35 });
 
         this.collectibleTexture = options.asset;

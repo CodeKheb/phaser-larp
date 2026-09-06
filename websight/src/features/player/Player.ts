@@ -9,6 +9,11 @@ import Phaser from 'phaser';
  * Handles player movement, interaction, and physics.
  *
  * extends Phaser API's Phaser.Physics.Arcade.Sprite.
+ *
+ * Coupling note: Player owns interaction dispatch. The flow is one-directional:
+ * Player -> InteractionController -> Interactable.onInteract(). Interactables
+ * may READ the player's position, but must never call Player movement methods.
+ * Keep it that way to avoid a true circular dependency.
  */
 export class Player extends Phaser.Physics.Arcade.Sprite {
     private readonly interaction: InteractionController;

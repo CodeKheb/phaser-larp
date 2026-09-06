@@ -68,7 +68,7 @@ export class MainScene extends GameScene {
             x: 4500,
             y: 1000,
             scale: 0.3,
-            glowStrength: 2,
+            innerGlowIntensity: 2,
         });
 
         this.house = new SwitchSceneInteractable(this, this.player, {
