@@ -10,8 +10,8 @@ export const WorldConfig = {
     CLOUD_AMOUNT: 20, // Number of clouds to spawn
     CLOUD_SPEED: 0.02, // Cloud scroll speed (multiplier for delta time)
     ZOOM_AMOUNT: 0.55, // Desktop camera zoom level
-    MOBILE_ZOOM: 0.35, // Mobile camera zoom level
-    MOBILE_ZOOM_OFFSET: 300, // Mobile camera Y-axis follow offset
+    MOBILE_ZOOM: 0.48, // Mobile camera zoom level
+    MOBILE_ZOOM_OFFSET: 220, // Mobile camera Y-axis follow offset
 } as const;
 
 /**
