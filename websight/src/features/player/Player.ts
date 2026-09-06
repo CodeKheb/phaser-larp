@@ -26,7 +26,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         super(
             scene,
             x ?? WorldConfig.WORLD_WIDTH / 2.15,
-            y ?? 200,
+            y ?? 400,
             Assets.CHARACTER,
         );
 
@@ -36,6 +36,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setBounce(Attributes.BOUNCE_AMOUNT);
         this.setCollideWorldBounds(true);
         this.setDepth(Depth.PLAYER);
+        this.setScale(Attributes.SCALE);
 
         this.interaction = new InteractionController();
     }

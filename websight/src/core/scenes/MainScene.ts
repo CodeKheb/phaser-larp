@@ -74,7 +74,7 @@ export class MainScene extends GameScene {
             asset: Assets.BOX,
             x: 4500,
             y: 1000,
-            scale: 0.3,
+            scale: 0.15,
             innerGlowIntensity: 2,
         });
 
@@ -83,7 +83,7 @@ export class MainScene extends GameScene {
             asset: Assets.HOUSE,
             x: 5000,
             y: 1000,
-            scale: 2,
+            scale: 1,
             interactionRadius: 320,
         });
 
@@ -94,6 +94,7 @@ export class MainScene extends GameScene {
             this.world.platforms,
             Assets.CUBE,
             1000,
+            0.25,
         );
 
         // creates the sign (dialogue object)
@@ -103,6 +104,7 @@ export class MainScene extends GameScene {
                 'Welcome to the demo world developed by SSITE!\nExplore and interact with objects.',
             x: this.player.x - 80,
             y: this.player.y,
+            scale: 0.5,
         });
 
         // physics colliders
