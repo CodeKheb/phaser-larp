@@ -37,10 +37,10 @@ export class SwitchSceneInteractable extends Interactable {
     onInteract(): void {
         const currentKey = this.scene.scene.key;
         const targetKey = this.targetScene;
-        
+
         // Sleep scene
         this.scene.scene.sleep(currentKey);
-        
+
         // Wake or start target scene
         const target = this.scene.scene.get(targetKey);
         if (target && target.scene.isSleeping()) {
@@ -50,7 +50,7 @@ export class SwitchSceneInteractable extends Interactable {
             // Target was stopped or never started - start it
             this.scene.scene.start(targetKey);
         }
-        
+
         // Bring target to top
         this.scene.scene.switch(targetKey);
     }
