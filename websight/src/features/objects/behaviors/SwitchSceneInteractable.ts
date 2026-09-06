@@ -27,7 +27,7 @@ export class SwitchSceneInteractable extends Interactable {
     ) {
         super(scene, player, {
             ...options,
-            glowStrength: 1, // subtle glow so the exit is noticeable
+            innerGlowIntensity: 1, // subtle glow so the exit is noticeable
         });
         this.targetScene = options.targetScene;
         this.setDepth(Depth.BEHIND_PLAYER);

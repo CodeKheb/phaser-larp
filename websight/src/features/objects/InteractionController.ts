@@ -5,6 +5,10 @@ import { HoldingInteractable } from './behaviors/HoldingInteractable';
  * Controls the interaction between the player and interactable objects.
  * Dispatches the generic {@link Interactable.onInteract} call and
  * separately tracks held objects that subclass {@link HoldingInteractable}.
+ *
+ * Owned by {@link Player}. See the coupling note on the Player class:
+ * interactables may read the player's position but never call its movement
+ * methods, so this controller is the only path that triggers interactions.
  */
 export class InteractionController {
     private nearby: Interactable | null = null;
@@ -17,7 +21,7 @@ export class InteractionController {
         this.nearby = Interactable.getInRange()[0] ?? null;
 
         // Release reference if the held object was dropped
-        if (this.held && !this.held.isClicked) {
+        if (this.held && !this.held.isHeld) {
             this.held = null;
         }
     }
