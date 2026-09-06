@@ -29,7 +29,7 @@ This installs both `node` and `npm` for you.
 
 Open a terminal (Command Prompt, PowerShell, or Terminal) and run:
 
-```
+``` bash
 node -v
 npm -v
 ```
@@ -49,7 +49,7 @@ GitHub. It's separate from npm. Install it from
 npm updates itself along with Node.js, but updating it separately once keeps
 things fresh:
 
-```
+``` bash
 npm install -g npm@latest
 ```
 
@@ -57,14 +57,14 @@ npm install -g npm@latest
 
 In your terminal, run:
 
-```
+``` bash
 git clone https://github.com/org/repo
 ```
 
 This downloads the whole project into a new folder on your computer. Move into
 that folder (Git names it after the repository):
 
-```
+``` bash
 cd repo
 ```
 
@@ -72,7 +72,7 @@ cd repo
 
 The actual game lives inside the `websight/` folder, not the repo root:
 
-```
+``` bash
 cd websight
 ```
 
@@ -81,7 +81,7 @@ cd websight
 This reads `package.json` and downloads everything the project needs into
 `node_modules/`:
 
-```
+``` bash
 npm install
 ```
 
@@ -90,7 +90,7 @@ a new package).
 
 ### Step 8: Run the game (dev server)
 
-```
+``` bash
 npm run dev
 ```
 
@@ -101,7 +101,7 @@ how you'll see your contributions live.
 
 ### Step 9: Build for production (optional)
 
-```
+``` bash
 npm run build
 ```
 
@@ -182,22 +182,40 @@ review, or remove later.
 ```
 websight/
 ├── src/
+│   ├── Main.ts               # entry point — registers scenes
+│   ├── core/
+│   │   ├── config/           # tuning values & constants (GameConfig, SceneKeys, ...)
+│   │   └── scenes/           # Phaser scenes (GameScene base class, MainScene, ...)
 │   ├── features/
-│   │   ├── controls/
-│   │   ├── objects/
+│   │   ├── controls/         # keyboard + mobile input
+│   │   ├── objects/          # Interactable base + behaviors/ for each type
 │   │   ├── player/
 │   │   └── world/
-│   ├── scenes/
-│   └── main.js
-├── public/
+│   └── shared/
+│       └── Assets.ts         # every asset key & path in one place
+├── public/                   # images & static files
 ├── package.json
 └── ...
 ```
 
 If you're adding something that doesn't cleanly fit an existing feature
 folder, create a new one rather than dropping files into a shared/generic
-folder. If you're not sure where something belongs, ask in your PR description
-and that's a completely normal question, not a sign you're doing something wrong.
+folder. Not sure where something belongs? See
+**[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)** for a "where do I add X?"
+table — or just ask in your PR description. That's a completely normal
+question, not a sign you're doing something wrong.
+
+### Useful commands
+
+Run these from the `websight/` folder:
+
+| Command | What it does |
+|---|---|
+| `npm run dev` | Start the dev server and play the game. |
+| `npm run typecheck` | Check for TypeScript errors without building. |
+| `npm run format` | Auto-format your code with Prettier (run before pushing). |
+| `npm run format:check` | Same, but only reports problems without fixing. |
+| `npm run build` | Production build (CI runs this on every PR). |
 
 ---
 
