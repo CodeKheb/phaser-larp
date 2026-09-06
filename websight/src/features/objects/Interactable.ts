@@ -115,6 +115,14 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         super.destroy(fromScene);
     }
 
+    /**
+     * Clears all interactables from the registry.
+     * Call this when switching scenes to prevent ghost interactables.
+     */
+    static clearRegistry(): void {
+        Interactable.registry.clear();
+    }
+
     protected preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
         this.updateProximity();

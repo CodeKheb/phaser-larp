@@ -8,6 +8,7 @@ import { SceneKeys } from '../config/SceneKeys';
 import { CameraManager } from '../camera/CameraManager';
 import { CollectibleInteractable } from '../../features/objects/behaviors/CollectibleInteractable';
 import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable';
+import { Interactable } from '../../features/objects/Interactable';
 
 /**
  * Represents the main game scene.
@@ -40,6 +41,7 @@ export class MainScene extends GameScene {
         this.load.image(Assets.CUBE, AssetPaths.CUBE);
         this.load.image(Assets.BOX, AssetPaths.BOX);
         this.load.image(Assets.HOUSE, AssetPaths.HOUSE);
+        this.load.image(Assets.DOOR, AssetPaths.DOOR);
     }
 
     /**
@@ -54,6 +56,9 @@ export class MainScene extends GameScene {
      * </ul>
      */
     create() {
+        // Clear interactable registry to prevent ghost interactables from other scenes
+        Interactable.clearRegistry();
+
         this.world = new World(this);
 
         // Player and controls come from GameScene
