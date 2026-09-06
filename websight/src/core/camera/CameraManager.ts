@@ -20,7 +20,10 @@ export class CameraManager {
     /** Whether this camera was configured for mobile follow mode. */
     private readonly mobileFollow: boolean;
 
-    constructor(camera: Phaser.Cameras.Scene2D.Camera, options?: { mobileFollow?: boolean }) {
+    constructor(
+        camera: Phaser.Cameras.Scene2D.Camera,
+        options?: { mobileFollow?: boolean },
+    ) {
         this.camera = camera;
         options = options ?? {};
 
