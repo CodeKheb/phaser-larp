@@ -61,29 +61,27 @@ export class MainScene extends Phaser.Scene {
         this.controls = new InputManager(this);
 
         // creates the staff (holdable object)
-        this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
+        this.staff = new HoldingInteractable(this, this.player, {
+            asset: Assets.STAFF,
+        });
 
         // creates the box (holdable object)
-        this.box = new HoldingInteractable(
-            this,
-            this.player,
-            Assets.BOX,
-            4500,
-            1000,
-            0.3,
-            2,
-        );
+        this.box = new HoldingInteractable(this, this.player, {
+            asset: Assets.BOX,
+            x: 4500,
+            y: 1000,
+            scale: 0.3,
+            glowStrength: 2,
+        });
 
-        this.house = new SwitchSceneInteractable(
-            this,
-            'HouseScene',
-            this.player,
-            Assets.HOUSE,
-            5000,
-            1000,
-            2,
-            320,
-        );
+        this.house = new SwitchSceneInteractable(this, this.player, {
+            targetScene: 'HouseScene',
+            asset: Assets.HOUSE,
+            x: 5000,
+            y: 1000,
+            scale: 2,
+            interactionRadius: 320,
+        });
 
         // spawns collectible objects
         CollectibleInteractable.spawn(
@@ -95,14 +93,13 @@ export class MainScene extends Phaser.Scene {
         );
 
         // creates the sign (dialogue object)
-        this.sign = new DialogueInteractable(
-            this,
-            this.player,
-            Assets.SIGN,
-            'Welcome to the demo world developed by SSITE!\nExplore and interact with objects.',
-            this.player.currentPosition().x - 80,
-            this.player.currentPosition().y,
-        );
+        this.sign = new DialogueInteractable(this, this.player, {
+            asset: Assets.SIGN,
+            message:
+                'Welcome to the demo world developed by SSITE!\nExplore and interact with objects.',
+            x: this.player.x - 80,
+            y: this.player.y,
+        });
 
         // physics colliders
         this.physics.add.collider(this.player, this.world.platforms);

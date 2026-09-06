@@ -1,8 +1,21 @@
-import { Interactable } from '../Interactable';
+import { Interactable, type InteractableOptions } from '../Interactable';
 import { InteractableConfig } from '../../../core/config/InteractableConfig';
 import { Player } from '../../player/Player';
 import { Depth } from '../../../core/config/GameConfig';
 import Phaser from 'phaser';
+
+/**
+ * Configuration for creating a dialogue interactable.
+ * Extends {@link InteractableOptions} with the message to display.
+ */
+export interface DialogueInteractableOptions extends InteractableOptions {
+    /** The text to show in the dialogue. */
+    message: string;
+    /** Spawn X position. */
+    x: number;
+    /** Spawn Y position. */
+    y: number;
+}
 
 /**
  * An interactable that displays a dialogue box when the player interacts with it.
@@ -17,23 +30,15 @@ export class DialogueInteractable extends Interactable {
     /**
      * @param scene the game scene
      * @param player the player object
-     * @param asset the texture key for this object
-     * @param message the text to show in the dialogue
-     * @param x spawn X
-     * @param y spawn Y
-     * @param scale for asset scale
+     * @param options configuration for this dialogue object
      */
     constructor(
         scene: Phaser.Scene,
         player: Player,
-        asset: string,
-        message: string,
-        x: number,
-        y: number,
-        scale?: number,
+        options: DialogueInteractableOptions,
     ) {
-        super(scene, player, x, y, asset, scale ?? 1);
-        this.message = message;
+        super(scene, player, options);
+        this.message = options.message;
         this.setDepth(Depth.ABOVE_PLAYER);
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.onInteract());

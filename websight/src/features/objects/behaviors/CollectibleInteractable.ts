@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { Interactable } from '../Interactable';
+import { Interactable, type InteractableOptions } from '../Interactable';
 import { Player } from '../../player/Player';
 import { Depth, WorldConfig } from '../../../core/config/GameConfig';
 
@@ -17,25 +17,15 @@ export class CollectibleInteractable extends Interactable {
     /**
      * @param scene the game scene
      * @param player the player object
-     * @param x spawn X
-     * @param y spawn Y
-     * @param texture the sprite asset
-     * @param scale for scale of asset
+     * @param options configuration for this collectible object
+     *                (scale defaults to 0.35)
      */
-    constructor(
-        scene: Phaser.Scene,
-        player: Player,
-        x: number,
-        y: number,
-        texture: string,
-        scale: number,
-    ) {
-        super(scene, player, x, y, texture, scale ?? 0.35);
+    constructor(scene: Phaser.Scene, player: Player, options: InteractableOptions) {
+        super(scene, player, { ...options, scale: options.scale ?? 0.35 });
 
-        this.collectibleTexture = texture;
-        this.collectibleScale = scale;
+        this.collectibleTexture = options.asset;
+        this.collectibleScale = options.scale ?? 0.35;
 
-        this.setScale(scale);
         this.setDepth(Depth.BEHIND_PLAYER);
 
         this.setUpGlow();
@@ -68,16 +58,12 @@ export class CollectibleInteractable extends Interactable {
         const x = Phaser.Math.Between(spawnAreaMinX, spawnAreaMaxX);
         const y = WorldConfig.GROUND_Y - 5000;
 
-        const collectible = new CollectibleInteractable(
-            scene,
-            player,
+        const collectible = new CollectibleInteractable(scene, player, {
+            asset: texture,
             x,
             y,
-            texture,
             scale,
-        );
-
-
+        });
 
         scene.physics.add.collider(collectible, platforms);
 
@@ -164,7 +150,7 @@ export class CollectibleInteractable extends Interactable {
      * if player is not in range, set glow to false
      */
     onOutOfRange(): void {
-        if (this.glowSprite && this.glowSprite && this.glowTween) {
+        if (this.glowSprite && this.glowSprite.active && this.glowTween) {
             this.glowSprite.setVisible(false);
             this.glowTween.pause();
         }
