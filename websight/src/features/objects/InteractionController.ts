@@ -1,30 +1,35 @@
 import { Interactable } from './Interactable';
-import { HoldingInteractable } from './interactable_behaviors/HoldingInteractable.ts';
+import { HoldingInteractable } from './behaviors/HoldingInteractable';
 
 /**
  * Controls the interaction between the player and interactable objects.
- * Dispatches the generic {@link Interactable.onInteract} call and
- * separately tracks held objects that subclass {@link HoldingInteractable}.
+ * Dispatches the {@link Interactable.onInteract} call to the nearest interactable
+ * and separately tracks held objects that subclass {@link HoldingInteractable}.
+ *
+ * Owned by {@link Player}. See the coupling note on the Player class:
+ * interactables may read the player's position but never call its movement
+ * methods, so this controller is the main path that triggers interactions.
  */
 export class InteractionController {
     private nearby: Interactable | null = null;
     private held: HoldingInteractable | null = null;
 
     /**
-     * Updates the interaction controller's state each frame.
+     * Updates the interaction controller each frame.
+     * Finds the nearest interactable in range and clears held reference if dropped.
      */
     update(): void {
         this.nearby = Interactable.getInRange()[0] ?? null;
 
         // Release reference if the held object was dropped
-        if (this.held && !this.held.isClicked) {
+        if (this.held && !this.held.isHeld) {
             this.held = null;
         }
     }
 
     /**
      * Triggers the interaction on the nearest interactable.
-     * For {@link HoldingInteractable} objects this also tracks the held state.
+     * For {@link HoldingInteractable} objects, also updates the held reference.
      */
     toggle(): void {
         if (!this.nearby) return;
@@ -37,7 +42,7 @@ export class InteractionController {
         }
     }
 
-    /** The object currently held by the player, if any. */
+    /** The {@link HoldingInteractable} currently held by the player, or null if none. */
     get heldObject(): HoldingInteractable | null {
         return this.held;
     }

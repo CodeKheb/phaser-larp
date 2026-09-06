@@ -1,24 +1,22 @@
 import Phaser from 'phaser';
 import { Assets, AssetPaths } from '../../shared/Assets';
-import { Player } from '../../features/player/Player';
 import { World } from '../../features/world/World';
-import { InputManager } from '../../features/controls/InputManager';
-import { HoldingInteractable } from '../../features/objects/interactable_behaviors/HoldingInteractable.ts';
-import { DialogueInteractable } from '../../features/objects/interactable_behaviors/DialogueInteractable.ts';
-import { WorldConfig } from '../config/GameConfig.ts';
-import { CollectibleInteractable } from '../../features/objects/interactable_behaviors/CollectibleInteractable.ts';
-import { SwitchSceneInteractable } from '../../features/objects/interactable_behaviors/SwitchSceneInteractable.ts';
+import { GameScene } from './GameScene';
+import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable';
+import { DialogueInteractable } from '../../features/objects/behaviors/DialogueInteractable';
+import { WorldConfig } from '../config/GameConfig';
+import { SceneKeys } from '../config/SceneKeys';
+import { CollectibleInteractable } from '../../features/objects/behaviors/CollectibleInteractable';
+import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable';
 
 /**
  * Represents the main game scene.
  * Handles the core gameplay mechanics, including the player, world, and interaction systems.
  * It is initialized, loaded, and updated by the Phaser game framework.
  *
- * referenced by main.ts as the main scene
+ * Referenced by Main.ts as the main scene.
  */
-export class MainScene extends Phaser.Scene {
-    private player!: Player;
-    private controls!: InputManager;
+export class MainScene extends GameScene {
     private world!: World;
     private sign!: DialogueInteractable;
     private staff!: HoldingInteractable;
@@ -26,7 +24,7 @@ export class MainScene extends Phaser.Scene {
     private house!: SwitchSceneInteractable;
 
     constructor() {
-        super('MainScene');
+        super(SceneKeys.Main);
     }
 
     /**
@@ -45,45 +43,44 @@ export class MainScene extends Phaser.Scene {
     }
 
     /**
-     * creates all game objects and sets up the gameplay environment such as
+     * Creates all game objects and sets up the gameplay environment:
      * <ul>
      *     <li>player</li>
-     *     <li>world</li>
-     *     <li>controls</li>
-     *     <li>physics</li>
-     *     <li>camera</li>
+     *     <li>world (ground, clouds, logo)</li>
+     *     <li>controls (keyboard and mobile)</li>
+     *     <li>physics colliders</li>
+     *     <li>camera (with mobile/desktop zoom settings)</li>
+     *     <li>interactable objects (staff, box, house, sign, collectibles)</li>
      * </ul>
      */
     create() {
         this.world = new World(this);
 
-        this.player = new Player(this);
-        this.controls = new InputManager(this);
+        // Player and controls come from GameScene
+        this.setupPlayer();
 
         // creates the staff (holdable object)
-        this.staff = new HoldingInteractable(this, this.player, Assets.STAFF);
+        this.staff = new HoldingInteractable(this, this.player, {
+            asset: Assets.STAFF,
+        });
 
         // creates the box (holdable object)
-        this.box = new HoldingInteractable(
-            this,
-            this.player,
-            Assets.BOX,
-            4500,
-            1000,
-            0.3,
-            2,
-        );
+        this.box = new HoldingInteractable(this, this.player, {
+            asset: Assets.BOX,
+            x: 4500,
+            y: 1000,
+            scale: 0.3,
+            innerGlowIntensity: 2,
+        });
 
-        this.house = new SwitchSceneInteractable(
-            this,
-            'HouseScene',
-            this.player,
-            Assets.HOUSE,
-            5000,
-            1000,
-            2,
-            320,
-        );
+        this.house = new SwitchSceneInteractable(this, this.player, {
+            targetScene: SceneKeys.House,
+            asset: Assets.HOUSE,
+            x: 5000,
+            y: 1000,
+            scale: 2,
+            interactionRadius: 320,
+        });
 
         // spawns collectible objects
         CollectibleInteractable.spawn(
@@ -95,14 +92,13 @@ export class MainScene extends Phaser.Scene {
         );
 
         // creates the sign (dialogue object)
-        this.sign = new DialogueInteractable(
-            this,
-            this.player,
-            Assets.SIGN,
-            'Welcome to the demo world developed by SSITE!\nExplore and interact with objects.',
-            this.player.currentPosition().x - 80,
-            this.player.currentPosition().y,
-        );
+        this.sign = new DialogueInteractable(this, this.player, {
+            asset: Assets.SIGN,
+            message:
+                'Welcome to the demo world developed by SSITE!\nExplore and interact with objects.',
+            x: this.player.x - 80,
+            y: this.player.y,
+        });
 
         // physics colliders
         this.physics.add.collider(this.player, this.world.platforms);
@@ -118,57 +114,39 @@ export class MainScene extends Phaser.Scene {
         this.placeOnGround(this.box);
 
         const camera = this.cameras.main;
-        // isMobile boolean if in mobile view
+        // Detect if the device uses coarse pointer (touch/mobile)
         const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
-        // setZoom if mobile view, set MOBILE_ZOOM else set ZOOM_AMOUNT
+        // Apply different zoom levels for mobile vs desktop
         camera.setZoom(
             isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT,
         );
 
         camera.startFollow(this.player);
 
-        // if mobile view MOBILE_ZOOM_OFFSET
+        // Set additional Y offset for mobile camera follow
         if (isMobile) {
             camera.setFollowOffset(0, WorldConfig.MOBILE_ZOOM_OFFSET);
         }
     }
 
     /**
-     * updates the game state, including player movement, interaction, and physics
+     * updates the game state, including player movement, interaction, and physics.
+     * Movement, jumping, interaction, and the pause menu are handled by GameScene.
      */
     update(_time: number, delta: number) {
         this.world.update(delta);
 
-        if (this.controls.left) this.player.moveLeft();
-        else if (this.controls.right) this.player.moveRight();
-        else this.player.stopPlayer();
-
-        if (this.controls.jump) this.player.jump();
-
-        if (this.controls.interact) {
-            this.player.toggleInteractable();
-        }
-
-        if (this.controls.escape) {
-            this.scene.pause();
-            this.scene.launch('MenuScene');
-            this.scene.bringToTop('MenuScene');
-        }
+        super.update(_time, delta);
     }
 
     /**
-     * @param sprite takes in the phaser sprite
+     * @param sprite The Phaser sprite to place on the ground.
      *
-     * this method automatically spawns the sprites on the ground
+     * Places the sprite so its bottom aligns with the ground surface.
      */
     private placeOnGround(sprite: Phaser.Physics.Arcade.Sprite) {
-        const groundSprite =
-            this.world.platforms.getChildren()[0] as Phaser.Physics.Arcade.Sprite;
-
-        const groundBody = groundSprite.body as Phaser.Physics.Arcade.Body;
-
-        Phaser.Display.Bounds.SetBottom(sprite, groundBody.top);
+        Phaser.Display.Bounds.SetBottom(sprite, this.world.groundTopY);
 
         const body = sprite.body as Phaser.Physics.Arcade.Body;
         body.updateFromGameObject();

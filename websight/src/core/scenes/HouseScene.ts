@@ -1,14 +1,10 @@
-import Phaser from 'phaser';
 import { AssetPaths, Assets } from '../../shared/Assets';
-import { Player } from '../../features/player/Player';
-import { InputManager } from '../../features/controls/InputManager';
+import { SceneKeys } from '../config/SceneKeys';
+import { GameScene } from './GameScene';
 
-export class HouseScene extends Phaser.Scene {
-    private player!: Player;
-    private controls!: InputManager;
-
+export class HouseScene extends GameScene {
     constructor() {
-        super('HouseScene');
+        super(SceneKeys.House);
     }
 
     preload(): void {
@@ -24,32 +20,16 @@ export class HouseScene extends Phaser.Scene {
         );
         house.setScale(1.8);
 
+        // Add padding around the house image for world bounds
         const constraintWidth = house.displayWidth - 500;
         const constraintHeight = house.displayHeight - 500;
 
         this.physics.world.setBounds(0, 0, constraintWidth, constraintHeight);
         this.cameras.main.setBounds(0, 0, constraintWidth, constraintHeight);
-        this.player = new Player(
-            this,
-            constraintWidth / 2,
-            constraintHeight / 2,
-        );
-        this.controls = new InputManager(this);
+
+        // Set up player and controls (inherited from GameScene)
+        this.setupPlayer(constraintWidth / 2, constraintHeight / 2);
 
         this.cameras.main.startFollow(this.player);
-    }
-
-    update(_time: number, _delta: number): void {
-        if (this.controls.left) this.player.moveLeft();
-        else if (this.controls.right) this.player.moveRight();
-        else this.player.stopPlayer();
-
-        if (this.controls.jump) this.player.jump();
-
-        if (this.controls.escape) {
-            this.scene.pause();
-            this.scene.launch('MenuScene');
-            this.scene.bringToTop('MenuScene');
-        }
     }
 }

@@ -15,7 +15,7 @@ export class InputManager {
     private prevMobileInteract: boolean = false;
 
     /**
-     * assigns movement keys to the keyboard and mobile controls.
+     * Creates keyboard and mobile input handlers for the scene.
      * @param scene the game scene
      */
     constructor(scene: Phaser.Scene) {
@@ -25,8 +25,8 @@ export class InputManager {
     }
 
     /*
-        returns the current state of the input.
-        combines keyboard and mobile input states.
+     * Returns the current input state.
+     * Combines keyboard and mobile input states.
      */
     get left() {
         return this.keyboard.left || this.mobile.left;
@@ -42,8 +42,8 @@ export class InputManager {
     }
 
     /**
-     * One-shot interact: fires once per press on both keyboard and mobile.
-     * Keyboard already uses JustDown; mobile is edge-detected here.
+     * fires once per press.
+     * Keyboard uses JustDown; mobile is edge-detected here.
      */
     get interact(): boolean {
         const mobileEdge = this.mobile.interact && !this.prevMobileInteract;
