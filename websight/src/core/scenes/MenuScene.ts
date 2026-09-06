@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import { InputManager } from '../../features/controls/InputManager';
+import { SceneKeys } from '../config/SceneKeys';
 
 /**
  * Represents the menu mage scene.
@@ -36,15 +37,14 @@ export class MenuScene extends Phaser.Scene {
             .setShadow(0, 4, '#00000066', 6, false, true);
 
         this.createButton(CENTER_X, CENTER_Y, 'PLAY', () => {
-            if (this.scene.isPaused('HouseScene')) {
-                this.scene.resume('HouseScene');
+            if (this.scene.isPaused(SceneKeys.House)) {
+                this.scene.resume(SceneKeys.House);
                 this.scene.stop();
-            }
-            else if (this.scene.isPaused('MainScene')) {
-                this.scene.resume('MainScene');
+            } else if (this.scene.isPaused(SceneKeys.Main)) {
+                this.scene.resume(SceneKeys.Main);
                 this.scene.stop();
             } else {
-                this.scene.start('MainScene');
+                this.scene.start(SceneKeys.Main);
             }
         });
 
@@ -55,17 +55,17 @@ export class MenuScene extends Phaser.Scene {
         });
     }
 
-    // If escape is pressed again, resume PreviousScene 
+    // If escape is pressed again, resume the scene that was paused.
     update(): void {
         const escapePressed = this.controls.escape;
 
-        if (escapePressed && this.scene.isPaused('HouseScene')) {
+        if (escapePressed && this.scene.isPaused(SceneKeys.House)) {
             this.scene.stop();
-            this.scene.resume('HouseScene');
+            this.scene.resume(SceneKeys.House);
         }
-        if (escapePressed && this.scene.isPaused('MainScene')) {
+        if (escapePressed && this.scene.isPaused(SceneKeys.Main)) {
             this.scene.stop();
-            this.scene.resume('MainScene');
+            this.scene.resume(SceneKeys.Main);
         }
     }
 
