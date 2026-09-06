@@ -1,6 +1,6 @@
 import { Assets } from '../../shared/Assets';
 import Phaser from 'phaser';
-import { Depth, WorldConfig } from '../../core/config/GameConfig';
+import { Depth, Logo, WorldConfig } from '../../core/config/GameConfig';
 
 /**
  * Represents the game world.
@@ -58,10 +58,10 @@ export class World {
                 WorldConfig.WORLD_WIDTH,
             );
             const randomSpawnY = Phaser.Math.Between(
-                0,
-                WorldConfig.WORLD_HEIGHT / 2,
+                600,
+                900,
             );
-            const randomScale = Phaser.Math.Between(0, 2);
+            const randomScale = Phaser.Math.Between(0, 1.25);
             const cloud = scene.add
                 .image(randomSpawnX, randomSpawnY, Assets.CLOUD)
                 .setScale(randomScale);
@@ -70,11 +70,12 @@ export class World {
         }
 
         // Adds SSITE logo in the middle of the screen.
-        scene.add.image(
+        const logo = scene.add.image(
             WorldConfig.WORLD_WIDTH / 2,
-            WorldConfig.LOGO_Y,
+            Logo.LOGO_Y,
             Assets.LOGO,
         );
+        logo.setScale(Logo.LOGO_SCALE);
     }
 
     // Move clouds right and recycle them after they leave the world.

@@ -38,7 +38,7 @@ export class HouseScene extends GameScene {
         // House centered in the world (scrolls with camera)
         const house = this.add.image(
             WORLD_WIDTH / 2,
-            WORLD_HEIGHT / 2,
+            WORLD_HEIGHT / 1.25,
             Assets.HOUSE_SCENE,
         );
         house.setDepth(-1); // Render behind everything
@@ -59,19 +59,20 @@ export class HouseScene extends GameScene {
         // Create a box to interact with
         this.box = new HoldingInteractable(this, this.player, {
             asset: Assets.BOX,
-            x: 2000,
+            x: 1000,
             y: 2000,
-            scale: 0.3,
+            scale: 0.15,
             innerGlowIntensity: 2,
         });
 
         this.door = new SwitchSceneInteractable(this, this.player, {
             targetScene: SceneKeys.Main,
             asset: Assets.DOOR,
-            x: 2500,
-            y: 2000,
+            x: 1000,
+            y: 2280,
             innerGlowIntensity: 5,
             interactionRadius: 250,
+            scale: 0.5,
         });
 
         // Player collides with ground and box
