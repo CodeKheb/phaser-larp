@@ -24,5 +24,5 @@ export const Depth = {
 
 export const Logo = {
     LOGO_Y: 900, // Y-coordinate where the logo is placed
-    LOGO_SCALE: 0.60,
+    LOGO_SCALE: 0.6,
 } as const;

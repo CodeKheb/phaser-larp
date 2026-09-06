@@ -57,10 +57,7 @@ export class World {
                 0,
                 WorldConfig.WORLD_WIDTH,
             );
-            const randomSpawnY = Phaser.Math.Between(
-                600,
-                900,
-            );
+            const randomSpawnY = Phaser.Math.Between(600, 900);
             const randomScale = Phaser.Math.Between(0, 1.25);
             const cloud = scene.add
                 .image(randomSpawnX, randomSpawnY, Assets.CLOUD)
