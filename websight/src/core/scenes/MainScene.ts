@@ -118,9 +118,9 @@ export class MainScene extends GameScene {
         this.placeOnGround(this.house);
         this.placeOnGround(this.box);
 
-        new CameraManager(this.cameras.main, { mobileFollow: true }).startFollow(
-            this.player,
-        );
+        new CameraManager(this.cameras.main, {
+            mobileFollow: true,
+        }).startFollow(this.player);
     }
 
     /**
