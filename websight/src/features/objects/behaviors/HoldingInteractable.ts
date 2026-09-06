@@ -1,4 +1,4 @@
-import { Interactable } from '../Interactable';
+import { Interactable, type InteractableOptions } from '../Interactable';
 import { Player } from '../../player/Player';
 import Phaser from 'phaser';
 import { Depth } from '../../../core/config/GameConfig';
@@ -13,31 +13,16 @@ export class HoldingInteractable extends Interactable {
     /**
      * @param scene the game scene
      * @param player the player object
-     * @param asset the texture key for this object
-     * @param x spawn X (defaults to near the player)
-     * @param y spawn Y (defaults to the player's Y)
-     * @param scale (defaults to the 1)
-     * @param glowStrength (defaults to the 0)
+     * @param options configuration for this holdable object
+     * @param (x and y default to just right of the player)
      */
-    constructor(
-        scene: Phaser.Scene,
-        player: Player,
-        asset: string,
-        x?: number,
-        y?: number,
-        scale?: number,
-        glowStrength?: number,
-    ) {
+    constructor(scene: Phaser.Scene, player: Player, options: InteractableOptions) {
         const pos = player.currentPosition();
-        super(
-            scene,
-            player,
-            x ?? pos.x + 50,
-            y ?? pos.y,
-            asset,
-            scale ?? 1,
-            glowStrength ?? 0,
-        );
+        super(scene, player, {
+            ...options,
+            x: options.x ?? pos.x + 50,
+            y: options.y ?? pos.y,
+        });
         this.setDepth(Depth.ABOVE_PLAYER);
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleClicked());

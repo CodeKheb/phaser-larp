@@ -3,6 +3,27 @@ import { InteractableConfig } from '../../core/config/InteractableConfig';
 import Phaser from 'phaser';
 
 /**
+ * Configuration for creating an interactable object.
+ *
+ * Using one named-options object instead of many positional arguments makes
+ * call sites like `new HoldingInteractable(scene, player, { asset, x, y })`
+ */
+export interface InteractableOptions {
+    /** Texture key for the object's sprite. */
+    asset: string;
+    /** Spawn X position (defaults to 0). */
+    x?: number;
+    /** Spawn Y position (defaults to 0). */
+    y?: number;
+    /** Sprite scale (defaults to 1). */
+    scale?: number;
+    /** Inner glow strength shown while the player is in range (defaults to 0). */
+    glowStrength?: number;
+    /** How close the player must be to interact (defaults to InteractableConfig.RADIUS). */
+    interactionRadius?: number;
+}
+
+/**
  * Abstract base class for all interactable objects in the game.
  * Handles common functionality: proximity detection, in-range outline, and registry management.
  *
@@ -21,32 +42,21 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      * Creates a new interactable at the given position.
      * @param scene the game scene
      * @param player the player object
-     * @param x spawn X coordinate
-     * @param y spawn Y coordinate
-     * @param asset the texture key to use
-     * @param scale for the asset scale
+     * @param options configuration for this interactable (see {@link InteractableOptions})
      */
-    constructor(
-        scene: Phaser.Scene,
-        player: Player,
-        x: number,
-        y: number,
-        asset: string,
-        scale: number,
-        glowStrength?: number,
-        interactionRadius?: number,
-    ) {
-        super(scene, x, y, asset);
+    constructor(scene: Phaser.Scene, player: Player, options: InteractableOptions) {
+        super(scene, options.x ?? 0, options.y ?? 0, options.asset);
         this.player = player;
-        this.glowStrength = glowStrength ?? 0;
-        this.interactionRadius = interactionRadius ?? InteractableConfig.RADIUS;
+        this.glowStrength = options.glowStrength ?? 0;
+        this.interactionRadius =
+            options.interactionRadius ?? InteractableConfig.RADIUS;
 
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.setCollideWorldBounds(true);
         this.setVisible(true);
         this.setActive(true);
-        this.setScale(scale);
+        this.setScale(options.scale ?? 1);
 
         this.setInteractive({ useHandCursor: true });
         this.input!.enabled = false;
