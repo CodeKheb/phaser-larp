@@ -1,8 +1,7 @@
 import Phaser from 'phaser';
 import { Assets, AssetPaths } from '../../shared/Assets';
-import { Player } from '../../features/player/Player';
 import { World } from '../../features/world/World';
-import { InputManager } from '../../features/controls/InputManager';
+import { GameScene } from './GameScene';
 import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable';
 import { DialogueInteractable } from '../../features/objects/behaviors/DialogueInteractable';
 import { WorldConfig } from '../config/GameConfig';
@@ -16,9 +15,7 @@ import { SwitchSceneInteractable } from '../../features/objects/behaviors/Switch
  *
  * referenced by main.ts as the main scene
  */
-export class MainScene extends Phaser.Scene {
-    private player!: Player;
-    private controls!: InputManager;
+export class MainScene extends GameScene {
     private world!: World;
     private sign!: DialogueInteractable;
     private staff!: HoldingInteractable;
@@ -57,8 +54,8 @@ export class MainScene extends Phaser.Scene {
     create() {
         this.world = new World(this);
 
-        this.player = new Player(this);
-        this.controls = new InputManager(this);
+        // Player and controls come from GameScene
+        this.setupPlayer();
 
         // creates the staff (holdable object)
         this.staff = new HoldingInteractable(this, this.player, {
@@ -132,26 +129,13 @@ export class MainScene extends Phaser.Scene {
     }
 
     /**
-     * updates the game state, including player movement, interaction, and physics
+     * updates the game state, including player movement, interaction, and physics.
+     * Movement, jumping, interaction, and the pause menu are handled by GameScene.
      */
     update(_time: number, delta: number) {
         this.world.update(delta);
 
-        if (this.controls.left) this.player.moveLeft();
-        else if (this.controls.right) this.player.moveRight();
-        else this.player.stopPlayer();
-
-        if (this.controls.jump) this.player.jump();
-
-        if (this.controls.interact) {
-            this.player.toggleInteractable();
-        }
-
-        if (this.controls.escape) {
-            this.scene.pause();
-            this.scene.launch('MenuScene');
-            this.scene.bringToTop('MenuScene');
-        }
+        super.update(_time, delta);
     }
 
     /**
