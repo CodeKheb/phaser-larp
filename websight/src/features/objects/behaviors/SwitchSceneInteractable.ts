@@ -18,7 +18,7 @@ export class SwitchSceneInteractable extends Interactable {
     /**
      * @param scene the game scene
      * @param player the player object
-     * @param options configuration for this scene-switching object
+     * @param options configuration for this scene-switching object (must include targetScene)
      */
     constructor(
         scene: Phaser.Scene,
@@ -27,7 +27,7 @@ export class SwitchSceneInteractable extends Interactable {
     ) {
         super(scene, player, {
             ...options,
-            innerGlowIntensity: 1, // subtle glow so the exit is noticeable
+            innerGlowIntensity: 1, // glow effect so the exit is noticeable
         });
         this.targetScene = options.targetScene;
         this.setDepth(Depth.BEHIND_PLAYER);

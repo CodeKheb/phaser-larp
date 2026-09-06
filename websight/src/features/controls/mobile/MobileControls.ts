@@ -11,7 +11,7 @@ export class MobileControls {
         this.input = input;
 
         /*
-            Binds the buttons to the input objects in MobileInput.
+         * Binds the HTML buttons to the corresponding MobileInput flags.
          */
         this.bindButton('left');
         this.bindButton('right');
@@ -34,19 +34,19 @@ export class MobileControls {
         // If the button is not found, return early
         if (!button) return;
 
-        // Prevents default browser behaviors and assigns input as true if the button is pressed
+        // Prevents default browser behaviors and sets input to true when the button is pressed
         button.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             this.input[key] = true;
         });
 
-        // Shared method to assign input as false when the button is released
+        // Shared method to set input to false when the button is released
         const release = () => {
             this.input[key] = false;
         };
 
         /*
-            Event listeners for cases where the button is released.
+         * Event listeners for pointer release (up, leave, or cancel).
          */
         button.addEventListener('pointerup', release);
         button.addEventListener('pointerleave', release);

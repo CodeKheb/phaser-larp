@@ -9,7 +9,7 @@ import { SceneKeys } from '../config/SceneKeys';
  * Handles the parts that every gameplay scene shares:
  * - creating the player and input manager
  * - movement, jumping, and interaction controls
- * - pausing the game and opening the menu with Escape
+ * - pausing the scene and launching the menu overlay with Escape
  *
  * Subclasses only need to build their own world in create() and can hook
  * per-frame logic through {@link updateScene}.
@@ -30,9 +30,10 @@ export abstract class GameScene extends Phaser.Scene {
     }
 
     /**
-     * Runs every frame: first the subclass hook, then the shared player controls.
-     * Subclasses override {@link updateScene} for their own per-frame logic,
-     * or override update() entirely and call super.update(time, delta).
+     * Runs every frame: first the subclass hook, then player controls,
+     * then pause menu handling. Subclasses override {@link updateScene} for
+     * their own per-frame logic, or override update() entirely and call
+     * super.update(time, delta).
      */
     update(_time: number, delta: number): void {
         this.updateScene(delta);
@@ -46,7 +47,7 @@ export abstract class GameScene extends Phaser.Scene {
     protected updateScene(_delta: number): void {}
 
     /**
-     * Movement, jumping, and interaction, read from the shared InputManager.
+     * Handles player movement, jumping, and interact toggle based on InputManager state.
      */
     private handlePlayerControls(): void {
         if (this.controls.left) this.player.moveLeft();
@@ -61,8 +62,8 @@ export abstract class GameScene extends Phaser.Scene {
     }
 
     /**
-     * Opens the menu by pausing this scene and launching the MenuScene on top.
-     * MenuScene is responsible for resuming whichever scene paused it.
+     * Opens the menu by pausing this scene and launching MenuScene on top.
+     * MenuScene handles resuming whichever scene paused it.
      */
     private handlePauseMenu(): void {
         if (!this.controls.escape) return;

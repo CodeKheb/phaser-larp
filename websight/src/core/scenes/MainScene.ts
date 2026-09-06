@@ -14,7 +14,7 @@ import { SwitchSceneInteractable } from '../../features/objects/behaviors/Switch
  * Handles the core gameplay mechanics, including the player, world, and interaction systems.
  * It is initialized, loaded, and updated by the Phaser game framework.
  *
- * referenced by main.ts as the main scene
+ * Referenced by Main.ts as the main scene.
  */
 export class MainScene extends GameScene {
     private world!: World;
@@ -43,13 +43,14 @@ export class MainScene extends GameScene {
     }
 
     /**
-     * creates all game objects and sets up the gameplay environment such as
+     * Creates all game objects and sets up the gameplay environment:
      * <ul>
      *     <li>player</li>
-     *     <li>world</li>
-     *     <li>controls</li>
-     *     <li>physics</li>
-     *     <li>camera</li>
+     *     <li>world (ground, clouds, logo)</li>
+     *     <li>controls (keyboard and mobile)</li>
+     *     <li>physics colliders</li>
+     *     <li>camera (with mobile/desktop zoom settings)</li>
+     *     <li>interactable objects (staff, box, house, sign, collectibles)</li>
      * </ul>
      */
     create() {
@@ -113,17 +114,15 @@ export class MainScene extends GameScene {
         this.placeOnGround(this.box);
 
         const camera = this.cameras.main;
-        // isMobile boolean if in mobile view
+        // Detect if the device uses coarse pointer (touch/mobile)
         const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
-        // setZoom if mobile view, set MOBILE_ZOOM else set ZOOM_AMOUNT
-        camera.setZoom(
-            isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT,
-        );
+        // Apply different zoom levels for mobile vs desktop
+        camera.setZoom(isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT);
 
         camera.startFollow(this.player);
 
-        // if mobile view MOBILE_ZOOM_OFFSET
+        // Set additional Y offset for mobile camera follow
         if (isMobile) {
             camera.setFollowOffset(0, WorldConfig.MOBILE_ZOOM_OFFSET);
         }
@@ -140,9 +139,9 @@ export class MainScene extends GameScene {
     }
 
     /**
-     * @param sprite takes in the phaser sprite
+     * @param sprite The Phaser sprite to place on the ground.
      *
-     * this method automatically spawns the sprites on the ground
+     * Places the sprite so its bottom aligns with the ground surface.
      */
     private placeOnGround(sprite: Phaser.Physics.Arcade.Sprite) {
         Phaser.Display.Bounds.SetBottom(sprite, this.world.groundTopY);

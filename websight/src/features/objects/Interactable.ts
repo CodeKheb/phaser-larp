@@ -6,7 +6,7 @@ import Phaser from 'phaser';
  * Configuration for creating an interactable object.
  *
  * Using one named-options object instead of many positional arguments makes
- * call sites like `new HoldingInteractable(scene, player, { asset, x, y })`
+ * call sites like `new HoldingInteractable(scene, player, { asset, x, y, scale })`
  */
 export interface InteractableOptions {
     /** Texture key for the object's sprite. */
@@ -25,13 +25,14 @@ export interface InteractableOptions {
 
 /**
  * Abstract base class for all interactable objects in the game.
- * Handles common functionality: proximity detection, in-range outline, and registry management.
+ * Handles common functionality: proximity detection, in-range outline glow,
+ * optional inner glow, and registry management.
  *
  * Subclasses must implement {@link onInteract} to define their specific interaction behavior.
  *
  * Coupling rule: interactables may READ the player's position, but must never
  * call Player movement methods. Interaction dispatch flows the other way
- * (Player -> InteractionController -> Interactable.onInteract). Keeping this
+ * (Player -> InteractionController -> Interactable subclasses' onInteract). Keeping this
  * one-directional avoids turning the existing Player/Interactable reference
  * into a true circular dependency.
  */
@@ -175,7 +176,7 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
 
     /**
      * Called when the player moves inside of interaction range.
-     * Subclasses can override to perform cleanup (e.g. start glow).
+     * Subclasses can override to perform setup (e.g. start glow animation).
      */
     onInRange(): void {
         // Default: no-op

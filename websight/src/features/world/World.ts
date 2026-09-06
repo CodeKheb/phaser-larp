@@ -11,13 +11,13 @@ export class World {
     /** Static physics group holding the ground and any platforms. */
     readonly platforms: Phaser.Physics.Arcade.StaticGroup;
 
-    /** The main ground platform. Scenes can use {@link groundTopY} to place objects on it. */
+    /** The main ground platform. Scenes can use the {@link groundTopY} getter to place objects on it. */
     readonly ground: Phaser.Physics.Arcade.Sprite;
 
     private readonly clouds: Phaser.GameObjects.Image[] = [];
 
     /**
-     * creates the game world. Runs automatically when the game starts.
+     * Creates the game world. Runs automatically when the game starts.
      * @param scene the game scene
      */
     constructor(scene: Phaser.Scene) {

@@ -11,9 +11,9 @@ import Phaser from 'phaser';
 export interface DialogueInteractableOptions extends InteractableOptions {
     /** The text to show in the dialogue. */
     message: string;
-    /** Spawn X position. */
+    /** X position for the dialogue object. */
     x: number;
-    /** Spawn Y position. */
+    /** Y position for the dialogue object. */
     y: number;
 }
 
@@ -30,7 +30,7 @@ export class DialogueInteractable extends Interactable {
     /**
      * @param scene the game scene
      * @param player the player object
-     * @param options configuration for this dialogue object
+     * @param options configuration for this dialogue object (includes message, x, y)
      */
     constructor(
         scene: Phaser.Scene,
@@ -63,7 +63,7 @@ export class DialogueInteractable extends Interactable {
     }
 
     /**
-     * Renders a speech-bubble style dialogue above the object.
+     * Renders a speech-bubble style dialogue, positioned relative to the camera.
      */
     private showDialogue(): void {
         if (this.isOpen) return;
@@ -93,7 +93,8 @@ export class DialogueInteractable extends Interactable {
 
     /**
      * Positions the dialogue bubble relative to the camera so it stays
-     * on-screen regardless of world position.
+     * on-screen regardless of world position. The camera scroll params are
+     * accepted for interface compatibility but not used internally.
      */
     private positionDialogue(_camX: number, _camY: number): void {
         if (!this.dialogueText || !this.dialogueBg) return;
@@ -130,7 +131,7 @@ export class DialogueInteractable extends Interactable {
         this.dialogueBg.lineStyle(2, 0x333333, 1);
         this.dialogueBg.strokeRoundedRect(bx, by, bw, bh, radius);
 
-        // Small pointer triangle pointing down at the object
+        // Small pointer triangle pointing downward from the bubble to the object
         const tipX = this.x;
         const tipY = by + bh;
         this.dialogueBg.fillStyle(0xffffff, 0.92);
