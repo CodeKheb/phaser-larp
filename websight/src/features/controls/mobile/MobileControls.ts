@@ -13,24 +13,23 @@ export class MobileControls {
         /*
             Binds the buttons to the input objects in MobileInput.
          */
-        this.bind('left', 'left');
-        this.bind('right', 'right');
-        this.bind('jump', 'jump');
-        this.bind('interact', 'interact');
-        this.bind('settings', 'settings');
+        this.bindButton('left');
+        this.bindButton('right');
+        this.bindButton('jump');
+        this.bindButton('interact');
+        this.bindButton('settings');
     }
 
     /**
-     * binds a button to a key in the input object.
-     * @param id the id of the button (e.g., "left", "right")
-     * @param key the key in the input object to bind to
+     * Binds an input flag to the HTML button with the same id.
+     * Pressing the button sets the flag to true; releasing sets it to false.
+     * @param key the MobileInput flag (and button id) to bind, e.g. "left"
      */
-    private bind(
-        id: 'left' | 'right' | 'jump' | 'interact' | 'settings',
-        key: keyof MobileInput,
-    ) {
-        // Declares a button element with the given id in the parameter
-        const button = document.getElementById(id);
+    private bindButton(key: keyof MobileInput) {
+
+        // Each MobileInput flag has a matching button id in index.html
+        // (e.g. "left" flag -> <button id="left">).
+        const button = document.getElementById(key);
 
         // If the button is not found, return early
         if (!button) return;
