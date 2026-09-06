@@ -40,20 +40,3 @@ websight/
 | A new tuning value (speeds, sizes, colors) | Put it in the matching file in `core/config/` — never hardcode numbers in gameplay code. |
 | A new mobile button | Add a flag in `features/controls/mobile/MobileInput.ts`, a `<button>` with the same id in `index.html`, and a `bindButton(...)` call in `MobileControls.ts`. |
 | A new playable level/area | Create a scene extending `GameScene`; `setupPlayer()` gives you movement, jump, interact, and the Esc menu for free. |
-
-## Rules that keep the code beginner-friendly
-
-1. **One options object per constructor.** Interactables take a single
-   `InteractableOptions` object (`{ asset, x, y, scale, ... }`) instead of a list
-   of bare numbers, so call sites read like data.
-2. **Scene keys live in `SceneKeys.ts`.** Never pass a bare `'MainScene'` string.
-3. **The interaction flow is one-directional:**
-   `Player -> InteractionController -> Interactable.onInteract()`.
-   Interactables may *read* the player's position but must never call player
-   movement. This is documented on both `Player` and `Interactable` — keep it
-   that way to avoid a circular dependency.
-4. **Ground access goes through `World`.** Use `world.ground` / `world.groundTopY`
-   instead of digging into the `platforms` group's children.
-5. **No side-effecting getters.** One-shot inputs (like `interact`) should be
-   consumed via a method call so it's obvious each read changes state.
-   (Note: `InputManager.interact` still needs this refactor — see FIXES.md D6.)
