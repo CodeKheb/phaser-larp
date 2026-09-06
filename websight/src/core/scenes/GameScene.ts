@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 import { Player } from '../../features/player/Player';
 import { InputManager } from '../../features/controls/InputManager';
+import { SceneKeys } from '../config/SceneKeys';
 
 /**
  * Base class for scenes where the player is controlled directly (gameplay scenes).
@@ -67,7 +68,7 @@ export abstract class GameScene extends Phaser.Scene {
         if (!this.controls.escape) return;
 
         this.scene.pause();
-        this.scene.launch('MenuScene');
-        this.scene.bringToTop('MenuScene');
+        this.scene.launch(SceneKeys.Menu);
+        this.scene.bringToTop(SceneKeys.Menu);
     }
 }

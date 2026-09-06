@@ -13,7 +13,7 @@ export class MenuScene extends Phaser.Scene {
     private controls!: InputManager;
 
     constructor() {
-        super('MenuScene');
+        super(SceneKeys.Menu);
     }
 
     /**

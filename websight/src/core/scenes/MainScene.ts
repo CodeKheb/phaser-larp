@@ -5,6 +5,7 @@ import { GameScene } from './GameScene';
 import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable';
 import { DialogueInteractable } from '../../features/objects/behaviors/DialogueInteractable';
 import { WorldConfig } from '../config/GameConfig';
+import { SceneKeys } from '../config/SceneKeys';
 import { CollectibleInteractable } from '../../features/objects/behaviors/CollectibleInteractable';
 import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable';
 
@@ -23,7 +24,7 @@ export class MainScene extends GameScene {
     private house!: SwitchSceneInteractable;
 
     constructor() {
-        super('MainScene');
+        super(SceneKeys.Main);
     }
 
     /**
@@ -72,7 +73,7 @@ export class MainScene extends GameScene {
         });
 
         this.house = new SwitchSceneInteractable(this, this.player, {
-            targetScene: 'HouseScene',
+            targetScene: SceneKeys.House,
             asset: Assets.HOUSE,
             x: 5000,
             y: 1000,
