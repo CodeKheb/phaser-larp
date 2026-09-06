@@ -26,7 +26,6 @@ export class MobileControls {
      * @param key the MobileInput flag (and button id) to bind, e.g. "left"
      */
     private bindButton(key: keyof MobileInput) {
-
         // Each MobileInput flag has a matching button id in index.html
         // (e.g. "left" flag -> <button id="left">).
         const button = document.getElementById(key);

@@ -6,7 +6,6 @@ import { MenuScene } from './core/scenes/MenuScene';
 import { HouseScene } from './core/scenes/HouseScene';
 import { GRAVITY } from './core/config/GameConfig';
 
-
 /**
  * Main bootstrap file for the game configuration.
  * Entry point loaded by index.html.
