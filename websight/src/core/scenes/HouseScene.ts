@@ -1,9 +1,10 @@
 import { AssetPaths, Assets } from '../../shared/Assets';
+import { SceneKeys } from '../config/SceneKeys';
 import { GameScene } from './GameScene';
 
 export class HouseScene extends GameScene {
     constructor() {
-        super('HouseScene');
+        super(SceneKeys.House);
     }
 
     preload(): void {
