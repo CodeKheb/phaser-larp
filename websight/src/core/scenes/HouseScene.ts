@@ -72,7 +72,7 @@ export class HouseScene extends GameScene {
             y: 2000,
             innerGlowIntensity: 5,
             interactionRadius: 250,
-        })
+        });
 
         // Player collides with ground and box
         this.physics.add.collider(this.player, platforms);
