@@ -8,10 +8,10 @@ import Phaser from 'phaser';
  * Main player class.
  * Handles player movement, interaction, and physics.
  *
- * extends Phaser API's Phaser.Physics.Arcade.Sprite.
+ * Extends Phaser API's Phaser.Physics.Arcade.Sprite.
  *
  * Coupling note: Player owns interaction dispatch. The flow is one-directional:
- * Player -> InteractionController -> Interactable.onInteract(). Interactables
+ * Player -> InteractionController -> Interactable subclasses' onInteract(). Interactables
  * may READ the player's position, but must never call Player movement methods.
  * Keep it that way to avoid a true circular dependency.
  */
@@ -19,7 +19,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     private readonly interaction: InteractionController;
 
     /**
-     * creates a new player at the center of the screen.
+     * Creates a new player at the default spawn position.
      * @param scene the game scene you wish to add the player to.
      */
     constructor(scene: Phaser.Scene, x?: number, y?: number) {
@@ -55,7 +55,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     /*
-     *  Character Position and movements
+     *  Character position and movement methods
      */
 
     currentPosition(): { x: number; y: number } {

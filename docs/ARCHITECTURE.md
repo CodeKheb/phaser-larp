@@ -26,7 +26,7 @@ websight/
 │   │   ├── player/              # The Player sprite and its movement
 │   │   └── world/               # World layout: ground, clouds, logo, camera bounds
 │   └── shared/
-│       └── Assets.ts            # Asset keys + file paths (single source of truth)
+│       └── Assets.ts            # Asset keys and file paths (both Assets and AssetPaths)
 └── public/                      # Static files served as-is (images live in subfolders here)
 ```
 
@@ -34,9 +34,9 @@ websight/
 
 | I want to add... | Do this |
 |---|---|
-| A new interactable type (NPC, door, chest...) | Create `features/objects/behaviors/MyThingInteractable.ts` extending `Interactable`. Implement `onInteract()`. Add its texture to `Assets.ts` and load it in the scene's `preload()`. |
-| A new scene | Create `core/scenes/MyScene.ts` (extend `GameScene` if the player walks around in it). Add a key to `core/config/SceneKeys.ts` and register the class in `Main.ts`. |
-| A new asset (image) | Drop the file in `public/` (use the matching subfolder), add a key + path in `shared/Assets.ts`, and load it in the scene that uses it. |
+| A new interactable type (NPC, door, chest...) | Create `features/objects/behaviors/MyThingInteractable.ts` extending `Interactable`. Implement `onInteract()`. Add its key to `Assets.ts` and its path to `AssetPaths.ts`, then load it in the scene's `preload()`. |
+| A new scene | Create `core/scenes/MyScene.ts` (extend `GameScene` if the player walks around in it). Add a key to `core/config/SceneKeys.ts` and register the scene class in `Main.ts`. |
+| A new asset (image) | Drop the file in `public/` (use the matching subfolder like `player/`, `objects/`, `world/`, or `scenes/`), add a key in `Assets.ts` and a path in `AssetPaths.ts`, then load it in the scene that uses it. |
 | A new tuning value (speeds, sizes, colors) | Put it in the matching file in `core/config/` — never hardcode numbers in gameplay code. |
-| A new mobile button | Add a flag in `features/controls/mobile/MobileInput.ts`, a `<button>` with the same id in `index.html`, and a `bindButton(...)` call in `MobileControls.ts`. |
+| A new mobile button | Add a flag (e.g. `myButton = false`) in `MobileInput.ts`, add a `<button id="myButton">` in `index.html`, and add a `this.bindButton('myButton')` call in `MobileControls.ts`. The flag name must match the button id exactly. |
 | A new playable level/area | Create a scene extending `GameScene`; `setupPlayer()` gives you movement, jump, interact, and the Esc menu for free. |

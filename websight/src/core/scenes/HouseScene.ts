@@ -20,13 +20,14 @@ export class HouseScene extends GameScene {
         );
         house.setScale(1.8);
 
+        // Add padding around the house image for world bounds
         const constraintWidth = house.displayWidth - 500;
         const constraintHeight = house.displayHeight - 500;
 
         this.physics.world.setBounds(0, 0, constraintWidth, constraintHeight);
         this.cameras.main.setBounds(0, 0, constraintWidth, constraintHeight);
 
-        // Player and controls come from GameScene
+        // Set up player and controls (inherited from GameScene)
         this.setupPlayer(constraintWidth / 2, constraintHeight / 2);
 
         this.cameras.main.startFollow(this.player);

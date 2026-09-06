@@ -14,7 +14,7 @@ export class HoldingInteractable extends Interactable {
      * @param scene the game scene
      * @param player the player object
      * @param options configuration for this holdable object
-     *        (x and y default to just right of the player)
+     *        (x defaults to 50px right of the player, y defaults to player's y)
      */
     constructor(
         scene: Phaser.Scene,
@@ -38,13 +38,13 @@ export class HoldingInteractable extends Interactable {
     }
 
     /**
-     * Toggles the held state on/off.
+     * Toggles the held state.
      */
     toggleHeld(): void {
         this.held = !this.held;
     }
 
-    /** Whether the object is currently held by the player. */
+    /** Whether the object is held and can be interacted with. */
     get isHeld(): boolean {
         return this.canInteract && this.held;
     }
@@ -55,7 +55,7 @@ export class HoldingInteractable extends Interactable {
     }
 
     /**
-     * While held, the object matches the player's velocity so it stays alongside them.
+     * While held, the object matches the player's velocity and flip state so it moves alongside them.
      */
     private followPlayerIfHeld(): void {
         if (!this.isHeld) {

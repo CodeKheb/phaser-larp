@@ -5,11 +5,11 @@ import { Depth, WorldConfig } from '../../../core/config/GameConfig';
 
 /**
  * An interactable that displays a collectible.
- * When the player is near, the collectible glow, when the player interacts with it, it spawns a new one.
+ * When the player is near, the collectible glows; when the player interacts with it, it spawns a new one.
  */
 export class CollectibleInteractable extends Interactable {
-    private glowSprite!: Phaser.GameObjects.Sprite; // Sprite for the collectible glow
-    private glowTween!: Phaser.Tweens.Tween; // The animation (tween means in-between)
+    private glowSprite!: Phaser.GameObjects.Sprite; // Sprite for the collectible glow effect
+    private glowTween!: Phaser.Tweens.Tween; // Tween animation (in-between frames)
 
     private readonly collectibleTexture: string;
     private readonly collectibleScale: number;
@@ -38,15 +38,15 @@ export class CollectibleInteractable extends Interactable {
     }
 
     /**
-     * This method is called in MainScene and adds the collectible in a random position
-     * Once a collectible is destroyed, it spawns a new one
+     * Spawns a collectible at a random position in the world.
+     * Once destroyed, automatically spawns a new one after a delay.
      *
-     * @param Phaser.scene
+     * @param scene the game scene
      * @param player the player object
-     * @param platforms the collidable Physics component
-     * @param texture the Sprite Asset
-     * @param spawnRate delay for spawn after destroy
-     * @param scale for scale of asset
+     * @param platforms the collidable physics group or sprite
+     * @param texture the sprite asset key
+     * @param spawnRate delay in ms before spawning a new collectible after destroy
+     * @param scale for the collectible sprite scale
      */
     static spawn(
         scene: Phaser.Scene,
@@ -120,10 +120,10 @@ export class CollectibleInteractable extends Interactable {
             ease: Phaser.Math.Easing.Sine.InOut,
         });
 
-        // pause the tween
+        // Pause the tween initially
         this.glowTween.pause();
 
-        // bind listener to updateListener for removal later
+        // Bind update listener for position synchronization (removed on destroy)
         const updateListener = () => {
             if (this.active && this.glowSprite && this.glowSprite.active) {
                 this.glowSprite.setPosition(this.x, this.y);
@@ -132,7 +132,7 @@ export class CollectibleInteractable extends Interactable {
 
         this.scene.events.on(Phaser.Scenes.Events.UPDATE, updateListener);
 
-        // Clean up the glowSprite and glowTween on DESTROY
+        // Clean up glowSprite and glowTween when the collectible is destroyed
         this.on(Phaser.GameObjects.Events.DESTROY, () => {
             this.scene.events.off(Phaser.Scenes.Events.UPDATE, updateListener);
             if (this.glowTween) this.glowTween.remove();
@@ -141,7 +141,7 @@ export class CollectibleInteractable extends Interactable {
     }
 
     /**
-     * if player is in range, set glow to true
+     * Called when the player enters interaction range. Shows the glow effect.
      */
     onInRange(): void {
         if (this.glowSprite && this.glowSprite.active && this.glowTween) {
@@ -151,7 +151,7 @@ export class CollectibleInteractable extends Interactable {
     }
 
     /**
-     * if player is not in range, set glow to false
+     * Called when the player leaves interaction range. Hides the glow effect.
      */
     onOutOfRange(): void {
         if (this.glowSprite && this.glowSprite.active && this.glowTween) {
@@ -160,7 +160,7 @@ export class CollectibleInteractable extends Interactable {
         }
     }
 
-    // destroy collectible after player interacts with it
+    // Destroy the collectible after the player interacts with it
     onInteract(): void {
         this.destroy();
     }
