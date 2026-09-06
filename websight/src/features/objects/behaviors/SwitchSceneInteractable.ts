@@ -35,6 +35,6 @@ export class SwitchSceneInteractable extends Interactable {
     }
 
     onInteract(): void {
-        this.scene.scene.switch(this.targetScene);
+        this.scene.scene.start(this.targetScene);
     }
 }
