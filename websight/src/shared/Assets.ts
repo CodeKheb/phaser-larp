@@ -12,6 +12,7 @@ export const Assets = {
     CUBE: 'cube',
     BOX: 'box',
     HOUSE: 'house',
+    DOOR: 'door',
     HOUSE_SCENE: 'house_scene',
 } as const;
 
@@ -28,5 +29,6 @@ export const AssetPaths = {
     CUBE: 'objects/cube.png',
     BOX: 'objects/wooden_box.png',
     HOUSE: 'world/house.png',
+    DOOR: 'objects/door.png',
     HOUSE_SCENE: 'scenes/house_scene.png',
 } as const;
