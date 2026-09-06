@@ -7,7 +7,6 @@ import { Depth, WorldConfig } from '../../core/config/GameConfig';
  * Contains the game's static environment, such as platforms, clouds, and the player's starting position.
  */
 export class World {
-
     /** Static physics group holding the ground and any platforms. */
     readonly platforms: Phaser.Physics.Arcade.StaticGroup;
 

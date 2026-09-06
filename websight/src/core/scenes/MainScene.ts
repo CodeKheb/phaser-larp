@@ -118,7 +118,9 @@ export class MainScene extends GameScene {
         const isMobile = window.matchMedia('(pointer: coarse)').matches;
 
         // Apply different zoom levels for mobile vs desktop
-        camera.setZoom(isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT);
+        camera.setZoom(
+            isMobile ? WorldConfig.MOBILE_ZOOM : WorldConfig.ZOOM_AMOUNT,
+        );
 
         camera.startFollow(this.player);
 
