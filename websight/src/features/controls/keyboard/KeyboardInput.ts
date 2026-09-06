@@ -8,7 +8,7 @@ export class KeyboardInput {
     private escapeKey: Phaser.Input.Keyboard.Key;
 
     /**
-     * assigns movement keys to the keyboard.
+     * Assigns movement keys to the keyboard.
      * @param scene the game scene
      */
     constructor(scene: Phaser.Scene) {
@@ -46,7 +46,7 @@ export class KeyboardInput {
     }
 
     get escape() {
-        return this.escapeKey.isDown;
+        return Phaser.Input.Keyboard.JustDown(this.escapeKey);
     }
 
     get interact() {

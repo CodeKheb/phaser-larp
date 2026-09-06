@@ -1,22 +1,23 @@
 import Phaser from 'phaser';
 import { InputManager } from '../../features/controls/InputManager';
+import { SceneKeys } from '../config/SceneKeys';
 
 /**
- * Represents the menu mage scene.
- * Handles the buttons and routes to Scene
- * It is initialized, loaded first by the Phaser game
+ * Represents the menu scene.
+ * Handles the play button and routes to the game scene.
+ * It is initialized and loaded first by the Phaser game.
  *
- * referenved by main.ts as the first scene
+ * Referenced by Main.ts as the first scene.
  */
 export class MenuScene extends Phaser.Scene {
     private controls!: InputManager;
 
     constructor() {
-        super('MenuScene');
+        super(SceneKeys.Menu);
     }
 
     /**
-     * creates the text and buttons
+     * Creates the title text and play button.
      */
     create(): void {
         this.controls = new InputManager(this);
@@ -36,34 +37,43 @@ export class MenuScene extends Phaser.Scene {
             .setShadow(0, 4, '#00000066', 6, false, true);
 
         this.createButton(CENTER_X, CENTER_Y, 'PLAY', () => {
-            if (this.scene.isPaused('MainScene')) {
-                this.scene.resume('MainScene');
+            if (this.scene.isPaused(SceneKeys.House)) {
+                this.scene.resume(SceneKeys.House);
+                this.scene.stop();
+            } else if (this.scene.isPaused(SceneKeys.Main)) {
+                this.scene.resume(SceneKeys.Main);
                 this.scene.stop();
             } else {
-                this.scene.start('MainScene');
+                this.scene.start(SceneKeys.Main);
             }
         });
 
-        // Hide mobile controls on Menu
+        // Add class to hide mobile controls while menu is active
         document.body.classList.add('menu-active');
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
             document.body.classList.remove('menu-active');
         });
     }
 
-    // If escape is pressed again, resume MainScene
+    // If escape is pressed, resume the paused scene (House or Main).
     update(): void {
-        if (this.controls.escape && this.scene.isPaused('MainScene')) {
+        const escapePressed = this.controls.escape;
+
+        if (escapePressed && this.scene.isPaused(SceneKeys.House)) {
             this.scene.stop();
-            this.scene.resume('MainScene');
+            this.scene.resume(SceneKeys.House);
+        }
+        if (escapePressed && this.scene.isPaused(SceneKeys.Main)) {
+            this.scene.stop();
+            this.scene.resume(SceneKeys.Main);
         }
     }
 
     /**
-     * @param x as x coordinate
-     * @param y as y coordinate
-     * @param label as text content
-     * @param onClick as the click handler
+     * @param x The x coordinate for the button center.
+     * @param y The y coordinate for the button center.
+     * @param label The button label text.
+     * @param onClick The handler to call when the button is released.
      */
     private createButton(
         x: number,

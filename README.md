@@ -46,7 +46,8 @@ A 2D side-scrolling platformer. The player explores a wide world filled with int
 - Arcade physics: gravity, jumping, and platform collision
 - Pick-up-and-hold interaction with objects
 - Keyboard and touch/mobile controls
-- Config-driven tuning (`WorldConfig`, `Attributes`, `InteractableConfig`)
+- Config-driven tuning (`WorldConfig`, `Attributes`, `InteractableConfig`, `SceneKeys`)
+- Menu, pause, and a second explorable scene (the house)
 
 ## Getting Started
 
@@ -70,5 +71,6 @@ All contributor communication happens on **Discord** or **Facebook Messenger** �
 
 ## Documentation
 
+- [Architecture guide](docs/ARCHITECTURE.md) — how the code is organized and "where do I add X?"
+- [How to Contribute](CONTRIBUTING.md) — setup from zero, rules, and useful commands
 - [Phaser: Making your first Phaser 3 game](https://phaser.io/tutorials/making-your-first-phaser-3-game)
-- [How to Contribute](CONTRIBUTING.md)

@@ -1,8 +1,7 @@
-/* manages:
- * 1. key/property name: unique identifier for the assets (e.g., Assets.CHARACTER)
- * 2. path: path to the asset (e.g., AssetPaths.CHARACTER)
+/**
+ * Asset key constants for use with Phaser's texture loader and sprite creation.
+ * Each key maps to a texture name used in the game.
  */
-
 export const Assets = {
     CHARACTER: 'character',
     PLATFORM: 'ground',
@@ -16,6 +15,9 @@ export const Assets = {
     HOUSE_SCENE: 'house_scene',
 } as const;
 
+/**
+ * File paths for each asset. Maps asset keys to their source image files.
+ */
 export const AssetPaths = {
     CHARACTER: 'player/player.png',
     PLATFORM: 'world/platform.png',

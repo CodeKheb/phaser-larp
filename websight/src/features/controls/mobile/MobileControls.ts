@@ -11,43 +11,41 @@ export class MobileControls {
         this.input = input;
 
         /*
-            Binds the buttons to the input objects in MobileInput.
+         * Binds the HTML buttons to the corresponding MobileInput flags.
          */
-        this.bind('left', 'left');
-        this.bind('right', 'right');
-        this.bind('jump', 'jump');
-        this.bind('interact', 'interact');
-        this.bind('settings', 'settings');
+        this.bindButton('left');
+        this.bindButton('right');
+        this.bindButton('jump');
+        this.bindButton('interact');
+        this.bindButton('settings');
     }
 
     /**
-     * binds a button to a key in the input object.
-     * @param id the id of the button (e.g., "left", "right")
-     * @param key the key in the input object to bind to
+     * Binds an input flag to the HTML button with the same id.
+     * Pressing the button sets the flag to true; releasing sets it to false.
+     * @param key the MobileInput flag (and button id) to bind, e.g. "left"
      */
-    private bind(
-        id: 'left' | 'right' | 'jump' | 'interact' | 'settings',
-        key: keyof MobileInput,
-    ) {
-        // Declares a button element with the given id in the parameter
-        const button = document.getElementById(id);
+    private bindButton(key: keyof MobileInput) {
+        // Each MobileInput flag has a matching button id in index.html
+        // (e.g. "left" flag -> <button id="left">).
+        const button = document.getElementById(key);
 
         // If the button is not found, return early
         if (!button) return;
 
-        // Prevents default browser behaviors and assigns input as true if the button is pressed
+        // Prevents default browser behaviors and sets input to true when the button is pressed
         button.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             this.input[key] = true;
         });
 
-        // Shared method to assign input as false when the button is released
+        // Shared method to set input to false when the button is released
         const release = () => {
             this.input[key] = false;
         };
 
         /*
-            Event listeners for cases where the button is released.
+         * Event listeners for pointer release (up, leave, or cancel).
          */
         button.addEventListener('pointerup', release);
         button.addEventListener('pointerleave', release);

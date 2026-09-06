@@ -7,11 +7,16 @@ import { Depth, WorldConfig } from '../../core/config/GameConfig';
  * Contains the game's static environment, such as platforms, clouds, and the player's starting position.
  */
 export class World {
-    readonly platforms;
+    /** Static physics group holding the ground and any platforms. */
+    readonly platforms: Phaser.Physics.Arcade.StaticGroup;
+
+    /** The main ground platform. Scenes can use the {@link groundTopY} getter to place objects on it. */
+    readonly ground: Phaser.Physics.Arcade.Sprite;
+
     private readonly clouds: Phaser.GameObjects.Image[] = [];
 
     /**
-     * creates the game world. Runs automatically when the game starts.
+     * Creates the game world. Runs automatically when the game starts.
      * @param scene the game scene
      */
     constructor(scene: Phaser.Scene) {
@@ -19,7 +24,7 @@ export class World {
         this.platforms = scene.physics.add.staticGroup();
 
         // Creates the ground platform according to WorldConfig.
-        this.platforms
+        this.ground = this.platforms
             .create(
                 WorldConfig.WORLD_WIDTH / 2,
                 WorldConfig.GROUND_Y,
@@ -46,19 +51,20 @@ export class World {
             WorldConfig.WORLD_HEIGHT * 1.25,
         );
 
-        /*
-           sets up the number of clouds to be generated in the scene.
-           */
-        for (let i = 0; i < 20; i++) {
-            let RandomSpawnX = Phaser.Math.Between(0, WorldConfig.WORLD_WIDTH);
-            let RandomSpawnY = Phaser.Math.Between(
+        // Create decorative clouds scattered across the upper half of the world.
+        for (let i = 0; i < WorldConfig.CLOUD_AMOUNT; i++) {
+            const randomSpawnX = Phaser.Math.Between(
+                0,
+                WorldConfig.WORLD_WIDTH,
+            );
+            const randomSpawnY = Phaser.Math.Between(
                 0,
                 WorldConfig.WORLD_HEIGHT / 2,
             );
-            let RandomScale = Phaser.Math.Between(0, 2);
+            const randomScale = Phaser.Math.Between(0, 2);
             const cloud = scene.add
-                .image(RandomSpawnX, RandomSpawnY, Assets.CLOUD)
-                .setScale(RandomScale);
+                .image(randomSpawnX, randomSpawnY, Assets.CLOUD)
+                .setScale(randomScale);
 
             this.clouds.push(cloud);
         }
@@ -80,5 +86,14 @@ export class World {
                 cloud.x = -cloud.displayWidth / 2;
             }
         }
+    }
+
+    /**
+     * The Y coordinate of the ground's top surface.
+     * Handy for placing objects so they rest exactly on the ground.
+     */
+    get groundTopY(): number {
+        const body = this.ground.body as Phaser.Physics.Arcade.StaticBody;
+        return body.top;
     }
 }
