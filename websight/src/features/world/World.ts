@@ -8,6 +8,8 @@ import { Depth, WorldConfig } from '../../core/config/GameConfig';
  */
 export class World {
     readonly platforms;
+    /** The main ground platform. Scenes can use {@link groundTopY} to place objects on it. */
+    readonly ground: Phaser.Physics.Arcade.Sprite;
     private readonly clouds: Phaser.GameObjects.Image[] = [];
 
     /**
@@ -19,7 +21,7 @@ export class World {
         this.platforms = scene.physics.add.staticGroup();
 
         // Creates the ground platform according to WorldConfig.
-        this.platforms
+        this.ground = this.platforms
             .create(
                 WorldConfig.WORLD_WIDTH / 2,
                 WorldConfig.GROUND_Y,
@@ -75,5 +77,14 @@ export class World {
                 cloud.x = -cloud.displayWidth / 2;
             }
         }
+    }
+
+    /**
+     * The Y coordinate of the ground's top surface.
+     * Handy for placing objects so they rest exactly on the ground.
+     */
+    get groundTopY(): number {
+        const body = this.ground.body as Phaser.Physics.Arcade.StaticBody;
+        return body.top;
     }
 }

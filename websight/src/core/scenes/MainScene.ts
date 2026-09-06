@@ -144,12 +144,7 @@ export class MainScene extends GameScene {
      * this method automatically spawns the sprites on the ground
      */
     private placeOnGround(sprite: Phaser.Physics.Arcade.Sprite) {
-        const groundSprite =
-            this.world.platforms.getChildren()[0] as Phaser.Physics.Arcade.Sprite;
-
-        const groundBody = groundSprite.body as Phaser.Physics.Arcade.Body;
-
-        Phaser.Display.Bounds.SetBottom(sprite, groundBody.top);
+        Phaser.Display.Bounds.SetBottom(sprite, this.world.groundTopY);
 
         const body = sprite.body as Phaser.Physics.Arcade.Body;
         body.updateFromGameObject();
