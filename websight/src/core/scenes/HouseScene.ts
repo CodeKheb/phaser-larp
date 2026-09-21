@@ -1,4 +1,5 @@
-import { AssetPaths, Assets } from '../../shared/Assets';
+import Phaser from 'phaser';
+import { Assets } from '../../shared/Assets';
 import { SceneKeys } from '../config/SceneKeys';
 import { GameScene } from './GameScene';
 import { CameraManager } from '../camera/CameraManager';
@@ -8,18 +9,8 @@ import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInt
 import { SwitchSceneInteractable } from '../../features/objects/behaviors/SwitchSceneInteractable';
 
 export class HouseScene extends GameScene {
-    private box!: HoldingInteractable;
-    private door!: SwitchSceneInteractable;
-
     constructor() {
         super(SceneKeys.House);
-    }
-
-    preload(): void {
-        this.load.image(Assets.HOUSE_SCENE, AssetPaths.HOUSE_SCENE);
-        this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
-        this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
-        this.load.image(Assets.BOX, AssetPaths.BOX);
     }
 
     create(): void {
@@ -56,8 +47,15 @@ export class HouseScene extends GameScene {
         // Set up player on the ground
         this.setupPlayer(WORLD_WIDTH / 2, groundY - 800);
 
+        // This scene builds its own platforms, so point the interact context at them.
+        this.interactContext = {
+            player: this.player,
+            platforms,
+            groundTopY: (ground.body as Phaser.Physics.Arcade.StaticBody).top,
+        };
+
         // Create a box to interact with
-        this.box = new HoldingInteractable(this, this.player, {
+        HoldingInteractable.spawn(this, {
             asset: Assets.BOX,
             x: 1000,
             y: 2000,
@@ -65,7 +63,8 @@ export class HouseScene extends GameScene {
             innerGlowIntensity: 2,
         });
 
-        this.door = new SwitchSceneInteractable(this, this.player, {
+        // Create the exit door back to the main scene
+        SwitchSceneInteractable.spawn(this, {
             targetScene: SceneKeys.Main,
             asset: Assets.DOOR,
             x: 1000,
@@ -75,10 +74,8 @@ export class HouseScene extends GameScene {
             scale: 0.5,
         });
 
-        // Player collides with ground and box
+        // Player collides with ground (object colliders are wired by spawn())
         this.physics.add.collider(this.player, platforms);
-        this.physics.add.collider(this.box, platforms);
-        this.physics.add.collider(this.door, platforms);
 
         camera.startFollow(this.player);
     }

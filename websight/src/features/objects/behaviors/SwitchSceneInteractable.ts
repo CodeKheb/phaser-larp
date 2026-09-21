@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 import { Depth } from '../../../core/config/GameConfig';
 import { Player } from '../../player/Player';
 import { Interactable, type InteractableOptions } from '../Interactable';
+import { SceneManager } from '../../../core/scenes/SceneManager';
+import type { SceneKey } from '../../../core/config/SceneKeys';
 
 /**
  * Configuration for creating a scene-switching interactable.
@@ -9,11 +11,11 @@ import { Interactable, type InteractableOptions } from '../Interactable';
  */
 export interface SwitchSceneInteractableOptions extends InteractableOptions {
     /** The key of the scene to switch to when interacted with. */
-    targetScene: string;
+    targetScene: SceneKey;
 }
 
 export class SwitchSceneInteractable extends Interactable {
-    private targetScene: string;
+    private targetScene: SceneKey;
 
     /**
      * @param scene the game scene
@@ -34,7 +36,27 @@ export class SwitchSceneInteractable extends Interactable {
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.onInteract());
     }
 
+    /**
+     * Spawns a scene-switching object wired to the scene's platforms and ground.
+     * @param scene the game scene
+     * @param options configuration for this scene-switching object (must include targetScene)
+     */
+    static spawn(
+        scene: Phaser.Scene,
+        options: SwitchSceneInteractableOptions,
+    ): SwitchSceneInteractable {
+        const context = Interactable.resolve(scene);
+
+        return Interactable.finalizeSpawn(
+            new SwitchSceneInteractable(scene, context.player, options),
+            scene,
+            options,
+        );
+    }
+
     onInteract(): void {
-        this.scene.scene.start(this.targetScene);
+        // SceneManager defers the switch out of this input tick and guards
+        // against concurrent transitions (raw scene.start is once-only).
+        SceneManager.go(this.scene, this.targetScene);
     }
 }

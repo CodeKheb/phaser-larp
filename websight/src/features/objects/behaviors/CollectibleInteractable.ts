@@ -4,10 +4,24 @@ import { Player } from '../../player/Player';
 import { Depth, WorldConfig } from '../../../core/config/GameConfig';
 
 /**
+ * Configuration for creating a collectible interactable.
+ * Extends {@link InteractableOptions} with the respawn delay.
+ */
+export interface CollectibleInteractableOptions extends InteractableOptions {
+    /** Delay in ms before a new collectible spawns after this one is collected (defaults to 250). */
+    respawnMs?: number;
+}
+
+/**
  * An interactable that displays a collectible.
  * When the player is near, the collectible glows; when the player interacts with it, it spawns a new one.
  */
 export class CollectibleInteractable extends Interactable {
+    private static readonly DEFAULT_RESPAWN_MS = 250;
+    private static readonly SPAWN_AREA_MIN_OFFSET = 5500;
+    private static readonly SPAWN_AREA_MAX_OFFSET = 3500;
+    private static readonly SPAWN_FALL_HEIGHT = 5000;
+
     private glowSprite!: Phaser.GameObjects.Sprite; // Sprite for the collectible glow effect
     private glowTween!: Phaser.Tweens.Tween; // Tween animation (in-between frames)
 
@@ -38,53 +52,51 @@ export class CollectibleInteractable extends Interactable {
     }
 
     /**
-     * Spawns a collectible at a random position in the world.
-     * Once destroyed, automatically spawns a new one after a delay.
+     * Spawns a collectible that drops from the sky and respawns after being collected.
+     * Collectibles do not place on the ground by default; they fall onto it.
      *
      * @param scene the game scene
-     * @param player the player object
-     * @param platforms the collidable physics group or sprite
-     * @param texture the sprite asset key
-     * @param spawnRate delay in ms before spawning a new collectible after destroy
-     * @param scale for the collectible sprite scale
+     * @param options configuration for this collectible
+     *        (x defaults to a random spot in the spawn area, y defaults to high above the ground)
      */
     static spawn(
         scene: Phaser.Scene,
-        player: Player,
-        platforms: Phaser.GameObjects.Group | Phaser.Physics.Arcade.Sprite,
-        texture: string,
-        spawnRate: number,
-        scale = 0.35,
+        options: CollectibleInteractableOptions,
     ): CollectibleInteractable {
-        const spawnAreaMinX = WorldConfig.WORLD_WIDTH - 5500;
-        const spawnAreaMaxX = WorldConfig.WORLD_WIDTH - 3500;
+        const context = Interactable.resolve(scene);
+        const respawnMs =
+            options.respawnMs ?? CollectibleInteractable.DEFAULT_RESPAWN_MS;
 
-        const x = Phaser.Math.Between(spawnAreaMinX, spawnAreaMaxX);
-        const y = WorldConfig.GROUND_Y - 5000;
+        const full: CollectibleInteractableOptions = {
+            ...options,
+            x:
+                options.x ??
+                Phaser.Math.Between(
+                    WorldConfig.WORLD_WIDTH -
+                        CollectibleInteractable.SPAWN_AREA_MIN_OFFSET,
+                    WorldConfig.WORLD_WIDTH -
+                        CollectibleInteractable.SPAWN_AREA_MAX_OFFSET,
+                ),
+            y:
+                options.y ??
+                WorldConfig.GROUND_Y -
+                    CollectibleInteractable.SPAWN_FALL_HEIGHT,
+            placeOnGround: options.placeOnGround ?? false,
+        };
 
-        const collectible = new CollectibleInteractable(scene, player, {
-            asset: texture,
-            x,
-            y,
-            scale,
-        });
-
-        scene.physics.add.collider(collectible, platforms);
+        const collectible = new CollectibleInteractable(
+            scene,
+            context.player,
+            full,
+        );
 
         collectible.once(Phaser.GameObjects.Events.DESTROY, () => {
-            scene.time.delayedCall(spawnRate, () => {
-                CollectibleInteractable.spawn(
-                    scene,
-                    player,
-                    platforms,
-                    texture,
-                    spawnRate,
-                    scale,
-                );
-            });
+            scene.time.delayedCall(respawnMs, () =>
+                CollectibleInteractable.spawn(scene, options),
+            );
         });
 
-        return collectible;
+        return Interactable.finalizeSpawn(collectible, scene, full);
     }
 
     /**
