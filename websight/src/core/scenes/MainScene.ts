@@ -1,5 +1,4 @@
-import Phaser from 'phaser';
-import { Assets, AssetPaths } from '../../shared/Assets';
+import { Assets } from '../../shared/Assets';
 import { World } from '../../features/world/World';
 import { GameScene } from './GameScene';
 import { HoldingInteractable } from '../../features/objects/behaviors/HoldingInteractable';
@@ -18,30 +17,8 @@ import { Interactable } from '../../features/objects/Interactable';
  * Referenced by Main.ts as the main scene.
  */
 export class MainScene extends GameScene {
-    private world!: World;
-    private sign!: DialogueInteractable;
-    private staff!: HoldingInteractable;
-    private box!: HoldingInteractable;
-    private house!: SwitchSceneInteractable;
-
     constructor() {
         super(SceneKeys.Main);
-    }
-
-    /**
-     * preloads all main assets for the game
-     */
-    preload() {
-        this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
-        this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
-        this.load.image(Assets.LOGO, AssetPaths.LOGO);
-        this.load.image(Assets.STAFF, AssetPaths.STAFF);
-        this.load.image(Assets.SIGN, AssetPaths.SIGN);
-        this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
-        this.load.image(Assets.CUBE, AssetPaths.CUBE);
-        this.load.image(Assets.BOX, AssetPaths.BOX);
-        this.load.image(Assets.HOUSE, AssetPaths.HOUSE);
-        this.load.image(Assets.DOOR, AssetPaths.DOOR);
     }
 
     /**
@@ -65,12 +42,10 @@ export class MainScene extends GameScene {
         this.setupPlayer();
 
         // creates the staff (holdable object)
-        this.staff = new HoldingInteractable(this, this.player, {
-            asset: Assets.STAFF,
-        });
+        HoldingInteractable.spawn(this, { asset: Assets.STAFF });
 
         // creates the box (holdable object)
-        this.box = new HoldingInteractable(this, this.player, {
+        HoldingInteractable.spawn(this, {
             asset: Assets.BOX,
             x: 4500,
             y: 1000,
@@ -78,7 +53,8 @@ export class MainScene extends GameScene {
             innerGlowIntensity: 2,
         });
 
-        this.house = new SwitchSceneInteractable(this, this.player, {
+        // creates the house (scene switcher)
+        SwitchSceneInteractable.spawn(this, {
             targetScene: SceneKeys.House,
             asset: Assets.HOUSE,
             x: 5000,
@@ -88,17 +64,14 @@ export class MainScene extends GameScene {
         });
 
         // spawns collectible objects
-        CollectibleInteractable.spawn(
-            this,
-            this.player,
-            this.world.platforms,
-            Assets.CUBE,
-            1000,
-            0.25,
-        );
+        CollectibleInteractable.spawn(this, {
+            asset: Assets.CUBE,
+            respawnMs: 1000,
+            scale: 0.25,
+        });
 
         // creates the sign (dialogue object)
-        this.sign = new DialogueInteractable(this, this.player, {
+        DialogueInteractable.spawn(this, {
             asset: Assets.SIGN,
             message:
                 'Welcome to the demo world developed by SSITE!\nExplore and interact with objects.',
@@ -107,18 +80,9 @@ export class MainScene extends GameScene {
             scale: 0.5,
         });
 
-        // physics colliders
+        // object colliders and ground placement are wired by spawn();
+        // only the player needs a collider here
         this.physics.add.collider(this.player, this.world.platforms);
-        this.physics.add.collider(this.staff, this.world.platforms);
-        this.physics.add.collider(this.sign, this.world.platforms);
-        this.physics.add.collider(this.box, this.world.platforms);
-        this.physics.add.collider(this.house, this.world.platforms);
-
-        // automatically place on ground
-        this.placeOnGround(this.sign);
-        this.placeOnGround(this.staff);
-        this.placeOnGround(this.house);
-        this.placeOnGround(this.box);
 
         new CameraManager(this.cameras.main, {
             mobileFollow: true,
@@ -133,17 +97,5 @@ export class MainScene extends GameScene {
         this.world.update(delta);
 
         super.update(_time, delta);
-    }
-
-    /**
-     * @param sprite The Phaser sprite to place on the ground.
-     *
-     * Places the sprite so its bottom aligns with the ground surface.
-     */
-    private placeOnGround(sprite: Phaser.Physics.Arcade.Sprite) {
-        Phaser.Display.Bounds.SetBottom(sprite, this.world.groundTopY);
-
-        const body = sprite.body as Phaser.Physics.Arcade.Body;
-        body.updateFromGameObject();
     }
 }
