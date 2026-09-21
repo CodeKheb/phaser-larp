@@ -79,7 +79,6 @@ export abstract class GameScene extends Phaser.Scene {
         this.load.image(Assets.DOOR, AssetPaths.DOOR);
     }
 
-
     /**
      * Hook for subclasses to update their own per-frame logic (e.g. the world).
      */
