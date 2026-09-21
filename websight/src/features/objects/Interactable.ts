@@ -1,5 +1,7 @@
 import { Player } from '../player/Player';
 import { InteractableConfig } from '../../core/config/InteractableConfig';
+import { ColliderHandler } from './ColliderHandler';
+import type { GameScene } from '../../core/scenes/GameScene';
 import Phaser from 'phaser';
 
 /**
@@ -21,6 +23,24 @@ export interface InteractableOptions {
     innerGlowIntensity?: number;
     /** How close the player must be to interact (defaults to InteractableConfig.RADIUS). */
     interactionRadius?: number;
+    /** Whether spawn() should add a collider with the scene's platforms (defaults to true). */
+    collide?: boolean;
+    /** Whether spawn() should bottom-align the object on the ground (defaults to true). */
+    placeOnGround?: boolean;
+}
+
+/**
+ * Scene-level context needed to build and wire interactables.
+ * Provided by `GameScene.interactContext` so spawn factories can resolve
+ * the player and platforms from the scene alone.
+ */
+export interface InteractContext {
+    /** The player this interactable interacts with. */
+    player: Player;
+    /** Physics group or sprite that spawned objects should collide with. */
+    platforms: Phaser.GameObjects.Group | Phaser.Physics.Arcade.Sprite;
+    /** Y coordinate of the ground's top surface, for ground placement. */
+    groundTopY: number;
 }
 
 /**
@@ -121,6 +141,36 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
      */
     static clearRegistry(): void {
         Interactable.registry.clear();
+    }
+
+    /**
+     * Resolves the interact context (player, platforms, ground position) from a scene.
+     * Gameplay scenes expose it via `interactContext`; see {@link GameScene}.
+     */
+    static resolve(scene: Phaser.Scene): InteractContext {
+        return (scene as GameScene).interactContext;
+    }
+
+    /**
+     * Shared wiring for the static spawn() factories on Interactable subclasses:
+     * adds the platforms collider and ground placement unless opted out in options.
+     * Keeps scenes free of physics and positioning boilerplate.
+     */
+    protected static finalizeSpawn<T extends Interactable>(
+        interactable: T,
+        scene: Phaser.Scene,
+        options: InteractableOptions,
+    ): T {
+        const context = Interactable.resolve(scene);
+
+        if (options.collide !== false) {
+            ColliderHandler.withPlatforms(interactable, context.platforms);
+        }
+        if (options.placeOnGround !== false) {
+            ColliderHandler.placeOnGround(interactable, context.groundTopY);
+        }
+
+        return interactable;
     }
 
     protected preUpdate(time: number, delta: number): void {
