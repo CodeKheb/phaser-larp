@@ -45,6 +45,11 @@ export class MenuScene extends Phaser.Scene {
             SceneManager.resumeFromMenu(this),
         );
 
+        // Swaps the menu for the credits screen; BACK there returns here.
+        this.createButton(CENTER_X, CENTER_Y + 110, 'CREDITS', () =>
+            SceneManager.openCredits(this),
+        );
+
         // Add class to hide mobile controls while menu is active
         document.body.classList.add('menu-active');
         this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
