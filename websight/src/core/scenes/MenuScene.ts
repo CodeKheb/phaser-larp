@@ -7,9 +7,9 @@ import { SceneManager } from './SceneManager';
 /**
  * Represents the menu scene.
  * Handles the play button and routes to the game scene.
- * It is initialized and loaded first by the Phaser game.
+ * Started by PreloaderScene once all assets are loaded.
  *
- * Referenced by Main.ts as the first scene.
+ * Referenced by Main.ts as the second scene.
  */
 export class MenuScene extends Phaser.Scene {
     private controls!: InputManager;

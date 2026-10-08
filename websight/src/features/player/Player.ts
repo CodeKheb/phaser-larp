@@ -38,7 +38,7 @@ export class Player extends Phaser.Physics.Arcade.Sprite {
         this.setDepth(Depth.PLAYER);
         this.setScale(Attributes.SCALE);
 
-        this.interaction = new InteractionController();
+        this.interaction = new InteractionController(scene);
     }
 
     /**

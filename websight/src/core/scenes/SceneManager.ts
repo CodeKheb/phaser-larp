@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
 import { SceneKeys, type SceneKey } from '../config/SceneKeys';
-import { Interactable } from '../../features/objects/Interactable';
 
 /**
- * The only code allowed to start/stop/pause/resume/launch scenes.
+ * The only code allowed to start/stop/sleep/wake/pause/resume/launch scenes.
  */
 export class SceneManager {
     /** Registry key storing which gameplay scene opened the pause menu. */
@@ -14,10 +13,11 @@ export class SceneManager {
 
     /**
      * The ONE way to switch gameplay scenes.
-     * Safe to call from input handlers mid-update: the actual `start` is
+     * Safe to call from input handlers mid-update: the actual switch is
      * deferred to the next tick so it never runs inside a physics or input
      * callback, and concurrent transitions are ignored.
-     * Also clears the interactable registry, so scenes never do it manually.
+     * Uses sleep/wake under the hood, so the scene being left keeps its
+     * state and the target only runs preload/create the first time it starts.
      * @param from the scene initiating the switch
      * @param key key of the scene to switch to
      */
@@ -32,12 +32,12 @@ export class SceneManager {
             from.scene.stop(SceneKeys.Menu);
         }
 
-        Interactable.clearRegistry();
-
-        // Defer out of the current update/input tick (fixes the once-only bug).
+        // Defer out of the current update/input tick.
         from.time.delayedCall(0, () => {
             registry.set(SceneManager.TRANSITION_KEY, false);
-            from.scene.start(key);
+            // Sleeps this scene and wakes the target (or starts it the first
+            // time), so the scene being left keeps its state.
+            from.scene.switch(key);
         });
     }
 
@@ -55,7 +55,6 @@ export class SceneManager {
 
     /**
      * Stops the menu and resumes exactly the scene that paused for it.
-     * Replaces MenuScene's hardcoded isPaused(House)/isPaused(Main) guessing.
      * Safe no-op when no scene is recorded (e.g. the menu was opened cold).
      */
     static resumeFromMenu(menu: Phaser.Scene): void {
@@ -89,9 +88,6 @@ export class SceneManager {
      * Opens the credits screen from the menu overlay: stops the menu and
      * starts CreditsScene on the next tick, using the same transition guards
      * as go().
-     * Deliberately does NOT clear the interactable registry — a gameplay
-     * scene may be paused behind the menu and must keep its interactables
-     * for when it resumes.
      * @param menu the menu scene opening the credits
      */
     static openCredits(menu: Phaser.Scene): void {
@@ -128,9 +124,19 @@ export class SceneManager {
 
     /**
      * Safe restart of the given scene with the same transition guards as go().
-     * Useful later for reset/respawn flows.
+     * The scene is stopped and started again, so create() re-runs and the
+     * world is rebuilt from scratch. Useful for reset/respawn flows.
      */
     static restart(scene: Phaser.Scene): void {
-        SceneManager.go(scene, scene.scene.key as SceneKey);
+        const registry = scene.game.registry;
+        if (registry.get(SceneManager.TRANSITION_KEY)) return; // in flight
+
+        registry.set(SceneManager.TRANSITION_KEY, true);
+
+        scene.time.delayedCall(0, () => {
+            registry.set(SceneManager.TRANSITION_KEY, false);
+            // Full teardown: queues stop(self) + start(self).
+            scene.scene.restart();
+        });
     }
 }

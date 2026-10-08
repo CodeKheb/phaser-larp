@@ -57,7 +57,18 @@ export interface InteractContext {
  * into a true circular dependency.
  */
 export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
-    private static registry: Set<Interactable> = new Set();
+    /**
+     * Per-scene registries. Each scene only ever sees its own interactables,
+     * so a sleeping scene keeps its objects registered while another scene
+     * is active (scenes are switched via sleep/wake, see SceneManager.go).
+     */
+    private static readonly registries = new WeakMap<
+        Phaser.Scene,
+        Set<Interactable>
+    >();
+
+    /** The owning scene's registry this instance was added to. */
+    private readonly registry: Set<Interactable>;
 
     protected player: Player;
     protected canInteract: boolean = false;
@@ -92,17 +103,29 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.setInteractive({ useHandCursor: true });
         this.input!.enabled = false;
 
-        Interactable.registry.add(this);
+        this.registry = Interactable.registryFor(scene);
+        this.registry.add(this);
+    }
+
+    /** Returns (creating if needed) the registry belonging to the given scene. */
+    private static registryFor(scene: Phaser.Scene): Set<Interactable> {
+        let registry = Interactable.registries.get(scene);
+        if (!registry) {
+            registry = new Set();
+            Interactable.registries.set(scene, registry);
+        }
+        return registry;
     }
 
     /**
-     * Returns all interactables currently in range of the player,
-     * sorted by distance to the player (nearest first).
+     * Returns all interactables of the given scene currently in range of
+     * that scene's player, sorted by distance to the player (nearest first).
+     * @param scene the scene whose interactables should be considered
      */
-    static getInRange(): Interactable[] {
-        const interactablesInRange = [...Interactable.registry].filter(
-            (interactable) => interactable.canInteract,
-        );
+    static getInRange(scene: Phaser.Scene): Interactable[] {
+        const interactablesInRange = [
+            ...Interactable.registryFor(scene),
+        ].filter((interactable) => interactable.canInteract);
 
         // All in-range interactables share the same player instance,
         // so grab position once instead of per-comparison.
@@ -130,17 +153,18 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
     }
 
     destroy(fromScene?: boolean): void {
-        Interactable.registry.delete(this);
+        this.registry.delete(this);
         this.setOutlineEnabled(false);
         super.destroy(fromScene);
     }
 
     /**
-     * Clears all interactables from the registry.
-     * Call this when switching scenes to prevent ghost interactables.
+     * Clears the given scene's interactable registry, e.g. when the scene is
+     * rebuilt. Other scenes (including sleeping ones) keep their own.
+     * @param scene the scene whose registry should be cleared
      */
-    static clearRegistry(): void {
-        Interactable.registry.clear();
+    static clearRegistry(scene: Phaser.Scene): void {
+        Interactable.registries.get(scene)?.clear();
     }
 
     /**

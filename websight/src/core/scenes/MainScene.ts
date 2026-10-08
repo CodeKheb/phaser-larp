@@ -33,8 +33,8 @@ export class MainScene extends GameScene {
      * </ul>
      */
     create() {
-        // Clear interactable registry to prevent ghost interactables from other scenes
-        Interactable.clearRegistry();
+        // Start from a clean registry; the spawns below add this scene's objects
+        Interactable.clearRegistry(this);
 
         this.world = new World(this);
 
