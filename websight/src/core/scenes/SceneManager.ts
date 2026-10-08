@@ -86,6 +86,47 @@ export class SceneManager {
     }
 
     /**
+     * Opens the credits screen from the menu overlay: stops the menu and
+     * starts CreditsScene on the next tick, using the same transition guards
+     * as go().
+     * Deliberately does NOT clear the interactable registry — a gameplay
+     * scene may be paused behind the menu and must keep its interactables
+     * for when it resumes.
+     * @param menu the menu scene opening the credits
+     */
+    static openCredits(menu: Phaser.Scene): void {
+        const registry = menu.game.registry;
+        if (registry.get(SceneManager.TRANSITION_KEY)) return; // in flight
+
+        registry.set(SceneManager.TRANSITION_KEY, true);
+
+        menu.time.delayedCall(0, () => {
+            registry.set(SceneManager.TRANSITION_KEY, false);
+            // Queues "stop credits' caller, start credits" — Phaser runs both
+            // together next step, so no frame renders between them.
+            menu.scene.start(SceneKeys.Credits);
+        });
+    }
+
+    /**
+     * Returns from the credits screen to the menu overlay, with the same
+     * transition guards as go(). Any gameplay scene paused behind the menu
+     * is untouched, so the menu's PLAY still resumes it.
+     * @param credits the credits scene closing
+     */
+    static returnToMenu(credits: Phaser.Scene): void {
+        const registry = credits.game.registry;
+        if (registry.get(SceneManager.TRANSITION_KEY)) return; // in flight
+
+        registry.set(SceneManager.TRANSITION_KEY, true);
+
+        credits.time.delayedCall(0, () => {
+            registry.set(SceneManager.TRANSITION_KEY, false);
+            credits.scene.start(SceneKeys.Menu);
+        });
+    }
+
+    /**
      * Safe restart of the given scene with the same transition guards as go().
      * Useful later for reset/respawn flows.
      */
