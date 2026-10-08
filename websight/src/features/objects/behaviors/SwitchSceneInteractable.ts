@@ -56,7 +56,7 @@ export class SwitchSceneInteractable extends Interactable {
 
     onInteract(): void {
         // SceneManager defers the switch out of this input tick and guards
-        // against concurrent transitions (raw scene.start is once-only).
+        // against concurrent transitions.
         SceneManager.go(this.scene, this.targetScene);
     }
 }

@@ -20,8 +20,8 @@ export class HouseScene extends GameScene {
         const WORLD_WIDTH = 3000;
         const WORLD_HEIGHT = 3000;
 
-        // Clear interactable registry to prevent ghost interactables from other scenes
-        Interactable.clearRegistry();
+        // Start from a clean registry; the spawns below add this scene's objects
+        Interactable.clearRegistry(this);
 
         this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
         this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
