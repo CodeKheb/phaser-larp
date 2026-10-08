@@ -4,3 +4,4 @@
 #
 # Add YOUR line at the bottom of this file. Do not edit or remove existing lines.
 Buenaventura, Kherbin Clloyde, B. BSCS - CS2B - 2nd Year
+Santeno, Josh Ryle, R. BSCS - CS2B - 2nd Year
