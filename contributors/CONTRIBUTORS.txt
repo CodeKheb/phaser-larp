@@ -1,0 +1,5 @@
+# WebSight contributors — one line per person.
+# Format: LNAME, FNAME, M.I. PROGRAM - SECTION - YEAR LEVEL
+# Example: Dela Cruz, Juan, M. BSIT - NW2A - 3rd Year
+#
+# Add YOUR line at the bottom of this file. Do not edit or remove existing lines.
