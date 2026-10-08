@@ -2,13 +2,14 @@ import Phaser from 'phaser';
 import { InputManager } from '../../features/controls/InputManager';
 import { CameraManager } from '../camera/CameraManager';
 import { SceneKeys } from '../config/SceneKeys';
+import { SceneManager } from './SceneManager';
 
 /**
  * Represents the menu scene.
  * Handles the play button and routes to the game scene.
- * It is initialized and loaded first by the Phaser game.
+ * Started by PreloaderScene once all assets are loaded.
  *
- * Referenced by Main.ts as the first scene.
+ * Referenced by Main.ts as the second scene.
  */
 export class MenuScene extends Phaser.Scene {
     private controls!: InputManager;
@@ -38,17 +39,16 @@ export class MenuScene extends Phaser.Scene {
             .setOrigin(0.5)
             .setShadow(0, 4, '#00000066', 6, false, true);
 
-        this.createButton(CENTER_X, CENTER_Y, 'PLAY', () => {
-            if (this.scene.isPaused(SceneKeys.House)) {
-                this.scene.resume(SceneKeys.House);
-                this.scene.stop();
-            } else if (this.scene.isPaused(SceneKeys.Main)) {
-                this.scene.resume(SceneKeys.Main);
-                this.scene.stop();
-            } else {
-                this.scene.start(SceneKeys.Main);
-            }
-        });
+        // Resumes whichever gameplay scene opened this menu; starts Main if
+        // the menu was opened cold (no paused scene behind it).
+        this.createButton(CENTER_X, CENTER_Y, 'PLAY', () =>
+            SceneManager.resumeFromMenu(this),
+        );
+
+        // Swaps the menu for the credits screen; BACK there returns here.
+        this.createButton(CENTER_X, CENTER_Y + 110, 'CREDITS', () =>
+            SceneManager.openCredits(this),
+        );
 
         // Add class to hide mobile controls while menu is active
         document.body.classList.add('menu-active');
@@ -57,17 +57,10 @@ export class MenuScene extends Phaser.Scene {
         });
     }
 
-    // If escape is pressed, resume the paused scene (House or Main).
+    // If escape is pressed, resume the scene that paused for this menu.
     update(): void {
-        const escapePressed = this.controls.escape;
-
-        if (escapePressed && this.scene.isPaused(SceneKeys.House)) {
-            this.scene.stop();
-            this.scene.resume(SceneKeys.House);
-        }
-        if (escapePressed && this.scene.isPaused(SceneKeys.Main)) {
-            this.scene.stop();
-            this.scene.resume(SceneKeys.Main);
+        if (this.controls.escape) {
+            SceneManager.resumeFromMenu(this);
         }
     }
 

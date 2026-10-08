@@ -1,0 +1,7 @@
+# WebSight contributors — one line per person.
+# Format: LNAME, FNAME, M.I. PROGRAM - SECTION - YEAR LEVEL
+# Example: Dela Cruz, Juan, M. BSIT - NW2A - 3rd Year
+#
+# Add YOUR line at the bottom of this file. Do not edit or remove existing lines.
+Buenaventura, Kherbin Clloyde, B. BSCS - CS2B - 2nd Year
+Santeno, Josh Ryle, R. BSCS - CS2B - 2nd Year

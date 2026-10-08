@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 import { Player } from '../../features/player/Player';
 import { InputManager } from '../../features/controls/InputManager';
-import { SceneKeys } from '../config/SceneKeys';
+import type { InteractContext } from '../../features/objects/Interactable';
+import { World } from '../../features/world/World';
+import { SceneManager } from './SceneManager';
 
 /**
  * Base class for scenes where the player is controlled directly (gameplay scenes).
@@ -15,8 +17,16 @@ import { SceneKeys } from '../config/SceneKeys';
  * per-frame logic through {@link updateScene}.
  */
 export abstract class GameScene extends Phaser.Scene {
+    protected world!: World;
     protected player!: Player;
     protected controls!: InputManager;
+
+    /**
+     * Scene-level context (player, platforms, ground position) that spawn()
+     * factories resolve automatically. Subclasses with their own world setup
+     * override this after building their world (see {@link HouseScene}).
+     */
+    interactContext!: InteractContext;
 
     /**
      * Creates the player and input manager.
@@ -27,6 +37,16 @@ export abstract class GameScene extends Phaser.Scene {
     protected setupPlayer(x?: number, y?: number): void {
         this.player = new Player(this, x, y);
         this.controls = new InputManager(this);
+
+        // Default context points at the standard World; subclasses that build
+        // their own platforms override it after setupPlayer() (see HouseScene).
+        if (this.world) {
+            this.interactContext = {
+                player: this.player,
+                platforms: this.world.platforms,
+                groundTopY: this.world.groundTopY,
+            };
+        }
     }
 
     /**
@@ -68,8 +88,6 @@ export abstract class GameScene extends Phaser.Scene {
     private handlePauseMenu(): void {
         if (!this.controls.escape) return;
 
-        this.scene.pause();
-        this.scene.launch(SceneKeys.Menu);
-        this.scene.bringToTop(SceneKeys.Menu);
+        SceneManager.pauseForMenu(this);
     }
 }

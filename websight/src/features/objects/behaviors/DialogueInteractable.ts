@@ -11,10 +11,6 @@ import Phaser from 'phaser';
 export interface DialogueInteractableOptions extends InteractableOptions {
     /** The text to show in the dialogue. */
     message: string;
-    /** X position for the dialogue object. */
-    x: number;
-    /** Y position for the dialogue object. */
-    y: number;
 }
 
 /**
@@ -42,6 +38,31 @@ export class DialogueInteractable extends Interactable {
         this.setDepth(Depth.ABOVE_PLAYER);
 
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.onInteract());
+    }
+
+    /**
+     * Spawns a dialogue object wired to the scene's platforms and ground.
+     * @param scene the game scene
+     * @param options configuration for this dialogue object
+     *        (x/y default to the player's position)
+     */
+    static spawn(
+        scene: Phaser.Scene,
+        options: DialogueInteractableOptions,
+    ): DialogueInteractable {
+        const context = Interactable.resolve(scene);
+        const pos = context.player.currentPosition();
+        const full: DialogueInteractableOptions = {
+            ...options,
+            x: options.x ?? pos.x,
+            y: options.y ?? pos.y,
+        };
+
+        return Interactable.finalizeSpawn(
+            new DialogueInteractable(scene, context.player, full),
+            scene,
+            full,
+        );
     }
 
     /**

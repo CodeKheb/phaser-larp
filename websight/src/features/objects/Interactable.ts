@@ -1,5 +1,7 @@
 import { Player } from '../player/Player';
 import { InteractableConfig } from '../../core/config/InteractableConfig';
+import { ColliderHandler } from './ColliderHandler';
+import type { GameScene } from '../../core/scenes/GameScene';
 import Phaser from 'phaser';
 
 /**
@@ -21,6 +23,24 @@ export interface InteractableOptions {
     innerGlowIntensity?: number;
     /** How close the player must be to interact (defaults to InteractableConfig.RADIUS). */
     interactionRadius?: number;
+    /** Whether spawn() should add a collider with the scene's platforms (defaults to true). */
+    collide?: boolean;
+    /** Whether spawn() should bottom-align the object on the ground (defaults to true). */
+    placeOnGround?: boolean;
+}
+
+/**
+ * Scene-level context needed to build and wire interactables.
+ * Provided by `GameScene.interactContext` so spawn factories can resolve
+ * the player and platforms from the scene alone.
+ */
+export interface InteractContext {
+    /** The player this interactable interacts with. */
+    player: Player;
+    /** Physics group or sprite that spawned objects should collide with. */
+    platforms: Phaser.GameObjects.Group | Phaser.Physics.Arcade.Sprite;
+    /** Y coordinate of the ground's top surface, for ground placement. */
+    groundTopY: number;
 }
 
 /**
@@ -37,7 +57,18 @@ export interface InteractableOptions {
  * into a true circular dependency.
  */
 export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
-    private static registry: Set<Interactable> = new Set();
+    /**
+     * Per-scene registries. Each scene only ever sees its own interactables,
+     * so a sleeping scene keeps its objects registered while another scene
+     * is active (scenes are switched via sleep/wake, see SceneManager.go).
+     */
+    private static readonly registries = new WeakMap<
+        Phaser.Scene,
+        Set<Interactable>
+    >();
+
+    /** The owning scene's registry this instance was added to. */
+    private readonly registry: Set<Interactable>;
 
     protected player: Player;
     protected canInteract: boolean = false;
@@ -72,17 +103,29 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
         this.setInteractive({ useHandCursor: true });
         this.input!.enabled = false;
 
-        Interactable.registry.add(this);
+        this.registry = Interactable.registryFor(scene);
+        this.registry.add(this);
+    }
+
+    /** Returns (creating if needed) the registry belonging to the given scene. */
+    private static registryFor(scene: Phaser.Scene): Set<Interactable> {
+        let registry = Interactable.registries.get(scene);
+        if (!registry) {
+            registry = new Set();
+            Interactable.registries.set(scene, registry);
+        }
+        return registry;
     }
 
     /**
-     * Returns all interactables currently in range of the player,
-     * sorted by distance to the player (nearest first).
+     * Returns all interactables of the given scene currently in range of
+     * that scene's player, sorted by distance to the player (nearest first).
+     * @param scene the scene whose interactables should be considered
      */
-    static getInRange(): Interactable[] {
-        const interactablesInRange = [...Interactable.registry].filter(
-            (interactable) => interactable.canInteract,
-        );
+    static getInRange(scene: Phaser.Scene): Interactable[] {
+        const interactablesInRange = [
+            ...Interactable.registryFor(scene),
+        ].filter((interactable) => interactable.canInteract);
 
         // All in-range interactables share the same player instance,
         // so grab position once instead of per-comparison.
@@ -110,17 +153,48 @@ export abstract class Interactable extends Phaser.Physics.Arcade.Sprite {
     }
 
     destroy(fromScene?: boolean): void {
-        Interactable.registry.delete(this);
+        this.registry.delete(this);
         this.setOutlineEnabled(false);
         super.destroy(fromScene);
     }
 
     /**
-     * Clears all interactables from the registry.
-     * Call this when switching scenes to prevent ghost interactables.
+     * Clears the given scene's interactable registry, e.g. when the scene is
+     * rebuilt. Other scenes (including sleeping ones) keep their own.
+     * @param scene the scene whose registry should be cleared
      */
-    static clearRegistry(): void {
-        Interactable.registry.clear();
+    static clearRegistry(scene: Phaser.Scene): void {
+        Interactable.registries.get(scene)?.clear();
+    }
+
+    /**
+     * Resolves the interact context (player, platforms, ground position) from a scene.
+     * Gameplay scenes expose it via `interactContext`; see {@link GameScene}.
+     */
+    static resolve(scene: Phaser.Scene): InteractContext {
+        return (scene as GameScene).interactContext;
+    }
+
+    /**
+     * Shared wiring for the static spawn() factories on Interactable subclasses:
+     * adds the platforms collider and ground placement unless opted out in options.
+     * Keeps scenes free of physics and positioning boilerplate.
+     */
+    protected static finalizeSpawn<T extends Interactable>(
+        interactable: T,
+        scene: Phaser.Scene,
+        options: InteractableOptions,
+    ): T {
+        const context = Interactable.resolve(scene);
+
+        if (options.collide !== false) {
+            ColliderHandler.withPlatforms(interactable, context.platforms);
+        }
+        if (options.placeOnGround !== false) {
+            ColliderHandler.placeOnGround(interactable, context.groundTopY);
+        }
+
+        return interactable;
     }
 
     protected preUpdate(time: number, delta: number): void {
