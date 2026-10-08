@@ -9,6 +9,7 @@ export const SceneKeys = {
     Menu: 'MenuScene',
     Main: 'MainScene',
     House: 'HouseScene',
+    Credits: 'CreditsScene',
 } as const;
 
 /**
