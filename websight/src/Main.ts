@@ -1,6 +1,7 @@
 import './style.css';
 
 import Phaser from 'phaser';
+import { PreloaderScene } from './core/scenes/PreloaderScene';
 import { MainScene } from './core/scenes/MainScene';
 import { MenuScene } from './core/scenes/MenuScene';
 import { HouseScene } from './core/scenes/HouseScene';
@@ -27,7 +28,9 @@ const config: Phaser.Types.Core.GameConfig = {
             debug: false,
         },
     },
-    scene: [MenuScene, MainScene, HouseScene, CreditsScene],
+    // PreloaderScene is first, so Phaser auto-starts it: it loads every
+    // texture, then starts the menu. The other scenes are only registered.
+    scene: [PreloaderScene, MenuScene, MainScene, HouseScene, CreditsScene],
 };
 
 // Create the game instance

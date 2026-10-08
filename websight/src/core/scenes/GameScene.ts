@@ -4,7 +4,6 @@ import { InputManager } from '../../features/controls/InputManager';
 import type { InteractContext } from '../../features/objects/Interactable';
 import { World } from '../../features/world/World';
 import { SceneManager } from './SceneManager';
-import { AssetPaths, Assets } from '../../shared/Assets';
 
 /**
  * Base class for scenes where the player is controlled directly (gameplay scenes).
@@ -60,23 +59,6 @@ export abstract class GameScene extends Phaser.Scene {
         this.updateScene(delta);
         this.handlePlayerControls();
         this.handlePauseMenu();
-    }
-
-    /**
-     * preloads all main assets for the game
-     */
-    preload() {
-        this.load.image(Assets.CHARACTER, AssetPaths.CHARACTER);
-        this.load.image(Assets.PLATFORM, AssetPaths.PLATFORM);
-        this.load.image(Assets.LOGO, AssetPaths.LOGO);
-        this.load.image(Assets.STAFF, AssetPaths.STAFF);
-        this.load.image(Assets.SIGN, AssetPaths.SIGN);
-        this.load.image(Assets.CLOUD, AssetPaths.CLOUD);
-        this.load.image(Assets.CUBE, AssetPaths.CUBE);
-        this.load.image(Assets.BOX, AssetPaths.BOX);
-        this.load.image(Assets.HOUSE_SCENE, AssetPaths.HOUSE_SCENE);
-        this.load.image(Assets.HOUSE, AssetPaths.HOUSE);
-        this.load.image(Assets.DOOR, AssetPaths.DOOR);
     }
 
     /**

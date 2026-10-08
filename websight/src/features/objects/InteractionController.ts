@@ -1,3 +1,4 @@
+import Phaser from 'phaser';
 import { Interactable } from './Interactable';
 import { HoldingInteractable } from './behaviors/HoldingInteractable';
 
@@ -13,13 +14,21 @@ import { HoldingInteractable } from './behaviors/HoldingInteractable';
 export class InteractionController {
     private nearby: Interactable | null = null;
     private held: HoldingInteractable | null = null;
+    private readonly scene: Phaser.Scene;
+
+    /**
+     * @param scene the scene whose interactables this controller dispatches
+     */
+    constructor(scene: Phaser.Scene) {
+        this.scene = scene;
+    }
 
     /**
      * Updates the interaction controller each frame.
      * Finds the nearest interactable in range and clears held reference if dropped.
      */
     update(): void {
-        this.nearby = Interactable.getInRange()[0] ?? null;
+        this.nearby = Interactable.getInRange(this.scene)[0] ?? null;
 
         // Release reference if the held object was dropped
         if (this.held && !this.held.isHeld) {
