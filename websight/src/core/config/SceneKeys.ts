@@ -6,9 +6,11 @@
  * Main.ts, add its key to this object.
  */
 export const SceneKeys = {
+    Preloader: 'PreloaderScene',
     Menu: 'MenuScene',
     Main: 'MainScene',
     House: 'HouseScene',
+    Credits: 'CreditsScene',
 } as const;
 
 /**

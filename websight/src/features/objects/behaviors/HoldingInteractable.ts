@@ -32,6 +32,25 @@ export class HoldingInteractable extends Interactable {
         this.on(Phaser.Input.Events.POINTER_DOWN, () => this.toggleHeld());
     }
 
+    /**
+     * Spawns a holdable object wired to the scene's platforms and ground.
+     * @param scene the game scene
+     * @param options configuration for this holdable object
+     *        (x defaults to 50px right of the player, y defaults to player's y)
+     */
+    static spawn(
+        scene: Phaser.Scene,
+        options: InteractableOptions,
+    ): HoldingInteractable {
+        const context = Interactable.resolve(scene);
+
+        return Interactable.finalizeSpawn(
+            new HoldingInteractable(scene, context.player, options),
+            scene,
+            options,
+        );
+    }
+
     protected preUpdate(time: number, delta: number): void {
         super.preUpdate(time, delta);
         this.followPlayerIfHeld();

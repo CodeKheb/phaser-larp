@@ -1,13 +1,25 @@
+import Phaser from 'phaser';
 import { MobileInput } from './MobileInput';
 
 /**
  * Connects HTML mobile control buttons to the game's input system.
  *
- * Button IDs are defined in index.html.
+ * Button IDs are defined in index.html. The buttons are static DOM nodes
+ * shared by every scene, so the owning scene's shutdown removes this
+ * instance's listeners and keeps them from accumulating on the buttons.
+ * Sleeping scenes keep their listeners until they shut down.
  */
 export class MobileControls {
     private input: MobileInput;
-    constructor(input: MobileInput) {
+
+    /** Removal callbacks for every DOM listener this instance added. */
+    private readonly unbinders: Array<() => void> = [];
+
+    /**
+     * @param input the mobile input flags the buttons should drive
+     * @param scene the scene that owns this input; its shutdown unbinds the DOM
+     */
+    constructor(input: MobileInput, scene: Phaser.Scene) {
         this.input = input;
 
         /*
@@ -18,6 +30,8 @@ export class MobileControls {
         this.bindButton('jump');
         this.bindButton('interact');
         this.bindButton('settings');
+
+        scene.events.once(Phaser.Scenes.Events.SHUTDOWN, () => this.unbind());
     }
 
     /**
@@ -34,10 +48,10 @@ export class MobileControls {
         if (!button) return;
 
         // Prevents default browser behaviors and sets input to true when the button is pressed
-        button.addEventListener('pointerdown', (e) => {
+        const press = (e: Event) => {
             e.preventDefault();
             this.input[key] = true;
-        });
+        };
 
         // Shared method to set input to false when the button is released
         const release = () => {
@@ -45,10 +59,26 @@ export class MobileControls {
         };
 
         /*
-         * Event listeners for pointer release (up, leave, or cancel).
+         * Event listeners for pointer press and release (up, leave, or cancel).
          */
+        button.addEventListener('pointerdown', press);
         button.addEventListener('pointerup', release);
         button.addEventListener('pointerleave', release);
         button.addEventListener('pointercancel', release);
+
+        this.unbinders.push(() => {
+            button.removeEventListener('pointerdown', press);
+            button.removeEventListener('pointerup', release);
+            button.removeEventListener('pointerleave', release);
+            button.removeEventListener('pointercancel', release);
+        });
+    }
+
+    /** Removes every DOM listener this instance added. */
+    private unbind(): void {
+        for (const unbind of this.unbinders) {
+            unbind();
+        }
+        this.unbinders.length = 0;
     }
 }

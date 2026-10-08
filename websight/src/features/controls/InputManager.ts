@@ -21,7 +21,7 @@ export class InputManager {
     constructor(scene: Phaser.Scene) {
         this.keyboard = new KeyboardInput(scene);
         this.mobile = new MobileInput();
-        this.mobileControls = new MobileControls(this.mobile);
+        this.mobileControls = new MobileControls(this.mobile, scene);
     }
 
     /*

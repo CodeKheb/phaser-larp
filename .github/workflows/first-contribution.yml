@@ -1,0 +1,198 @@
+name: First Contribution Check
+
+# Validates first-contribution PRs: they may only append one correctly
+# formatted line to contributors/CONTRIBUTORS.txt. See CONTRIBUTING.md.
+on:
+    pull_request:
+        branches:
+            - main
+
+permissions:
+    contents: read
+    pull-requests: write
+
+jobs:
+    check:
+        # Gate 1: only run for contribution branches or forks. Regular
+        # feature branches skip this job entirely.
+        if: >-
+            github.event.pull_request.head.repo.fork == true ||
+            startsWith(github.head_ref, 'contribution/') ||
+            startsWith(github.head_ref, 'first-contribution')
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Validate first contribution
+              uses: actions/github-script@v7
+              with:
+                  script: |
+                      const { execSync } = require('child_process');
+
+                      const FILE = 'contributors/CONTRIBUTORS.txt';
+                      const MARKER = '<!-- first-contribution-check -->';
+                      const FORMAT =
+                          /^[A-Za-z][A-Za-z .'\-]*, [A-Za-z][A-Za-z .'\-]*, [A-Z]\. [A-Z]{2,6} - [A-Z]{2,4}[1-4][A-Z] - (1st|2nd|3rd|4th) Year$/;
+
+                      const errors = [];
+                      let added = [];
+
+                      // --- Gate 2: scope — only CONTRIBUTORS.txt may change ---
+                      const files = await github.paginate(github.rest.pulls.listFiles, {
+                          owner: context.repo.owner,
+                          repo: context.repo.repo,
+                          pull_number: context.payload.pull_request.number,
+                          per_page: 100,
+                      });
+
+                      for (const f of files) {
+                          if (f.filename !== FILE) {
+                              errors.push(
+                                  `❌ This PR changes \`${f.filename}\`. A first contribution may only add your name to \`${FILE}\`.`
+                              );
+                          }
+                      }
+
+                      // --- Gate 3: format, duplicates, append-only ---
+                      const usable = (s) =>
+                          s.split('\n')
+                              .map((l) => l.trim())
+                              .filter((l) => l !== '' && !l.startsWith('#'));
+
+                      const baseSha = context.payload.pull_request.base.sha;
+                      let baseContent = '';
+
+                      try {
+                          baseContent = execSync(
+                              `git show ${baseSha}:${FILE}`,
+                              { encoding: 'utf8' }
+                          );
+                      } catch {
+                          baseContent = '';
+                      }
+
+                      const headContent = require('fs').readFileSync(FILE, 'utf8');
+
+                      const baseLines = usable(baseContent);
+                      const headLines = usable(headContent);
+
+                      const count = (lines) => {
+                          const m = new Map();
+                          for (const l of lines) {
+                              m.set(l, (m.get(l) || 0) + 1);
+                          }
+                          return m;
+                      };
+
+                      const baseCount = count(baseLines);
+                      const headCount = count(headLines);
+
+                      // Find newly added lines.
+                      for (const [line, n] of headCount) {
+                          const inBase = Math.min(n, baseCount.get(line) || 0);
+
+                          for (let i = inBase; i < n; i++) {
+                              added.push(line);
+                          }
+                      }
+
+                      // Ensure existing lines were not removed.
+                      for (const [line, n] of baseCount) {
+                          const inHead = Math.min(n, headCount.get(line) || 0);
+
+                          if (n > inHead) {
+                              errors.push(
+                                  `❌ Existing lines were changed or removed. The list is append-only — add your line at the bottom and leave everyone else's untouched.`
+                              );
+                              break;
+                          }
+                      }
+
+                      // Exactly one new contributor is allowed.
+                      if (added.length === 0 && errors.length === 0) {
+                          errors.push(
+                              `❌ No new name was added. Append one line with your name at the bottom of \`${FILE}\`.`
+                          );
+                      }
+
+                      if (added.length > 1) {
+                          errors.push(
+                              `❌ This PR adds ${added.length} contributor entries. A first contribution may only add one name.`
+                          );
+                      }
+
+                      // Validate the added line.
+                      for (const line of added) {
+                          if (!FORMAT.test(line)) {
+                              errors.push(
+                                  `❌ This line doesn't match the required format:\n\`\`\`\n${line}\n\`\`\`\nUse exactly:\n\`\`\`\nLNAME, FNAME, M.I. PROGRAM - SECTION - YEAR LEVEL\n\`\`\`\nExample:\n\`\`\`\nDela Cruz, Juan, M. BSIT - NW2A - 3rd Year\n\`\`\``
+                              );
+                          }
+
+                          if (
+                              baseLines.some(
+                                  (l) => l.toLowerCase() === line.toLowerCase()
+                              )
+                          ) {
+                              errors.push(
+                                  `❌ \`${line}\` is already in the list — one entry per person.`
+                              );
+                          }
+                      }
+
+                      // --- Friendly PR comment (update in place, never spam) ---
+                      const firstName =
+                          added.length > 0
+                              ? (added[0].split(',')[1] || '').trim()
+                              : '';
+
+                      const body =
+                          errors.length === 0
+                              ? `${MARKER}\n## ✅ Welcome to WebSight${firstName ? ', ' + firstName : ''}!\n\nYour name will appear in the game credits once this PR is merged. 🎉`
+                              : `${MARKER}\n## Almost there!\n\n${errors.join('\n\n')}\n\nFix the issue(s) above and this check will re-run automatically.`;
+
+                      try {
+                          const comments = await github.paginate(
+                              github.rest.issues.listComments,
+                              {
+                                  owner: context.repo.owner,
+                                  repo: context.repo.repo,
+                                  issue_number:
+                                      context.payload.pull_request.number,
+                              }
+                          );
+
+                          const existing = comments.find(
+                              (c) =>
+                                  c.user.login === 'github-actions[bot]' &&
+                                  c.body.includes(MARKER)
+                          );
+
+                          if (existing) {
+                              await github.rest.issues.updateComment({
+                                  owner: context.repo.owner,
+                                  repo: context.repo.repo,
+                                  comment_id: existing.id,
+                                  body,
+                              });
+                          } else {
+                              await github.rest.issues.createComment({
+                                  owner: context.repo.owner,
+                                  repo: context.repo.repo,
+                                  issue_number:
+                                      context.payload.pull_request.number,
+                                  body,
+                              });
+                          }
+                      } catch (e) {
+                          core.warning(
+                              `Could not post PR comment: ${e.message}`
+                          );
+                      }
+
+                      if (errors.length > 0) {
+                          core.setFailed('First contribution check failed');
+                      }
