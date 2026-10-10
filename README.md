@@ -51,7 +51,9 @@ A 2D side-scrolling platformer. The player explores a wide world filled with int
 
 ## Getting Started
 
-New to the project? The [Contributing Guide](CONTRIBUTING.md) walks you through everything **step by step, in beginner-friendly language** — installing Node.js and Git, cloning the repository, and running the game on your computer. No prior experience needed.
+New to the project? Start with the **[First Contribution Guide](docs/FIRST_CONTRIBUTION.md)** — add your name to the contributors list in about 5 minutes, right from your browser, no setup needed. It's your easiest way to learn the fork → branch → pull request flow.
+
+Then read the [Contributing Guide](CONTRIBUTING.md), which walks you through everything **step by step, in beginner-friendly language** — installing Node.js and Git, cloning the repository, and running the game on your computer. No prior experience needed.
 
 ## Tech Stack
 
@@ -71,6 +73,7 @@ All contributor communication happens on **Discord** or **Facebook Messenger** �
 
 ## Documentation
 
+- [First Contribution Guide](docs/FIRST_CONTRIBUTION.md) — your first PR in 5 minutes, no setup needed
 - [Architecture guide](docs/ARCHITECTURE.md) — how the code is organized and "where do I add X?"
 - [How to Contribute](CONTRIBUTING.md) — setup from zero, rules, and useful commands
 - [Phaser: Making your first Phaser 3 game](https://phaser.io/tutorials/making-your-first-phaser-3-game)
