@@ -6,6 +6,11 @@ contributing — from setting up your computer to merging your first change.
 It's written for **everyone**. If you've never opened a terminal or
 used GitHub before, you're in the right place. No question is too basic.
 
+> **Just want to make your first contribution?** Start with the
+> [First Contribution Guide](docs/FIRST_CONTRIBUTION.md) instead — it only takes
+> 5 minutes, happens entirely in your browser, and needs no setup. Come back
+> here when you're ready to contribute code, sprites, sounds, or anything else.
+
 ## Getting Started
 
 ### Terms you'll see a lot
